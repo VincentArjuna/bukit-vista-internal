@@ -85,32 +85,60 @@ Route::post('booking/delete/{id}', 'BookingsController@softDelete');
 
 //Properties
 //Display all 'Properties'
-Route::get('properties', 'PropertiesController@index');
+Route::get('property', 'PropertiesController@index');
 //Display 'Properties' specified by 'property_id'
-Route::get('properties/{id}', 'PropertiesController@showId');
+Route::get('property/{id}', 'PropertiesController@showId');
 //Display 'Properties' specified by 'property_name'
-Route::get('properties/name/{id}', 'PropertiesController@showName');
+Route::get('property/name/{id}', 'PropertiesController@showName');
 //Display 'Properties' specified by 'property_type'
-Route::get('properties/type/{id}', 'PropertiesController@showType');
+Route::get('property/type/{id}', 'PropertiesController@showType');
 //Display 'Properties' specified by 'property_Status'
-Route::get('properties/status/{id}', 'PropertiesController@showStatus');
+Route::get('property/status/{id}', 'PropertiesController@showStatus');
 //Display 'Properties' specified by 'property_package'
-Route::get('properties/package/{id}', 'PropertiesController@showPackage');
+Route::get('property/package/{id}', 'PropertiesController@showPackage');
 //Display 'Properties' specified by 'property_design'
-Route::get('properties/design/{id}', 'PropertiesController@showDesign');
+Route::get('property/design/{id}', 'PropertiesController@showDesign');
 //Display 'Properties' specified by 'property_proximity'
-Route::get('properties/proximity/{id}', 'PropertiesController@showProximity');
+Route::get('property/proximity/{id}', 'PropertiesController@showProximity');
 //Display 'Properties' specified by 'property_life_support'
-Route::get('properties/LS/{id}', 'PropertiesController@showLS');
+Route::get('property/LS/{id}', 'PropertiesController@showLS');
 //Display 'Properties' specified by 'property_service'
-Route::get('properties/service/{id}', 'PropertiesController@showService');
+Route::get('property/service/{id}', 'PropertiesController@showService');
 //Display 'Properties' specified by 'property_area'
-Route::get('properties/area/{id}', 'PropertiesController@showArea');
+Route::get('property/area/{id}', 'PropertiesController@showArea');
 //Display 'Properties' specified by 'property_employee'
-Route::get('properties/employee/{id}', 'PropertiesController@showEmployee');
+Route::get('property/employee/{id}', 'PropertiesController@showEmployee');
 //Add new 'Property'
-Route::post('properties/add','PropertiesController@create');
+Route::post('property/add','PropertiesController@create');
 //Update/Edit 'Property'
-Route::post('properties/update/{id}', 'PropertiesController@update');
+Route::post('property/update/{id}', 'PropertiesController@update');
 //SoftDelete 'Property'
-Route::post('properties/delete/{id}', 'PropertiesController@softDelete');
+Route::post('property/delete/{id}', 'PropertiesController@softDelete');
+
+//Area
+//Display all 'Area'
+Route::get('area', 'AreasController@index');
+//Display 'Area' specified by 'area_id'
+Route::get('area/{id}', 'AreasController@showId');
+//Display 'Area' specified by 'area_name'
+Route::get('area/name/{id}', 'AreasController@showName');
+//Add new area
+Route::post('area/add', 'AreasController@create');
+//Update area
+Route::post('area/update/{id}', 'AreasController@update');
+//Softdelete area
+Route::get('area/delete/{id}', 'AreasController@softDelete');
+
+//Profile
+//Display all 'Profile'
+Route::get('profile', 'ProfilesController@index');
+//Display 'Profile'specified by 'profile_id'
+Route::get('profile/{id}', 'ProfilesController@showId');
+//Display 'Profile'specified by 'profile_name'
+Route::get('profile/name/{id}', 'ProfilesController@showName');
+//Add new profile
+Route::post('profile/add', 'ProfilesController@create');
+//Update profile
+Route::post('profile/update/{id}', 'ProfilesController@update');
+//Delete profile
+Route::post('profile/delete/{id}', 'ProfilesController@softDelete');

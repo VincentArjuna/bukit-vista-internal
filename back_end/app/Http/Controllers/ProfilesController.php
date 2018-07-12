@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Areas;
+use App\Profiles;
 use DateTime;
 
-class AreasController extends Controller
+class ProfilesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class AreasController extends Controller
      */
     public function index()
     {
-        $areas = Areas::Latest()->paginate(20);
-        return $areas;
+        $profiles = Profiles::Latest()->paginate(20);
+        return $profiles;
     }
 
     /**
@@ -24,12 +24,13 @@ class AreasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        $areas = new Areas;
-        $areas->area_id = $request->input('data.area_id');
-        $areas->area_name = $request->input('data.area_name');
-        $areas->save();
+        $profiles = new Profiles;
+        $profiles->profile_id = $request->input('data.profile_id');
+        $profiles->profile_name = $request->input('data.profile_name');
+        $profiles->profile_email = $request->input('data.profile_email');
+        $profiles->save();
         return 'Data Created';
     }
 
@@ -52,13 +53,13 @@ class AreasController extends Controller
      */
     public function showId($id)
     {
-        $areas = Areas::where('area_id',$id)->get();
-        return $areas;
+        $profiles = Profiles::where('profile_id', $id)->get();
+        return $profiles;
     }
     public function showName($id)
     {
-        $areas = Areas::where('area_name',$id)->get();
-        return $areas;
+        $profiles = Profiles::where('profile_name', $id)->get();
+        return $profiles;
     }
 
     /**
@@ -69,7 +70,7 @@ class AreasController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**
@@ -81,9 +82,10 @@ class AreasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $areas = Area::find($id)->first();
-        $areas->area_name = $request->input('data.area_name');
-        $areas->save();
+        $profiles = Profiles::find($id)->first();
+        $profiles->profile_name = $request->input('data.profile_name');
+        $profiles->profile_email = $request->input('data.profile_email');
+        $profiles->save();
         return 'Data Updated';
     }
 
@@ -95,9 +97,9 @@ class AreasController extends Controller
      */
     public function softDelete($id)
     {
-        $areas = Area::find($id)->first();
-        $areas->deleted_at = new DateTime();
-        $areas->save();
+        $profiles = Profiles::find($id)->first();
+        $profiles->deleted_at = new DateTime();
+        $profiles->save();
         return 'Data SoftDeleted';
     }
 }
