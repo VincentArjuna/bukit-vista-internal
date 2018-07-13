@@ -76,6 +76,8 @@ Route::get('booking/profile/{id}', 'BookingsController@showProfile');
 Route::get('booking/listing/{id}', 'BookingsController@showListing');
 //Display specified by 'area_id'
 Route::get('booking/area/{id}', 'BookingsController@showArea');
+//Display arrival (check_in and area)
+Route::get('booking/arrival/{tgl}&{area}', 'BookingsController@showArrival');
 //Add 'booking'
 Route::post('booking/add','BookingsController@create');
 //Update 'booking'
