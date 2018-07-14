@@ -16,6 +16,7 @@ class FirebaseHelper {
   GOOGLE = 'google';
   GITHUB = 'github';
   TWITTER = 'twitter';
+
   constructor() {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -29,9 +30,11 @@ class FirebaseHelper {
       this.isValid && new ReduxSagaFirebase(firebaseApp, firebase.firestore());
     this.rsfFirestore = this.isValid && this.rsf.firestore;
   }
+
   createBatch = () => {
     return this.database.batch();
   };
+
   login(provider, info) {
     if (!this.isValid) {
       return;
@@ -53,6 +56,7 @@ class FirebaseHelper {
       default:
     }
   }
+
   logout() {
     return firebaseAuth().signOut();
   }
@@ -70,6 +74,16 @@ class FirebaseHelper {
       .database()
       .ref()
       .push().key;
+  }
+  processFireStoreCollection(snapshot) {
+    let data = {};
+    snapshot.forEach(doc => {
+      data = {
+        ...data,
+        [doc.id]: doc.data(),
+      };
+    });
+    return data;
   }
 }
 

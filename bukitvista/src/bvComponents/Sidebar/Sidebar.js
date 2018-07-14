@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import clone from 'clone';
-import { Link } from 'react-router-dom';
-import { Layout } from 'antd';
-import options from './options';
-import Scrollbars from '../../components/utility/customScrollBar.js';
-import Menu from '../../components/uielements/menu';
-import IntlMessages from '../../components/utility/intlMessages';
-import SidebarWrapper from './sidebar.style';
-import appActions from '../../redux/app/actions';
-import Logo from '../../components/utility/logo';
-import themes from '../../settings/themes';
-import { themeConfig } from '../../settings';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import clone from "clone";
+import { Link } from "react-router-dom";
+import { Layout } from "antd";
+import options from "./options";
+import Scrollbars from "../../components/utility/customScrollBar.js";
+import Menu from "../../components/uielements/menu";
+import IntlMessages from "../../components/utility/intlMessages";
+import SidebarWrapper from "./sidebar.style";
+import appActions from "../../redux/app/actions";
+import Logo from "../../components/utility/logo";
 
 const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
 const { Sider } = Layout;
 
 const {
@@ -23,7 +22,7 @@ const {
   toggleCollapsed
 } = appActions;
 const stripTrailingSlash = str => {
-  if (str.substr(-1) === '/') {
+  if (str.substr(-1) === "/") {
     return str.substr(0, str.length - 1);
   }
   return str;
@@ -37,7 +36,7 @@ class Sidebar extends Component {
   }
   handleClick(e) {
     this.props.changeCurrent([e.key]);
-    if (this.props.app.view === 'MobileView') {
+    if (this.props.app.view === "MobileView") {
       setTimeout(() => {
         this.props.toggleCollapsed();
         this.props.toggleOpenDrawer();
@@ -63,7 +62,7 @@ class Sidebar extends Component {
   }
   getAncestorKeys = key => {
     const map = {
-      sub3: ['sub2']
+      sub3: ["sub2"]
     };
     return map[key] || [];
   };
@@ -112,10 +111,10 @@ class Sidebar extends Component {
     );
   };
   render() {
-    const { app, toggleOpenDrawer, height } = this.props;
+    const { app, toggleOpenDrawer, customizedTheme, height } = this.props;
     const collapsed = clone(app.collapsed) && !clone(app.openDrawer);
     const { openDrawer } = app;
-    const mode = collapsed === true ? 'vertical' : 'inline';
+    const mode = collapsed === true ? "vertical" : "inline";
     const onMouseEnter = event => {
       if (openDrawer === false) {
         toggleOpenDrawer();
@@ -128,12 +127,11 @@ class Sidebar extends Component {
       }
       return;
     };
-    const customizedTheme = themes[themeConfig.theme];
     const styling = {
       backgroundColor: customizedTheme.backgroundColor
     };
     const submenuStyle = {
-      backgroundColor: 'rgba(0,0,0,0.3)',
+      backgroundColor: "rgba(0,0,0,0.3)",
       color: customizedTheme.textColor
     };
     const submenuColor = {
@@ -176,6 +174,7 @@ class Sidebar extends Component {
 export default connect(
   state => ({
     app: state.App,
+    customizedTheme: state.ThemeSwitcher.sidebarTheme,
     height: state.App.height
   }),
   { toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed }

@@ -1,11 +1,15 @@
 {
   "sidebar.email": "Email",
+  "sidebar.chat": "Chat",
   "sidebar.ecommerce": "Ecommerce",
   "sidebar.shop": "Shop",
   "sidebar.cart": "Cart",
   "sidebar.checkout": "Checkout",
   "sidebar.cards": "Cards",
   "sidebar.maps": "Maps",
+  "sidebar.firestorecrud": "Firestore CRUD",
+  "sidebar.firestorecrudarticle": "Articles",
+  "sidebar.firestorecrudinvestor": "Investors",
   "sidebar.googleMap": "Google Map",
   "sidebar.leafletMap": "Leaflet Map",
   "sidebar.calendar": "Calendar",
@@ -199,7 +203,7 @@
   "forms.formsWithValidation.header": "Customized Validation Form",
   "forms.formsWithValidation.failLabel": "Fail",
   "forms.formsWithValidation.failHelp":
-    "Should be combination of numbers &amp; alphabets",
+    "Should be combination of numbers & alphabets",
   "forms.formsWithValidation.warningLabel": "Warning",
   "forms.formsWithValidation.ValidatingLabel": "Validating",
   "forms.formsWithValidation.ValidatingHelp":
@@ -208,7 +212,7 @@
   "forms.formsWithValidation.WarninghasFeedbackLabel": "Warning",
   "forms.formsWithValidation.FailhasFeedbackLabel": "Fail",
   "forms.formsWithValidation.FailhasFeedbackHelp":
-    "Should be combination of numbers &amp; alphabets",
+    "Should be combination of numbers & alphabets",
   "forms.progressBar.header": "Progress Bar",
   "forms.progressBar.standardTitle": "Progress bar",
   "forms.progressBar.standardSubTitle": "A standard progress bar.",
@@ -624,7 +628,7 @@
   "email.cancel": "CANCEL",
   "email.compose": "COMPOSE",
   "email.noMessage": "Please select a mail to read",
-  "themeSwitcher.purchase": "PURCHAGE NOW",
+  "themeSwitcher.purchase": "PURCHASE NOW",
   "themeSwitcher.settings": "Settings",
   "sidebar.selectbox": "Select",
   "sidebar.frappeChart": "Frappe Charts",

@@ -1,5 +1,6 @@
 {
   "sidebar.email": "Email",
+  "sidebar.chat": "Chat",
   "sidebar.ecommerce": "Ecommerce",
   "sidebar.shop": "tienda",
   "sidebar.cart": "Carro",
@@ -641,7 +642,7 @@
   "email.cancel": "CANCELAR",
   "email.compose": "COMPONER",
   "email.noMessage": "Por favor seleccione un correo para leer",
-  "themeSwitcher.purchase": "Compra ahora",
+  "themeSwitcher.purchase": "ACHETER MAINTENANT",
   "themeSwitcher.settings": "AJUSTES",
   "sidebar.selectbox": "Seleccionar",
   "sidebar.frappeChart": "Frappe Charts",

@@ -1,5 +1,5 @@
-import { getDefaultPath } from '../../helpers/urlSync';
-import actions, { getView } from './actions';
+import { getDefaultPath } from "../../helpers/urlSync";
+import actions, { getView } from "./actions";
 
 const preKeys = getDefaultPath();
 
@@ -11,12 +11,19 @@ const initState = {
   openKeys: preKeys,
   current: preKeys
 };
+
 export default function appReducer(state = initState, action) {
   switch (action.type) {
     case actions.COLLPSE_CHANGE:
-      return { ...state, collapsed: !state.collapsed };
+      return {
+        ...state,
+        collapsed: !state.collapsed
+      };
     case actions.COLLPSE_OPEN_DRAWER:
-      return { ...state, openDrawer: !state.openDrawer };
+      return {
+        ...state,
+        openDrawer: !state.openDrawer
+      };
     case actions.TOGGLE_ALL:
       if (state.view !== action.view || action.height !== state.height) {
         const height = action.height ? action.height : state.height;
@@ -24,16 +31,26 @@ export default function appReducer(state = initState, action) {
           ...state,
           collapsed: action.collapsed,
           view: action.view,
-          height: height
+          height
         };
       }
       break;
     case actions.CHANGE_OPEN_KEYS:
-      return { ...state, openKeys: action.openKeys };
+      return {
+        ...state,
+        openKeys: action.openKeys
+      };
     case actions.CHANGE_CURRENT:
-      return { ...state, current: action.current };
-    case actions.CLOSE_ALL:
-      return { ...state, current: [], openKeys: [] };
+      return {
+        ...state,
+        current: action.current
+      };
+    case actions.CLEAR_MENU:
+      return {
+        ...state,
+        openKeys: [],
+        current: []
+      };
     default:
       return state;
   }

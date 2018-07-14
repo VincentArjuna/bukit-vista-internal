@@ -1,11 +1,13 @@
 {
   "sidebar.email": "Email",
+  "sidebar.chat": "Chat",
   "sidebar.ecommerce": "Ecommerce",
   "sidebar.shop": "tienda",
   "sidebar.cart": "Carro",
   "sidebar.checkout": "revisa",
   "sidebar.cards": "Divertido Tarjetas",
   "sidebar.maps": "Mapas",
+  "sidebar.firestore": "Firestore",
   "sidebar.googleMap": "Mapa de Google",
   "sidebar.leafletMap": "Mapa del folleto",
   "sidebar.calendar": "Calendario",

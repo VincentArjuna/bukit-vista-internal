@@ -1,14 +1,19 @@
-import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import Input from '../../components/uielements/input';
-import Checkbox from '../../components/uielements/checkbox';
-import Button from '../../components/uielements/button';
-import authAction from '../../redux/auth/actions';
-import IntlMessages from '../../components/utility/intlMessages';
-import SignInStyleWrapper from './signin.style';
+import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import Input from "../../components/uielements/input";
+import Checkbox from "../../components/uielements/checkbox";
+import Button from "../../components/uielements/button";
+import authAction from "../../redux/auth/actions";
+import appAction from "../../redux/app/actions";
+import Auth0 from "../../helpers/auth0";
+import Firebase from "../../helpers/firebase";
+import FirebaseLogin from "../../components/firebase";
+import IntlMessages from "../../components/utility/intlMessages";
+import SignInStyleWrapper from "./signin.style";
 
 const { login } = authAction;
+const { clearMenu } = appAction;
 
 class SignIn extends Component {
   state = {
@@ -23,12 +28,13 @@ class SignIn extends Component {
     }
   }
   handleLogin = () => {
-    const { login } = this.props;
+    const { login, clearMenu } = this.props;
     login();
-    this.props.history.push('/dashboard');
+    clearMenu();
+    this.props.history.push("/arrivalList");
   };
   render() {
-    const from = { pathname: '/dashboard' };
+    const from = { pathname: "/arrivalList" };
     const { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) {
@@ -39,7 +45,7 @@ class SignIn extends Component {
         <div className="isoLoginContentWrapper">
           <div className="isoLoginContent">
             <div className="isoLogoWrapper">
-              <Link to="/dashboard">
+              <Link to="/arrivalList">
                 <IntlMessages id="page.signInTitle" />
               </Link>
             </div>
@@ -73,12 +79,25 @@ class SignIn extends Component {
                 <Button onClick={this.handleLogin} type="primary btnGooglePlus">
                   <IntlMessages id="page.signInGooglePlus" />
                 </Button>
+
+                {Auth0.isValid && (
+                  <Button
+                    onClick={() => {
+                      Auth0.login(this.handleLogin);
+                    }}
+                    type="primary btnAuthZero"
+                  >
+                    <IntlMessages id="page.signInAuth0" />
+                  </Button>
+                )}
+
+                {Firebase.isValid && <FirebaseLogin login={this.handleLogin} />}
               </div>
               <div className="isoCenterComponent isoHelperWrapper">
-                <Link to="" className="isoForgotPass">
+                <Link to="/forgotpassword" className="isoForgotPass">
                   <IntlMessages id="page.signInForgotPass" />
                 </Link>
-                <Link to="">
+                <Link to="/signup">
                   <IntlMessages id="page.signInCreateAccount" />
                 </Link>
               </div>
@@ -94,5 +113,5 @@ export default connect(
   state => ({
     isLoggedIn: state.Auth.idToken !== null ? true : false
   }),
-  { login }
+  { login, clearMenu }
 )(SignIn);

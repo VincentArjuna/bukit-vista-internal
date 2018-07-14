@@ -1,5 +1,6 @@
 {
   "sidebar.email": "电子邮件",
+  "sidebar.chat": "Chat",
   "sidebar.ecommerce": "电子商务",
   "sidebar.shop": "店",
   "sidebar.cart": "大车",
@@ -112,16 +113,20 @@
   "feedback.alert.normalMessageSubtitle": "正常消息作为反馈。",
   "feedback.alert.displayMessage": "显示正常消息",
   "feedback.alert.displayOtherTypeMessageTitle": "其他类型的消息",
-  "feedback.alert.displayOtherTypeMessageSubTitle": "消息的成功，错误和警告类型。",
+  "feedback.alert.displayOtherTypeMessageSubTitle":
+    "消息的成功，错误和警告类型。",
   "feedback.alert.customizeDurationTitle": "自定义持续时间",
-  "feedback.alert.customizeDurationSubTitle": "自定义消息显示持续时间从默认值1.5s到10s。",
+  "feedback.alert.customizeDurationSubTitle":
+    "自定义消息显示持续时间从默认值1.5s到10s。",
   "feedback.alert.customizeDurationButton": "定制显示持续时间",
   "feedback.alert.messageLoadingTitle": "加载消息",
-  "feedback.alert.messageLoadingSubTitle": "显示一个全局加载指示器，它自身被异步地关闭。",
+  "feedback.alert.messageLoadingSubTitle":
+    "显示一个全局加载指示器，它自身被异步地关闭。",
   "feedback.alert.displayLoadIndicator": "显示装载指示灯",
   "feedback.alert.notification": "通知",
   "feedback.alert.notificationBasicTitle": "基本",
-  "feedback.alert.notificationBasicSubTitle": "4.5s后关闭通知框的最简单的用法。",
+  "feedback.alert.notificationBasicSubTitle":
+    "4.5s后关闭通知框的最简单的用法。",
   "feedback.alert.notificationBasicDescription": "打开通知框",
   "feedback.alert.notificationDurationTitle": "通知框关闭之后的时间",
   "feedback.alert.notificationDurationSubTitle":
@@ -164,16 +169,19 @@
   "forms.input.variationsSubtitle":
     "输入框有三种尺寸：大（42像素），默认（35像素）和小（30像素）。注意：在表格内部，只使用大尺寸。",
   "forms.input.groupTitle": "输入组",
-  "forms.input.groupSubTitle": "Input.Group示例注意：您不需要Col来控制紧凑模式下的宽度。",
+  "forms.input.groupSubTitle":
+    "Input.Group示例注意：您不需要Col来控制紧凑模式下的宽度。",
   "forms.input.autoSizingTitle": "自动调整高度以适应内容",
   "forms.input.autoSizingSubTitle":
     "对于textarea类型的输入，autosize prop可以根据内容自动调整高度。可以提供一个选项对象来自动调整，以指定textarea将自动调整的最小和最大行数。",
   "forms.input.prePostTabTitle": "前  后选项卡",
   "forms.input.prePostTabSubTitle": "使用前＆amp;帖子标签示例..",
   "forms.input.textAreaTitle": "多行文本",
-  "forms.input.textAreaSubTitle": "对于多行用户输入案例，可以使用类型prop具有textarea值的输入。",
+  "forms.input.textAreaSubTitle":
+    "对于多行用户输入案例，可以使用类型prop具有textarea值的输入。",
   "forms.input.searchTitle": "搜索",
-  "forms.input.searchSubTitle": "通过使用搜索按钮对标准输入进行分组来创建搜索框的示例",
+  "forms.input.searchSubTitle":
+    "通过使用搜索按钮对标准输入进行分组来创建搜索框的示例",
   "forms.editor.header": "编辑",
   "forms.formsWithValidation.header": "定制验证表",
   "forms.formsWithValidation.failLabel": "失败",
@@ -231,9 +239,11 @@
   "forms.checkbox.basicTitle": "基本复选框",
   "forms.checkbox.basicSubTitle": "复选框的基本用法",
   "forms.checkbox.groupTitle": "复选框组",
-  "forms.checkbox.groupSubTitle": "从数组生成一组复选框。禁用此功能可禁用复选框。",
+  "forms.checkbox.groupSubTitle":
+    "从数组生成一组复选框。禁用此功能可禁用复选框。",
   "forms.checkbox.groupCheckTitle": "复选框组",
-  "forms.checkbox.groupCheckSubTitle": "从数组生成一组复选框。禁用此功能可禁用复选框。",
+  "forms.checkbox.groupCheckSubTitle":
+    "从数组生成一组复选框。禁用此功能可禁用复选框。",
   "forms.radio.header": "无线电",
   "forms.radio.simpleTitle": "基本电台",
   "forms.radio.simpleSubTitle": "最简单的用法禁用禁用广播。",
@@ -267,11 +277,13 @@
   "uiElements.badge.processing": "处理",
   "uiElements.badge.warning": "警告",
   "uiElements.badge.redBadge": "红色徽章",
-  "uiElements.badge.redBadgeSubTitle": "这只会显示一个红色的徽章，没有特定的数字。",
+  "uiElements.badge.redBadgeSubTitle":
+    "这只会显示一个红色的徽章，没有特定的数字。",
   "uiElements.badge.linkSomething": "链接一些东西",
   "uiElements.cards.cards": "牌",
   "uiElements.cards.basicCard": "基本卡",
-  "uiElements.cards.basicCardSubTitle": "包含标题，内容和额外角落内容的基本卡。",
+  "uiElements.cards.basicCardSubTitle":
+    "包含标题，内容和额外角落内容的基本卡。",
   "uiElements.cards.more": "更多",
   "uiElements.cards.cardTitle": "卡标题",
   "uiElements.cards.cardContent": "卡内容",
@@ -282,25 +294,31 @@
   "uiElements.cards.gridCard": "网格卡",
   "uiElements.cards.gridCardSubTitle": "卡通常在概览页面中与网格布局配合使用。",
   "uiElements.cards.loadingCard": "装卡",
-  "uiElements.cards.loadingCardSubTitle": "显示加载指示符，同时正在取出卡的内容。",
+  "uiElements.cards.loadingCardSubTitle":
+    "显示加载指示符，同时正在取出卡的内容。",
   "uiElements.cards.whateverContent": "无论内容",
   "uiElements.cards.customizedContentTitle": "定制内容",
-  "uiElements.cards.customizedContent": "显示加载指示符，同时正在取出卡的内容。",
+  "uiElements.cards.customizedContent":
+    "显示加载指示符，同时正在取出卡的内容。",
   "uiElements.cards.europeStreetBeat": "欧洲街拍",
   "uiElements.cards.instagram": "www.instagram.com",
   "uiElements.carousel.carousel": "狂欢游行",
   "uiElements.carousel.verticalCarousel": "垂直旋转木马",
-  "uiElements.carousel.verticalCarouselSubTitle": "垂直分页。使用  vertical =true",
+  "uiElements.carousel.verticalCarouselSubTitle":
+    "垂直分页。使用  vertical =true",
   "uiElements.carousel.basicCarousel": "基本转盘",
   "uiElements.carousel.basicCarouselSubTitle": "基本用法",
   "uiElements.carousel.fadeInTransition": "淡入淡出",
-  "uiElements.carousel.fadeInTransitionSubTitle": "幻灯片使用淡入淡出。   效果= 淡入",
+  "uiElements.carousel.fadeInTransitionSubTitle":
+    "幻灯片使用淡入淡出。   效果= 淡入",
   "uiElements.carousel.scrollAutomatically": "自动滚动",
-  "uiElements.carousel.scrollAutomaticallySubTitle": "滚动到下一张卡  图片的时间。自动播放",
+  "uiElements.carousel.scrollAutomaticallySubTitle":
+    "滚动到下一张卡  图片的时间。自动播放",
   "uiElements.collapse.collapse": "坍方",
   "uiElements.collapse.collapseSubTitle":
     "一次可以扩展多个面板，在这种情况下，第一个面板被初始化为活动状态。使用  defaultActiveKey =   [keyNum]",
-  "uiElements.collapse.text": "狗是一种驯养动物。以其忠诚和忠诚而闻名，可以作为世界各地许多家庭的欢迎客人。",
+  "uiElements.collapse.text":
+    "狗是一种驯养动物。以其忠诚和忠诚而闻名，可以作为世界各地许多家庭的欢迎客人。",
   "uiElements.collapse.headerOne": "这是面板标题1",
   "uiElements.collapse.headerTwo": "这是面板标题2",
   "uiElements.collapse.headerThree": "这是面板标题3",
@@ -315,7 +333,8 @@
     "手风琴模式，一次只能扩展一个面板。默认情况下，第一个面板将被扩展。使用手风琴",
   "uiElements.popover.popover": "酥料饼",
   "uiElements.popover.basicExample": "基本例子",
-  "uiElements.popover.basicExampleSubTitle": "最基本的例子。浮动层的大小取决于内容区域。",
+  "uiElements.popover.basicExampleSubTitle":
+    "最基本的例子。浮动层的大小取决于内容区域。",
   "uiElements.popover.hoverMe": "悬停我",
   "uiElements.popover.title": "标题",
   "uiElements.popover.titleTrigger": "三种触发方式",
@@ -566,7 +585,7 @@
   "email.cancel": "取消",
   "email.compose": "撰写",
   "email.noMessage": "请选择一个邮件阅读",
-  "themeSwitcher.purchase": "立即购买",
+  "themeSwitcher.purchase": "现在买",
   "themeSwitcher.settings": "设置",
   "sidebar.selectbox": "选择",
   "sidebar.frappeChart": "Frappe Charts",

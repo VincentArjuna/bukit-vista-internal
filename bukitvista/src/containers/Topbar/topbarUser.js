@@ -4,11 +4,10 @@ import Popover from '../../components/uielements/popover';
 import IntlMessages from '../../components/utility/intlMessages';
 import userpic from '../../image/user1.png';
 import authAction from '../../redux/auth/actions';
-import appAction from '../../redux/app/actions';
 import TopbarDropdownWrapper from './topbarDropdown.style';
 
 const { logout } = authAction;
-const { closeAll } = appAction;
+
 class TopbarUser extends Component {
   constructor(props) {
     super(props);
@@ -37,13 +36,7 @@ class TopbarUser extends Component {
         <a className="isoDropdownLink">
           <IntlMessages id="topbar.help" />
         </a>
-        <a
-          className="isoDropdownLink"
-          onClick={() => {
-            this.props.logout();
-            this.props.closeAll();
-          }}
-        >
+        <a className="isoDropdownLink" onClick={this.props.logout}>
           <IntlMessages id="topbar.logout" />
         </a>
       </TopbarDropdownWrapper>
@@ -66,4 +59,4 @@ class TopbarUser extends Component {
     );
   }
 }
-export default connect(null, { logout, closeAll })(TopbarUser);
+export default connect(null, { logout })(TopbarUser);

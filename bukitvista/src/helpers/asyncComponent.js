@@ -29,11 +29,20 @@ class AsyncComponent extends Component {
 
   render() {
     const Component = this.state.Component || <div />;
-    return (
-      <ReactPlaceholder type="text" rows={7} ready={Component !== undefined}>
-        {Component}
-      </ReactPlaceholder>
-    );
+    try {
+      if (this.mounted) {
+        return (
+          <ReactPlaceholder
+            type="text"
+            rows={7}
+            ready={Component !== undefined}
+          >
+            {Component}
+          </ReactPlaceholder>
+        );
+      }
+    } catch (e) {}
+    return <div />;
   }
 }
 

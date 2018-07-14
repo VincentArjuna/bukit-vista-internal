@@ -25,9 +25,13 @@ const BvAppHolder = styled.div`
     }
   }
 
-  .ant-row {
+  .ant-row:not(.ant-form-item) {
     ${'' /* margin-left: -8px;
     margin-right: -8px; */};
+    &:before,
+    &:after {
+      display: none;
+    }
   }
 
   .ant-row > div {
