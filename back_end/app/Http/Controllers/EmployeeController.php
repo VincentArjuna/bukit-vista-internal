@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\employee;
-use App\Http\Requests;
 use DateTime;
+
 class EmployeeController extends Controller
 {
     /**
@@ -57,9 +57,14 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showemployee($id)
+    public function showId($id)
     {
         $employees = employee::where('employee_id',$id)->get();
+        return $employees;
+    }
+    public function showStatus($id)
+    {
+        $employees = employee::where('employee_status',$id)->paginate(20);
         return $employees;
     }
 

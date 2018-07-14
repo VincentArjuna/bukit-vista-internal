@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Listing;
-use App\Http\Requests;
 use DateTime;
 
 class ListingsController extends Controller
@@ -67,13 +66,13 @@ class ListingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showid($id)
+    public function showId($id)
     {
-        $listings = Listing::where('listing_id',$id)->get();
+        $listings = Listing::where('listing_id',$id)->first();
         return $listings;
     }
-    public function showunit($id){
-        $listings = Listing::where('unit_id',$id)->get();
+    public function showUnit($id){
+        $listings = Listing::where('unit_id',$id)->paginate(20);
         return $listings;
     }
 

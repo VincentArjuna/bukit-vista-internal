@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Unit;
-use App\Http\Requests;
-use App\Http\Resources\UnitResource;
 use DateTime;
 
 class UnitController extends Controller
@@ -68,13 +66,13 @@ class UnitController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showunit($id)
+    public function showId($id)
     {
         $units = Unit::where('unit_id',$id)->get();
         return $units;
     }
-    public function showprop($id){
-        $units = Unit::where('property_id',$id)->get();
+    public function showProperty($id){
+        $units = Unit::where('property_id',$id)->paginate(20);
         return $units;
     }
     /**

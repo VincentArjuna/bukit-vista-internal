@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use App\Bookings;
 use App\Http\Requests;
 use DateTime;
 use App\Listing;
 use App\Properties;
 use App\Unit;
+use App\fnPaginate;
 
 class BookingsController extends Controller
 {
@@ -84,7 +86,7 @@ class BookingsController extends Controller
      */
     public function showGuest($id)
     {
-        $bookings = Bookings::where('booking_guest_name',$id)->get();
+        $bookings = Bookings::where('booking_guest_name',$id)->paginate(20);
         return $bookings;
     }
     public function showId($id)
@@ -94,12 +96,12 @@ class BookingsController extends Controller
     }
     public function showSource($id)
     {
-        $bookings = Bookings::where('booking_source',$id)->get();
+        $bookings = Bookings::where('booking_source',$id)->paginate(20);
         return $bookings;
     }
     public function showListing($id)
     {
-        $bookings = Bookings::where('listing_id',$id)->get();
+        $bookings = Bookings::where('listing_id',$id)->paginate(20);
         return $bookings;
     }
     public function showCheckIn($id)
@@ -107,7 +109,7 @@ class BookingsController extends Controller
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $rawcheckin = date_create($id);
         $check_in = date_format($rawcheckin,"Y-m-d");
-        $bookings = Bookings::where('booking_check_in',$check_in)->get();
+        $bookings = Bookings::where('booking_check_in',$check_in)->paginate(20);
         return $bookings;
     }
     public function showCheckOut($id)
@@ -115,7 +117,7 @@ class BookingsController extends Controller
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $rawcheckout = date_create($id);
         $check_out = date_format($rawcheckout,"Y-m-d");
-        $bookings = Bookings::where('booking_check_out',$check_out)->get();
+        $bookings = Bookings::where('booking_check_out',$check_out)->paginate(20);
         return $bookings;
     }
     public function showProfile($id)
@@ -123,7 +125,7 @@ class BookingsController extends Controller
         $listings = Listing::where('profile_id',$id)->get();  
         $ar = [];
         foreach ($listings as $listing){
-            $bookings = Bookings::where('listing_id',$listing->listing_id)->get();
+            $bookings = Bookings::where('listing_id',$listing->listing_id)->paginate(20);
             foreach ($bookings as $booking){
                 array_push($ar,$booking);
             }
@@ -132,7 +134,6 @@ class BookingsController extends Controller
     }
     public function showArea($id)
     {
-        $ar = [];
         $properties = Properties::where('area_id', $id)->get();
         foreach($properties as $property){
             $units = Unit::where('property_id', $property->property_id)->get();
@@ -141,34 +142,19 @@ class BookingsController extends Controller
                 foreach ($listings as $listing){
                     $bookings = Bookings::where('listing_id',$listing->listing_id)->get();
                     foreach ($bookings as $booking){
-                        array_push($ar,$booking);
+                        $collection = collect($booking);
                     }
                 }                
             }
         }
-        return $ar;
+ 
+        if(isset($collection) == false){
+            return 'a';
+        } else
+        {
+            return fnPaginate::pager($collection, $perPage = 20, $page = null, $options = []);
+        }
     }
-    public function showArrival($tgl, $area)
-    {
-        date_default_timezone_set('Asia/Kuala_Lumpur');
-        $rawcheckin = date_create($tgl);
-        $check_in = date_format($rawcheckin,"Y-m-d");
-        $ar = [];
-        $properties = Properties::where('area_id', $area)->get();
-        foreach($properties as $property){
-            $units = Unit::where('property_id', $property->property_id)->get();
-            foreach($units as $unit){
-                $listings = Listing::where('unit_id', $unit->unit_id)->get();
-                foreach ($listings as $listing){
-                    $bookings = Bookings::where('listing_id',$listing->listing_id)->where('booking_check_in', $check_in)->get();
-                    foreach ($bookings as $booking){
-                        array_push($ar,$booking);
-                    }
-                }                
-            }
-        }
-        return $ar;
-    } 
 
     /**
      * Show the form for editing the specified resource.

@@ -21,9 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Display all 'listing'
 Route::get('listing', 'ListingsController@index');
 //Display specified 'listing' by 'listing_id'
-Route::get('listing/{id}','ListingsController@showid');
+Route::get('listing/{id}','ListingsController@showId');
 //Display specified 'listing' by 'unit_id'
-Route::get('listing/unit/{id}','ListingsController@showunit');
+Route::get('listing/unit/{id}','ListingsController@showUnit');
 //Add new 'Listing'
 Route::post('listing/add','ListingsController@create');
 //Update a 'Listing'
@@ -35,9 +35,9 @@ Route::post('listing/delete/{id}','ListingsController@softDelete');
 //Display all 'Unit'
 Route::get('unit','UnitController@index');
 //Display specified 'unit' by 'unit_id'
-Route::get('unit/{id}','UnitController@showunit');
+Route::get('unit/{id}','UnitController@showId');
 //Display specified 'unit' by 'property_id'
-Route::get('unit/property/{id}','UnitController@showprop');
+Route::get('unit/property/{id}','UnitController@showProperty');
 //Add new 'Unit'
 Route::post('unit/add','UnitController@create');
 //Update a 'Unit'
@@ -49,7 +49,9 @@ Route::post('unit/delete/{id}','UnitController@softDelete');
 //Display all 'employee'
 Route::get('employee','EmployeeController@index');
 //Display specified 'employee' by 'employee_id'
-Route::get('employee/{id}','UnitController@showemployee');
+Route::get('employee/{id}','UnitController@showId');
+//Display specified 'employee' by 'employee_status'
+Route::get('employee/{id}','UnitController@showStatus');
 //Add new 'employee'
 Route::post('employee/add','EmployeeController@create');
 //Update a 'employee'
@@ -76,8 +78,6 @@ Route::get('booking/profile/{id}', 'BookingsController@showProfile');
 Route::get('booking/listing/{id}', 'BookingsController@showListing');
 //Display specified by 'area_id'
 Route::get('booking/area/{id}', 'BookingsController@showArea');
-//Display arrival (check_in and area)
-Route::get('booking/arrival/{tgl}&{area}', 'BookingsController@showArrival');
 //Add 'booking'
 Route::post('booking/add','BookingsController@create');
 //Update 'booking'
@@ -144,3 +144,7 @@ Route::post('profile/add', 'ProfilesController@create');
 Route::post('profile/update/{id}', 'ProfilesController@update');
 //Delete profile
 Route::post('profile/delete/{id}', 'ProfilesController@softDelete');
+
+//ArrivalList
+//Display arrival (check_in and area)
+Route::get('arrival/{tgl}&{area}', 'ArrivalListsController@showArrival');

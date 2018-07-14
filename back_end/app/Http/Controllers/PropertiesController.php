@@ -68,52 +68,52 @@ class PropertiesController extends Controller
     }
     public function showName($id)
     {
-        $properties = Properties::where('property_name',$id)->get();
+        $properties = Properties::where('property_name',$id)->paginate(20);
         return $properties;
     }
     public function showType($id)
     {
-        $properties = Properties::where('property_type',$id)->get();
+        $properties = Properties::where('property_type',$id)->paginate(20);
         return $properties;
     }
     public function showStatus($id)
     {
-        $properties = Properties::where('property_status',$id)->get();
+        $properties = Properties::where('property_status',$id)->paginate(20);
         return $properties;
     }
     public function showPackage($id)
     {
-        $properties = Properties::where('property_package',$id)->get();
+        $properties = Properties::where('property_package',$id)->paginate(20);
         return $properties;
     }
     public function showDesign($id)
     {
-        $properties = Properties::where('property_design',$id)->get();
+        $properties = Properties::where('property_design',$id)->paginate(20);
         return $properties;
     }
     public function showProximity($id)
     {
-        $properties = Properties::where('property_proximity',$id)->get();
+        $properties = Properties::where('property_proximity',$id)->paginate(20);
         return $properties;
     }
     public function showLS($id)
     {
-        $properties = Properties::where('property_life_support',$id)->get();
+        $properties = Properties::where('property_life_support',$id)->paginate(20);
         return $properties;
     }
     public function showService($id)
     {
-        $properties = Properties::where('property_service',$id)->get();
+        $properties = Properties::where('property_service',$id)->paginate(20);
         return $properties;
     }
     public function showArea($id)
     {
-        $properties = Properties::where('area_id',$id)->get();
+        $properties = Properties::where('area_id',$id)->paginate(20);
         return $properties;
     }
     public function showEmployee($id)
     {
-        $properties = Properties::where('employee_id',$id)->get();
+        $properties = Properties::where('employee_id',$id)->paginate(20);
         return $properties;
     }
     

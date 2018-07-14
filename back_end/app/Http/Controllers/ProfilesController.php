@@ -58,7 +58,7 @@ class ProfilesController extends Controller
     }
     public function showName($id)
     {
-        $profiles = Profiles::where('profile_name', $id)->get();
+        $profiles = Profiles::where('profile_name', $id)->paginate(20);
         return $profiles;
     }
 
