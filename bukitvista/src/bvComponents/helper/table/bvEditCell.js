@@ -44,7 +44,7 @@ export default class extends Component {
     });
   }
   render() {
-    const{ index, onDeleteCell } = this.props;  
+    const{ index, onDeleteCell,dataList } = this.props;  
     const FormItem = Form.Item;
     const Option = SelectOption;
     return (

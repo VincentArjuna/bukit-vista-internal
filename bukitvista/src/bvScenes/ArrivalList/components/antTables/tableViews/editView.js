@@ -24,7 +24,7 @@ export default class extends Component {
     const editColumn = {
       dataIndex: 'edit',
       render: (text, record, index) => (
-        <BvEditCell index={index}/>
+        <BvEditCell index={index} dataList={this.state.dataList}/>
       )
     };
     const notesColumn = {
