@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import PageHeader from '../../components/utility/pageHeader';
-import LayoutContentWrapper from "../../components/utility/layoutWrapper.js";
+//import PageHeader from '../../components/utility/pageHeader';
+//import LayoutContentWrapper from "../../components/utility/layoutWrapper";
 import LayoutContent from "../../components/utility/layoutContent";
 import LayoutWrapper from '../../components/utility/layoutWrapper';
-import Box from '../../components/utility/box';
+//import Box from '../../components/utility/box';
 import DatePicker from '../../components/uielements/datePicker';
 //import { InputSearch } from '../../bvScenes/ArrivalList/components/arrivalSearch';
 import basicStyle from '../../settings/basicStyle';
 import { Row, Col } from 'antd';
-import ArrivalTable from '../../bvScenes/ArrivalList/components/arrivalTable';
+import AntTable from './components/antTables/';
 
 export default class extends Component {
   render() {
@@ -21,10 +21,7 @@ export default class extends Component {
               <DatePicker />
           </Row>
         </LayoutContent>
-        <LayoutContent>
-          <h2>Canggu</h2>
-          <ArrivalTable/>
-        </LayoutContent>
+        <AntTable/>
       </LayoutWrapper>
     );
   }
