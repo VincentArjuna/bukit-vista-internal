@@ -92,6 +92,7 @@ class BookingsController extends Controller
     public function showId($id)
     {
         $bookings = Bookings::where('booking_id',$id)->get();
+        //return $this->LoS($id);
         return $bookings;
     }
     public function showSource($id)
@@ -213,6 +214,17 @@ class BookingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function LoS($id)
+    {
+        $bookings = Bookings::where('booking_id',$id)->first();
+        $check_in = $bookings->booking_check_in;
+        $check_out = $bookings->booking_check_out;
+        $diff = abs(strtotime($check_out) - strtotime($check_in));
+        
+        $days = floor($diff / (60*60*24));
+        $loss = $days;
+        return $loss;
+    }
     public function softDelete($id)
     {
         $bookings = Bookings::find($id)->first();
