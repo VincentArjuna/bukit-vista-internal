@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use App\Bookings;
 use App\Http\Requests;
 use DateTime;
@@ -135,6 +134,7 @@ class BookingsController extends Controller
     }
     public function showArea($id)
     {
+        $ar = [];
         $properties = Properties::where('area_id', $id)->get();
         foreach($properties as $property){
             $units = Unit::where('property_id', $property->property_id)->get();
@@ -143,18 +143,14 @@ class BookingsController extends Controller
                 foreach ($listings as $listing){
                     $bookings = Bookings::where('listing_id',$listing->listing_id)->get();
                     foreach ($bookings as $booking){
-                        $collection = collect($booking);
+                        array_push($ar,$booking);
                     }
                 }                
             }
         }
- 
-        if(isset($collection) == false){
-            return 'a';
-        } else
-        {
-            return fnPaginate::pager($collection, $perPage = 20, $page = null, $options = []);
-        }
+        //return $bookings;
+        return $ar;
+
     }
 
     /**

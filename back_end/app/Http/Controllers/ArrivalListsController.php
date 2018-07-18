@@ -13,12 +13,13 @@ use DateTime;
 
 class ArrivalListsController extends Controller
 {
-    public function showArrival($tgl, $area)
+    public function showArrival($area, $tgl)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $rawcheckin = date_create($tgl);
         $check_in = date_format($rawcheckin,"Y-m-d");
         $ar = [];
+        $arr = [];
         $properties = Properties::where('area_id', $area)->get();
         foreach($properties as $property){
             $units = Unit::where('property_id', $property->property_id)->get();
@@ -29,16 +30,11 @@ class ArrivalListsController extends Controller
                     foreach ($bookings as $booking){
                         $collection = collect($booking);
                         $merged = $collection->merge($unit);
-                        $collector = collect($merged);
+                        array_push($ar,$merged);
                     }
                 }                
             }
         }
-        if(isset($collector) == false){
-            return 'a';
-        } else
-        {
-            return fnPaginate::pager($collector, $perPage = 20, $page = null, $options = []);
-        }
+        return $ar;
     } 
 }

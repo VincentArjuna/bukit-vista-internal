@@ -147,4 +147,17 @@ Route::post('profile/delete/{id}', 'ProfilesController@softDelete');
 
 //ArrivalList
 //Display arrival (check_in and area)
-Route::get('arrival/{tgl}&{area}', 'ArrivalListsController@showArrival');
+Route::get('booking/area/{area}/date/{tgl}', 'ArrivalListsController@showArrival');
+
+//Log
+//Display all log
+Route::get('log', 'LogsController@index');
+//Create new log
+Route::post('log/add', 'LogsController@create');
+
+//Users
+Route::get('users', 'UserController@index');
+//add user
+Route::post('users/add', 'UserController@create');
+//validation
+Route::post('users/validate', 'UserController@validate');
