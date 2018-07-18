@@ -75,6 +75,10 @@ class ListingsController extends Controller
         $listings = Listing::where('unit_id',$id)->paginate(20);
         return $listings;
     }
+    public function showProfile($id){
+        $listings = Listing::where('profile_id',$id)->paginate(20);
+        return $listings;
+    }
 
     /**
      * Update the specified resource in storage.

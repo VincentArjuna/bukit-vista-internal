@@ -24,6 +24,8 @@ Route::get('listing', 'ListingsController@index');
 Route::get('listing/{id}','ListingsController@showId');
 //Display specified 'listing' by 'unit_id'
 Route::get('listing/unit/{id}','ListingsController@showUnit');
+//Display speicified 'listing' by 'profile_id'
+Route::get('listing/profile/{id}', 'ListingsController@showProfile');
 //Add new 'Listing'
 Route::post('listing/add','ListingsController@create');
 //Update a 'Listing'
@@ -161,3 +163,17 @@ Route::get('users', 'UserController@index');
 Route::post('users/add', 'UserController@create');
 //validation
 Route::post('users/validate', 'UserController@validate');
+
+//Payment
+//Upload csv
+Route::post('payment/upload/new', 'PaymentController@upload');
+//Show all payment
+Route::get('payment', 'PaymentController@index');
+
+//Payment_Booking
+//Show All payment_booking
+Route::get('pb', 'PBController@index');
+//show pb on payment_id
+Route::get('pb/payment/{id}', 'PBController@showPayment');
+//show pb on profile_id
+Route::get('pb/profile/{id}', 'PBController@showProfile');
