@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LayoutContentWrapper from '../Utility/layoutContent'
-import TableDemoStyle from './demo.style';
+//import TableDemoStyle from './demo.style';
 import fakeData from './fakeData';
 import MyTable from './MyTable';
 

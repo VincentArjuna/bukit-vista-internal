@@ -13,6 +13,8 @@ import devSagas from '../customApp/redux/sagas';
 import articles from './articles/sagas';
 import investors from './investors/sagas';
 
+import arrivalListSaga from '../bvScenes/Operation/scenes/ArrivalList/redux/sagas';
+
 export default function* rootSaga(getState) {
   yield all([
     authSagas(),
@@ -28,5 +30,6 @@ export default function* rootSaga(getState) {
     devSagas(),
     articles(),
     investors(),
+    arrivalListSaga(),
   ]);
 }

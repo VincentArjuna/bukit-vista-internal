@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TableWrapper, { CustomizedTableWrapper } from './antTable.style';
 import clone from 'clone';
+import { connect } from 'tls';
 
 const scroll = { y: 240 };
 export default class MyTable extends Component {

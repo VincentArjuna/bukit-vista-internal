@@ -17,6 +17,7 @@ import YoutubeSearch from './youtubeSearch/reducers';
 import DevReducers from '../customApp/redux/reducers';
 import Articles from './articles/reducers';
 import Investors from './investors/reducers';
+import ArrivalList from '../bvScenes/Operation/scenes/ArrivalList/redux/reducers';
 
 export default {
   Auth,
@@ -38,4 +39,5 @@ export default {
   Articles,
   Investors,
   ...DevReducers,
+  ...ArrivalList,
 };

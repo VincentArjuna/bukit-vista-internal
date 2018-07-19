@@ -1,12 +1,12 @@
 import React from 'react';
 import clone from 'clone';
-
 import {
   LinkCell,
   TextCell
 } from '../../../../bvComponents/Table/helper/helperCells';
 import EditCell from './components/editCell';
 import NotesCell from './components/notesCell';
+
 
 const renderCell = (object, type, key) => {
   const value = object[key];

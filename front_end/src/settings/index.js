@@ -1,5 +1,5 @@
 export default {
-  apiUrl: 'http://yoursite.com/api/'
+  apiUrl: 'http://localhost:8888/api/'
 };
 const siteConfig = {
   siteName: 'BUKITVISTA',
