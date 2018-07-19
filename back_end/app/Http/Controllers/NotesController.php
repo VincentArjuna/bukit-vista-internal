@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Areas;
 use DateTime;
+use App\Notes;
 
-class AreasController extends Controller
+class NotesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,16 @@ class AreasController extends Controller
      */
     public function index()
     {
-        $areas = Areas::paginate(20);
-        return $areas;
+        $notes = Notes::where('deleted_at', null)->paginate(20);
+        return $notes;
     }
 
+    public function new_note_id()
+    {
+        $ctr = Notes::Latest()->count();
+        $note_id = 'N'.sprintf("%04s", $ctr);
+        return $note_id;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -27,11 +33,13 @@ class AreasController extends Controller
     public function create(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $areas = new Areas;
-        $areas->area_id = $request->input('data.area_id');
-        $areas->area_name = $request->input('data.area_name');
-        $areas->save();
-        return 'Data Created';
+        $notes = new Notes;
+        $notes->note_id = $this->new_note_id();
+        $notes->booking_id = $request->input('data.booking_id');
+        $notes->user_id = $request->input('data.user_id');
+        $notes->note_text = $request->input('data.note_text');
+        $notes->save();
+        return 'Data Added';
     }
 
     /**
@@ -53,19 +61,20 @@ class AreasController extends Controller
      */
     public function showId($id)
     {
-        $areas = Areas::where('area_id', $id)->first();
-        return $areas;
+        $notes = Notes::where('note_id', $id)->first();
+        return $notes;
     }
-    public function showName($id)
+    public function showBooking($id)
     {
-        $areas = Areas::where('area_name', $id)->paginate(20);
-        return $areas;
+        $notes = Notes::where('booking_id', $id)->paginate(20);
+        return $notes;
     }
-    public function showDeleted()
+    public function showUser($id)
     {
-        $areas = Areas::onlyTrashed()->latest()->paginate(20);
-        return $areas;
+        $notes = Notes::where('user_id', $id)->paginate(20);
+        return $notes;
     }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -74,7 +83,7 @@ class AreasController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**
@@ -87,9 +96,11 @@ class AreasController extends Controller
     public function update(Request $request, $id)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $areas = Areas::where('area_id', $id)->first();
-        $areas->area_name = $request->input('data.area_name');
-        $areas->save();
+        $notes = Notes::find($id)->first();
+        $notes->booking_id = $request->input('data.booking_id');
+        $notes->user_id = $request->input('data.user_id');
+        $notes->note_text = $request->input('data.note_text');
+        $notes->save();
         return 'Data Updated';
     }
 
@@ -102,15 +113,9 @@ class AreasController extends Controller
     public function softDelete($id)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $areas = Areas::where('area_id', $id)->first();
-        $areas->delete();
+        $notes = Notes::find($id)->first();
+        $notes->deleted_at = new DateTime();
+        $notes->save();
         return 'Data SoftDeleted';
-    }
-
-    public function restore($id)
-    {
-        date_default_timezone_set('Asia/Kuala_Lumpur');
-        Areas::onlyTrashed()->where('area_id', $id)->restore();
-        return 'Data Restored';
     }
 }

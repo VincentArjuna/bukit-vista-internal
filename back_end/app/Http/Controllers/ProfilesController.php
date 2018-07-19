@@ -26,6 +26,7 @@ class ProfilesController extends Controller
      */
     public function create()
     {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
         $profiles = new Profiles;
         $profiles->profile_id = $request->input('data.profile_id');
         $profiles->profile_name = $request->input('data.profile_name');
@@ -61,6 +62,11 @@ class ProfilesController extends Controller
         $profiles = Profiles::where('profile_name', $id)->paginate(20);
         return $profiles;
     }
+    public function showDeleted()
+    {
+        $profiles = Profiles::onlyTrashed()->latest()->paginate(20);
+        return $profiles;
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -82,7 +88,8 @@ class ProfilesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $profiles = Profiles::find($id)->first();
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $profiles = Profiles::where('profile_id', $id)->first();
         $profiles->profile_name = $request->input('data.profile_name');
         $profiles->profile_email = $request->input('data.profile_email');
         $profiles->save();
@@ -97,9 +104,15 @@ class ProfilesController extends Controller
      */
     public function softDelete($id)
     {
-        $profiles = Profiles::find($id)->first();
-        $profiles->deleted_at = new DateTime();
-        $profiles->save();
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $profiles = Profiles::where('profile_id', $id)->first();
+        $profiles->delete();
         return 'Data SoftDeleted';
+    }
+    public function restore($id)
+    {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        Profiles::onlyTrashed()->where('profile_id', $id)->restore();
+        return 'Data Restored';
     }
 }

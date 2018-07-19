@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Listing
 //Display all 'listing'
 Route::get('listing', 'ListingsController@index');
+//Display all softdeleted listing
+Route::get('listing/show_del', 'ListingsController@showDeleted');
 //Display specified 'listing' by 'listing_id'
 Route::get('listing/{id}','ListingsController@showId');
 //Display specified 'listing' by 'unit_id'
@@ -31,11 +33,15 @@ Route::post('listing/add','ListingsController@create');
 //Update a 'Listing'
 Route::post('listing/update/{id}','ListingsController@update');
 //Delete from 'Listing'
-Route::post('listing/delete/{id}','ListingsController@softDelete');
+Route::get('listing/delete/{id}','ListingsController@softDelete');
+//Restore Softdeleted listing
+Route::get('listing/restore/{id}', 'ListingsController@restore');
 
 //Unit
 //Display all 'Unit'
 Route::get('unit','UnitController@index');
+//Display softdeleted unit
+Route::get('unit/show_del', 'UnitController@showDeleted');
 //Display specified 'unit' by 'unit_id'
 Route::get('unit/{id}','UnitController@showId');
 //Display specified 'unit' by 'property_id'
@@ -45,25 +51,33 @@ Route::post('unit/add','UnitController@create');
 //Update a 'Unit'
 Route::post('unit/update/{id}','UnitController@update');
 //Delete from 'Unit'
-Route::post('unit/delete/{id}','UnitController@softDelete');
+Route::get('unit/delete/{id}','UnitController@softDelete');
+//Restore deleted Unit
+Route::get('unit/restore/{id}', 'UnitController@restore');
 
 //employee
 //Display all 'employee'
 Route::get('employee','EmployeeController@index');
+//display all softdeleted employee
+Route::get('employee/show_del', 'EmployeeController@showDeleted');
 //Display specified 'employee' by 'employee_id'
-Route::get('employee/{id}','UnitController@showId');
+Route::get('employee/{id}','EmployeeController@showId');
 //Display specified 'employee' by 'employee_status'
-Route::get('employee/{id}','UnitController@showStatus');
+Route::get('employee/{id}','EmployeeController@showStatus');
 //Add new 'employee'
 Route::post('employee/add','EmployeeController@create');
 //Update a 'employee'
 Route::post('employee/update/{id}','EmployeeController@update');
 //Delete from 'employee'
-Route::post('employee/delete/{id}','EmployeeController@softDelete');
+Route::get('employee/delete/{id}','EmployeeController@softDelete');
+//Restore deleted employee
+Route::get('employee/restore/{id}', 'EmployeeController@restore');
 
 //Booking
 //Display all 'booking'
 Route::get('booking','BookingsController@index');
+//display all soft_deleted
+Route::get('booking/show_del', 'BookingsController@showDeleted');
 //Display 'booking' specified by 'booking_id'
 Route::get('booking/{id}', 'BookingsController@showId');
 //Display 'booking' specified by 'guest_name'
@@ -85,11 +99,15 @@ Route::post('booking/add','BookingsController@create');
 //Update 'booking'
 Route::post('booking/update/{id}', 'BookingsController@update');
 //soft delete 'booking'
-Route::post('booking/delete/{id}', 'BookingsController@softDelete');
+Route::get('booking/delete/{id}', 'BookingsController@softDelete');
+//restore softdeleted booking
+Route::get('booking/restore/{id}', 'BookingsController@restore');
 
 //Properties
 //Display all 'Properties'
 Route::get('property', 'PropertiesController@index');
+//Display all sofdeleted properties
+Route::get('property/show_del', 'PropertiesController@showDeleted');
 //Display 'Properties' specified by 'property_id'
 Route::get('property/{id}', 'PropertiesController@showId');
 //Display 'Properties' specified by 'property_name'
@@ -117,11 +135,15 @@ Route::post('property/add','PropertiesController@create');
 //Update/Edit 'Property'
 Route::post('property/update/{id}', 'PropertiesController@update');
 //SoftDelete 'Property'
-Route::post('property/delete/{id}', 'PropertiesController@softDelete');
+Route::get('property/delete/{id}', 'PropertiesController@softDelete');
+//Restore sofdeleted property
+Route::get('property/restore/{id}', 'PropertiesController@restore');
 
 //Area
 //Display all 'Area'
 Route::get('area', 'AreasController@index');
+//Display all softdeleted
+Route::get('area/show_del', 'AreasController@showDeleted');
 //Display 'Area' specified by 'area_id'
 Route::get('area/{id}', 'AreasController@showId');
 //Display 'Area' specified by 'area_name'
@@ -132,10 +154,14 @@ Route::post('area/add', 'AreasController@create');
 Route::post('area/update/{id}', 'AreasController@update');
 //Softdelete area
 Route::get('area/delete/{id}', 'AreasController@softDelete');
+//restore softdeleted area
+Route::get('area/restore/{id}', 'AreasController@restore');
 
 //Profile
 //Display all 'Profile'
 Route::get('profile', 'ProfilesController@index');
+//Display all softdeleted profile
+Route::get('profile/show_del', 'ProfilesController@showDeleted');
 //Display 'Profile'specified by 'profile_id'
 Route::get('profile/{id}', 'ProfilesController@showId');
 //Display 'Profile'specified by 'profile_name'
@@ -145,7 +171,9 @@ Route::post('profile/add', 'ProfilesController@create');
 //Update profile
 Route::post('profile/update/{id}', 'ProfilesController@update');
 //Delete profile
-Route::post('profile/delete/{id}', 'ProfilesController@softDelete');
+Route::get('profile/delete/{id}', 'ProfilesController@softDelete');
+//Restore softdeleted profile
+Route::get('profile/restore/{id}', 'ProfilesController@restore');
 
 //ArrivalList
 //Display arrival (check_in and area)
@@ -177,3 +205,18 @@ Route::get('pb', 'PBController@index');
 Route::get('pb/payment/{id}', 'PBController@showPayment');
 //show pb on profile_id
 Route::get('pb/profile/{id}', 'PBController@showProfile');
+
+//Notes
+Route::get('notes' , 'NotesController@index');
+//show based note_id
+Route::get('notes/{id}', 'NotesController@showId');
+//show based booking_id
+Route::get('notes/booking/{id}','NotesController@showBooking');
+//show based user_id
+Route::get('notes/user/{id}', 'NotesController@showUser');
+//add new note
+Route::post('notes/add', 'NotesController@create');
+//update/edit note
+Route::post('notes/update/{id}', 'NotesController@update');
+//softdelete note
+Route::get('notes/softdelete/{id}', 'NotesController@softDelete');

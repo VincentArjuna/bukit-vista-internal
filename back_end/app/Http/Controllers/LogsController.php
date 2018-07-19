@@ -19,6 +19,12 @@ class LogsController extends Controller
         return $logs;
     }
 
+    public function new_log_id()
+    {
+        $ctr = Logs::latest()->count();
+        $log_id = 'LH'.sprintf("%04s", $ctr);
+        return $log_id;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -28,20 +34,7 @@ class LogsController extends Controller
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $logs = new Logs;
-        $ctr = Logs::Latest()->count();
-        if($ctr>10){
-            $log_id = 'LH000'.$ctr;
-        }else if($ctr>100)
-        {
-            $log_id = 'LH00'.$ctr;
-        }else if ($ctr>1000)
-        {
-            $log_id = 'LH0'.$ctr;
-        }else
-        {
-            $log_id = 'LH'.$ctr;
-        }
-        $logs->log_id = $log_id;
+        $logs->log_id = $this->new_log_id();
         $logs->user_id = $request->input('data.user_id');
         $logs->db_name = $request->input('data.db_name');
         $logs->table_name = $request->input('data.table.name');

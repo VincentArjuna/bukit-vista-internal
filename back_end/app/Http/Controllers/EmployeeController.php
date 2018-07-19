@@ -26,16 +26,13 @@ class EmployeeController extends Controller
      */
     public function create(Request $request)
     {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
         $employees = new employee;
         $employees->employee_id = $request->input('data.employee_id');
         $employees->employee_name = $request->input('data.employee_name');
         $employees->employee_address = $request->input('data.employee_address');
         $employees->employee_phone = $request->input('data.employee_phone');
         $employees->employee_status = $request->input('data.employee_status');
-        $listings->created_at = new DateTime();
-        $listings->updated_at = null;
-        $listings->deleted_at = null;
-        $listings->temp_column = null;
         $listings->save();
         return 'New Data Added';
     }
@@ -67,6 +64,11 @@ class EmployeeController extends Controller
         $employees = employee::where('employee_status',$id)->paginate(20);
         return $employees;
     }
+    public function showDeleted()
+    {
+        $employees = employee::onlyTrashed()->latest()->paginate(20);
+        return $employees;
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -88,12 +90,12 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $employees = employee::find($id)->first();
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $employees = employee::where('employee_id', $id)->first();
         $employees->employee_name = $request->input('data.employee_name');
         $employees->employee_address = $request->input('data.employee_address');
         $employees->employee_phone = $request->input('data.employee_phone');
         $employees->employee_status = $request->input('data.employee_status');
-        $listings->updated_at = new DateTime();
         $listings->save();
         return 'New Data Added';
     }
@@ -104,12 +106,17 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function softDelete($id)
     {
-        $employees = employee::find($id)->first();
-        $employees->updated_at = new DateTime();
-        $employees->deleted_at = new DateTime();
-        $employees->save();
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $employees = employee::where('employee_id', $id)->first();
+        $employees->delete();
         return 'Data Deleted';
+    }
+    public function restore($id)
+    {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        employee::onlyTrashed()->where('employee_id', $id)->restore();
+        return 'Data Restored';
     }
 }

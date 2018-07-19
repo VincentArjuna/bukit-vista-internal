@@ -55,6 +55,7 @@ class PBController extends Controller
     }
     public function showProfile($id)
     {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
         $ar = [];
         $listings = Listing::where('profile_id', $id)->get();
             foreach ($listings as $listing){

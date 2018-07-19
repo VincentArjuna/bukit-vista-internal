@@ -41,10 +41,6 @@ class UnitController extends Controller
         $units->unit_percentage_owner = $request->input('data.unit_percentage_owner');
         $units->unit_percentage_bv = $request->input('data.unit_percentage_bv');
         $units->property_id = $request->input('data.property_id');
-        $units->created_at = new DateTime();
-        $units->updated_at = null;
-        $units->deleted_at = null;
-        $units->temp_column = null;
         $units->save();
         return 'New Data Added';   
     }
@@ -75,6 +71,12 @@ class UnitController extends Controller
         $units = Unit::where('property_id',$id)->paginate(20);
         return $units;
     }
+    public function showDeleted()
+    {
+        $units = Unit::onlyTrashed()->latest()->paginate(20);
+        return $units;
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -98,7 +100,7 @@ class UnitController extends Controller
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $rawonboard = date_create($request->input('data.unit_onboard_date'));
         $onboard_date = date_format($rawonboard,"Y-m-d");
-        $units = Unit::find($id)->first();
+        $units = Unit::where('unit_id', $id)->first();
         $units->unit_name = $request->input('data.unit_name');
         $units->unit_onboard_date = $onboard_date;
         $units->unit_base_price = $request->input('data.unit_base_price');
@@ -109,7 +111,6 @@ class UnitController extends Controller
         $units->unit_percentage_owner = $request->input('data.unit_percentage_owner');
         $units->unit_percentage_bv = $request->input('data.unit_percentage_bv');
         $units->property_id = $request->input('data.property_id');
-        $units->updated_at = new DateTime();
         $units->save();
         return 'Data Updated';
     }
@@ -123,10 +124,13 @@ class UnitController extends Controller
     public function softDelete($id)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $units = Unit::find($id)->first();
-        $units->updated_at = new DateTime();
-        $units->deleted_at = new DateTime();
-        $units->save();
+        $units = Unit::where('unit_id', $id)->first();
+        $units->delete();
         return 'Data Deleted';
+    }
+    public function restore($id)
+    {
+        Unit::onlyTrashed()->where('unit_id', $id)->restore();
+        return 'Data Restored';
     }
 }

@@ -41,10 +41,6 @@ class ListingsController extends Controller
         $listings->unit_id = $request->input('data.unit_id');
         $listings->profile_id = $request->input('data.profile_id');
         $listings->employee_id = $request->input('data.employee_id');
-        $listings->created_at = new DateTime();
-        $listings->updated_at = null;
-        $listings->deleted_at = null;
-        $listings->temp_column = null;
         $listings->save();
         return 'New Data Added';
     }
@@ -79,6 +75,11 @@ class ListingsController extends Controller
         $listings = Listing::where('profile_id',$id)->paginate(20);
         return $listings;
     }
+    public function showDeleted()
+    {
+        $listings = Listing::onlyTrashed()->latest()->paginate(20);
+        return $listings;
+    }
 
     /**
      * Update the specified resource in storage.
@@ -92,7 +93,7 @@ class ListingsController extends Controller
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $rawonboard = date_create($request->input('data.onboard_date'));
         $onboard_date = date_format($rawonboard,"Y-m-d");
-        $listings = Listing::find($id)->first();
+        $listings = Listing::where('listing_id', $id)->first();
         $listings->listing_name = $request->input('data.listing_name');
         $listings->listing_onboard_date = $onboard_date;
         $listings->listing_status = $request->input('data.listing_status');
@@ -103,7 +104,6 @@ class ListingsController extends Controller
         $listings->unit_id = $request->input('data.unit_id');
         $listings->profile_id = $request->input('data.profile_id');
         $listings->employee_id = $request->input('data.employee_id');
-        $listings->updated_at = new DateTime();
         $listings->save();
         return "Data Updated";
     }
@@ -117,10 +117,14 @@ class ListingsController extends Controller
     public function softDelete($id)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $listings = Listing::find($id)->first();
-        $listings->updated_at = new DateTime();
-        $listings->deleted_at = new DateTime();
-        $listings->save();
+        $listings = Listing::where('listing_id', $id)->first();
+        $listings->delete();
         return 'Data Deleted';
+    }
+    public function restore($id)
+    {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        Listing::onlyTrashed()->where('listing_id', $id)->restore();
+        return 'Data Restored';
     }
 }

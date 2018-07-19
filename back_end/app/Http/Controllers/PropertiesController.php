@@ -26,6 +26,7 @@ class PropertiesController extends Controller
      */
     public function create(Request $request)
     {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
         $properties = new Properties;
         $properties->property_id = $request->input('data.property_id');
         $properties->property_name = $request->input('data.property_name');
@@ -39,7 +40,6 @@ class PropertiesController extends Controller
         $properties->property_owner_group_link = $request->input('data.property_owner_group_link');
         $properties->area_id = $request->input('data.area_id');
         $properties->employee_id = $request->input('data.employee_id');
-        $properties->updated_at = null;
         $properties-save();
         return 'Data added';
     }
@@ -116,6 +116,11 @@ class PropertiesController extends Controller
         $properties = Properties::where('employee_id',$id)->paginate(20);
         return $properties;
     }
+    public function showDeleted()
+    {
+        $properties = Properties::onlyTrashed()->latest()->paginate(20);
+        return $properties;
+    }
     
 
     /**
@@ -138,7 +143,8 @@ class PropertiesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $properties = Properties::find($id)->first();
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $properties = Properties::where('property_id', $id)->first();
         $properties->property_name = $request->input('data.property_name');
         $properties->property_type = $request->input('data.property_type');
         $properties->property_status = $request->input('data.property_status');
@@ -150,7 +156,6 @@ class PropertiesController extends Controller
         $properties->property_owner_group_link = $request->input('data.property_owner_group_link');
         $properties->area_id = $request->input('data.area_id');
         $properties->employee_id = $request->input('data.employee_id');
-        $properties->updated_at = null;
         $properties->save();
         return 'Data Updated';
     }
@@ -164,10 +169,13 @@ class PropertiesController extends Controller
     public function softDelete($id)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $properties = Properties::find($id)->first();
-        $properties->updated_at = new DateTime();
-        $properties->deleted_at = new DateTime();
-        $properties->save();
+        $properties = Properties::where('property_id', $id)->first();
+        $properties->delete();
         return 'Data Deleted';
+    }
+    public function restore($id)
+    {
+        Properties::onlyTrashed()->where('property_id', $id)->restore();
+        return 'Data restored';
     }
 }

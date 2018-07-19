@@ -44,6 +44,7 @@ class PaymentController extends Controller
     }
     public function upload(Request $request)
     {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
         $name = $request->input('data.name');
         $reader = Reader::createFromPath(storage_path('Csv/'.$name), 'r');
         $reader->setHeaderOffset(0);

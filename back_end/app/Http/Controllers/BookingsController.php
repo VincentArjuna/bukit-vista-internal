@@ -21,7 +21,7 @@ class BookingsController extends Controller
      */
     public function index(Request $request)
     {
-        $bookings = Bookings::Latest()->paginate(20);
+        $bookings = Bookings::where('deleted_at', null)->latest()->paginate(20);
         return $bookings;
     }
 
@@ -41,7 +41,6 @@ class BookingsController extends Controller
         $check_out = date_format($rawcheckout,"Y-m-d");
         $received_timestamp = date_format($rawrtimestamp,"Y-m-d H:i:s");
         $guest_eta = date_format($raweta,"H:i:s");
-        
         $bookings = new Bookings;
         $bookings->booking_id = $request->input('data.booking_id');
         $bookings->booking_guest_name = $request->input('data.booking_guest_name');
@@ -59,10 +58,6 @@ class BookingsController extends Controller
         $bookings->booking_conversation_url = $request->input('data.booking_conversation_url');
         $bookings->booking_received_timestamp = $received_timestamp;
         $bookings->listing_id = $request->input('data.listing_id');
-        $bookings->created_at = new DateTime();
-        $bookings->updated_at = null;
-        $bookings->deleted_at = null;
-        $bookings->temp_column = null;
         $bookings->save();
         return 'New Data Added';
     }
@@ -86,23 +81,22 @@ class BookingsController extends Controller
      */
     public function showGuest($id)
     {
-        $bookings = Bookings::where('booking_guest_name',$id)->paginate(20);
+        $bookings = Bookings::where('booking_guest_name', $id)->paginate(20);
         return $bookings;
     }
     public function showId($id)
     {
-        $bookings = Bookings::where('booking_id',$id)->get();
-        //return $this->LoS($id);
+        $bookings = Bookings::where('booking_id', $id)->get();
         return $bookings;
     }
     public function showSource($id)
     {
-        $bookings = Bookings::where('booking_source',$id)->paginate(20);
+        $bookings = Bookings::where('booking_source', $id)->paginate(20);
         return $bookings;
     }
     public function showListing($id)
     {
-        $bookings = Bookings::where('listing_id',$id)->paginate(20);
+        $bookings = Bookings::where('listing_id', $id)->paginate(20);
         return $bookings;
     }
     public function showCheckIn($id)
@@ -110,7 +104,7 @@ class BookingsController extends Controller
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $rawcheckin = date_create($id);
         $check_in = date_format($rawcheckin,"Y-m-d");
-        $bookings = Bookings::where('booking_check_in',$check_in)->paginate(20);
+        $bookings = Bookings::where('booking_check_in', $id)->paginate(20);
         return $bookings;
     }
     public function showCheckOut($id)
@@ -155,7 +149,11 @@ class BookingsController extends Controller
         $paginated->setPath('http://localhost:8000/api/booking/area/'.$id);
         return $paginated;
     }
-
+    public function showDeleted()
+    {
+        $bookings = Bookings::onlyTrashed()->latest()->paginate();
+        return $bookings;
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -186,7 +184,7 @@ class BookingsController extends Controller
         $received_timestamp = date_format($rawrtimestamp,"Y-m-d H:i:s");
         $guest_eta = date_format($raweta,"H:i:s");
 
-        $bookings = Bookings::find($id)->first();
+        $bookings = Bookings::where('booking_id', $id)->first();
         $bookings->booking_guest_name = $request->input('data.booking_guest_name');
         $bookings->booking_status = $request->input('data.booking_status');
         $bookings->booking_check_in = $check_in;
@@ -202,7 +200,6 @@ class BookingsController extends Controller
         $bookings->booking_conversation_url = $request->input('data.booking_conversation_url');
         $bookings->booking_received_timestamp = $received_timestamp;
         $bookings->listing_id = $request->input('data.listing_id');
-        $bookings->updated_at = new DateTime();
         $bookings->save();
         return 'Data Updated';
     }
@@ -219,16 +216,21 @@ class BookingsController extends Controller
         $check_in = $bookings->booking_check_in;
         $check_out = $bookings->booking_check_out;
         $diff = abs(strtotime($check_out) - strtotime($check_in));
-        
         $days = floor($diff / (60*60*24));
         $loss = $days;
         return $loss;
     }
     public function softDelete($id)
     {
-        $bookings = Bookings::find($id)->first();
-        $bookings->deleted_at = new DateTime();
-        $bookings->save();
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $bookings = Bookings::where('booking_id', $id)->first();
+        $bookings->delete();
         return 'Data SoftDeleted';
+    }
+    public function restore($id)
+    {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        Bookings::onlyTrashed()->where('area_id', $id)->restore();
+        return 'Data Restored';
     }
 }
