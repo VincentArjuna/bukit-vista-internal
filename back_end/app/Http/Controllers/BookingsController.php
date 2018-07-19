@@ -10,7 +10,6 @@ use App\Listing;
 use App\Properties;
 use App\Unit;
 use App\fnPaginate;
-use Illuminate\Pagination\Paginator;
 
 class BookingsController extends Controller
 {
@@ -115,7 +114,7 @@ class BookingsController extends Controller
         $bookings = Bookings::where('booking_check_out',$check_out)->paginate(20);
         return $bookings;
     }
-    public function showProfile($id)
+    public function showProfile($id, Request $request)
     {
         $listings = Listing::where('profile_id',$id)->get();  
         $ar = [];
@@ -125,11 +124,10 @@ class BookingsController extends Controller
                 array_push($ar,$booking);
             }
         }
-        $paginated = new Paginator($ar, 20);
-        $paginated->setPath('http://localhost:8000/api/booking/profile/'.$id);
+        $paginated = fnPaginate::pager($ar, $request);
         return $paginated;
     }
-    public function showArea($id)
+    public function showArea($id, Request $request)
     {
         $ar = [];
         $properties = Properties::where('area_id', $id)->get();
@@ -145,8 +143,7 @@ class BookingsController extends Controller
                 }                
             }
         }
-        $paginated = new Paginator($ar, 20);
-        $paginated->setPath('http://localhost:8000/api/booking/area/'.$id);
+        $paginated = fnPaginate::pager($ar, $request);
         return $paginated;
     }
     public function showDeleted()

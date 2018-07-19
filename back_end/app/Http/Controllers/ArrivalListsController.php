@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Support\Collection;
-use Illuminate\Pagination\Paginator;
+
 use App\Bookings;
 use App\Listing;
 use App\Unit;
@@ -36,8 +36,8 @@ class ArrivalListsController extends Controller
                 }                
             }
         }
-        $paginated = new Paginator($ar, 20);
-        $paginated->setPath('http://localhost:8000/api/booking/area/'.$area.'//date/'.$tgl);
+        $paginated = fnpaginate::pager($ar);
         return $paginated;
-    } 
+    }
+    
 }
