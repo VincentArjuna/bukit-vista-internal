@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Popconfirm } from 'antd';
+import Popconfirm from '../../Popconfirm';
 
 export default class extends Component {
   render() {

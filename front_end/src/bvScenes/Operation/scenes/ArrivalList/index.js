@@ -21,9 +21,11 @@ export default class ArrivalList extends Component {
         {areas.map(area=>(
           <LayoutContentWrapper style={{ height: "100vh"}}>
             <PageHeader>{area}</PageHeader>
-            <Table/>
+            <Table tableinfos={tableinfos} columns={columns}/>
           </LayoutContentWrapper>
         ))}
+          <LayoutContentWrapper style={{ height: "5vh"}}>
+          </LayoutContentWrapper>
       </div>
     );
   }

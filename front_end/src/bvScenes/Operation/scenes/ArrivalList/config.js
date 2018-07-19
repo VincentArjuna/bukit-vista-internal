@@ -2,21 +2,19 @@ import React from 'react';
 import clone from 'clone';
 
 import {
-  DateCell,
-  ImageCell,
   LinkCell,
   TextCell
-} from '../../../../bvComponents/Tables/helper/helperCells';
+} from '../../../../bvComponents/Table/helper/helperCells';
+import EditCell from './components/editCell';
+import NotesCell from './components/notesCell';
 
 const renderCell = (object, type, key) => {
   const value = object[key];
   switch (type) {
-    case 'ImageCell':
-      return ImageCell(value);
-    case 'DateCell':
-      return DateCell(value);
     case 'LinkCell':
       return LinkCell(value);
+    case 'TextCell':
+      return TextCell(value);
     default:
       return TextCell(value);
   }
@@ -39,13 +37,13 @@ const columns = [
     title: 'Check In',
     key: 'booking_check_in',
     width: '50',
-    render: object => renderCell(object, 'DateCell', 'booking_check_in')
+    render: object => renderCell(object, 'TextCell', 'booking_check_in')
   },
   {
     title: 'Check Out',
     key: 'booking_check_out',
     width: '50',
-    render: object => renderCell(object, 'DateCell', 'booking_check_out')
+    render: object => renderCell(object, 'TextCell', 'booking_check_out')
   },
   {
     title: 'LOS',
@@ -73,6 +71,26 @@ const columns = [
   },
 ];
 
+const createColumns=(columns)=> {
+    const editColumn={
+      title:'Edit',
+      dataIndex:'edit',
+      render: (text, record, index) => (
+        <EditCell index={index} onDeleteCell={this.onDeleteCell} />
+      )
+    }
+    const notesColumn={
+      title:'Add Notes',
+      dataIndex:'notes',
+      render: (text, record, index) => (
+        <NotesCell index={index} onDeleteCell={this.onDeleteCell} />
+      )
+    }
+    columns.push(notesColumn);
+    columns.push(editColumn);
+    return columns;
+};
+
 const areas = ['Yogyakarta',
 'Uluwatu',
 'Canggu',
@@ -98,8 +116,7 @@ const areas = ['Yogyakarta',
 
 const tableinfos = [
   {
-    value: 'editView',
-    columns: clone(columns),
+    columns: clone(createColumns(columns)),
     areas: clone(areas)
   }
 ];

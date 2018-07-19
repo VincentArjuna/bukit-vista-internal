@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import TableWrapper, { CustomizedTableWrapper } from './antTable.style';
 import clone from 'clone';
-import {
-  EditCell,
-  NotesCell
-} from './helper/helperCells';
 
 const scroll = { y: 240 };
 export default class MyTable extends Component {
@@ -13,10 +9,9 @@ export default class MyTable extends Component {
     this.onChange = this.onChange.bind(this);
     this.state = {
       dataList : this.props.dataList.getAll(),
-      columns: this.createcolumns(clone(this.props.tableInfo.columns)),
+      columns: this.props.columns,
       pagination: true,
       size: 'default',
-
     };
   }
 //      scroll: scroll
@@ -32,26 +27,10 @@ export default class MyTable extends Component {
     }
   }
 
-  createcolumns(columns) {
-    const editColumn={
-      render: (text, record, index) => (
-        <EditCell index={index} onDeleteCell={this.onDeleteCell} />
-      )
-    }
-    const notesColumn={
-      render: (text, record, index) => (
-        <NotesCell index={index} onDeleteCell={this.onDeleteCell} />
-      )
-    }
-    columns.push(editColumn);
-    columns.push(notesColumn);
-    return columns;
-  }
 
   render() {
-    const classes = `isoEditableTable isoCustomizedTable isoSortingTable`;
+    const classes = `isoCustomizedTableWrapper`;
     return (
-      <CustomizedTableWrapper className="isoCustomizedTableWrapper">
         <TableWrapper
           {...this.state}
           onChange={this.onChange}
@@ -59,7 +38,6 @@ export default class MyTable extends Component {
           dataSource={this.state.dataList}
           className={classes}
         />
-      </CustomizedTableWrapper>
     );
   }
 }
