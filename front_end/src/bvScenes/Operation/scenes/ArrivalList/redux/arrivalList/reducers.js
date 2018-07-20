@@ -1,21 +1,22 @@
 import actions from './actions';
 
 const initState={
-    result:[],
+    results:[],
     area:null,
+    title:null
 }
 
 export default function reducer(state = initState,action){
     switch(action.type){
-        case actions.RENDER_AREA:
+        case actions.RENDER_DATA:
             return{
                 ...state,
                 area:action.payload.area
             };
-        case actions.LOAD_AREA:
+        case actions.RENDER_DATA_SUCCESS:
             return{
                 ...state,
-                result:action.result
+                results:action.results
             };
         default:
             return state;

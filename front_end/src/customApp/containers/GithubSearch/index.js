@@ -22,6 +22,7 @@ class GitSearch extends Component {
     }
   };
   componentDidMount() {
+    console.log(this.props);
     this.onSearch(this.props.GitSearch.searcText);
   }
   render() {
@@ -53,6 +54,7 @@ class GitSearch extends Component {
   }
 }
 function mapStateToProps(state) {
+
   return { GitSearch: state.githubSearch };
 }
 export default connect(

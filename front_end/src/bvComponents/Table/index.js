@@ -4,28 +4,31 @@ import LayoutContentWrapper from '../Utility/layoutContent'
 import fakeData from './fakeData';
 import MyTable from './MyTable';
 
-const dataList = new fakeData(10);
-
+//const dataList = new fakeData(10);
+//const dataList= [];
 export default class Table extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tableinfos:this.props.tableinfos,
-      columns:this.props.columns
-    };
+  componentDidMount(){
+    this.loadData(this.props.mode.title);
   }
 
-  renderTable(tableInfo,columns,dataList) {
-    let Component= MyTable;
-    return <Component tableInfo={tableInfo} columns={columns} dataList={dataList} />;
+  loadData=title=>{
+    let param=null;
+    switch(title){
+      case "Arrival List":
+        param=this.props.mode.area;
+      default:
+        param=this.props.mode.area;
+    }
+    this.props.renderData(param);
   }
-  //<TableDemoStyle className="isoLayoutContent">
+
   render() {
+    const {results} = this.props.mode;
+    const dataList=results;
     return (
       <LayoutContentWrapper style={{overflow:'auto'}}>
-        {this.renderTable(this.props.tableinfos,this.props.columns,dataList)}
+        <MyTable columns={this.props.columns} mode={this.props.mode} dataList={this.props.mode.results} />
       </LayoutContentWrapper>
     );
   }
 }
-

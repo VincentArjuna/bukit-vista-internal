@@ -1,15 +1,15 @@
 const actions={
-    RENDER_AREA:'RENDER_AREA',
-    LOAD_AREA :'LOAD_AREA',
+    RENDER_DATA:'RENDER_DATA',
+    RENDER_DATA_SUCCESS :'RENDER_DATA_SUCCESS',
     ADD_NOTES:'ADD_NOTES',
     RENDER_NOTES:'RENDER_NOTES',
-    renderArea : area=>({
-        type: actions.RENDER_AREA,
+    renderData : area=>({
+        type: actions.RENDER_DATA,
         payload:{area}
     }),
-    parseArea : (result)=>({
-        type: actions.LOAD_AREA,
-        result
+    renderDataSuccess:results=>({
+        type: actions.RENDER_DATA_SUCCESS,
+        results
     }),
 };
 

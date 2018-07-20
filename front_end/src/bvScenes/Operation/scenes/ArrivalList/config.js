@@ -91,34 +91,12 @@ const createColumns=(columns)=> {
     return columns;
 };
 
-const areas = ['Yogyakarta',
-'Uluwatu',
-'Canggu',
-'Ubud',
-'Jakarta',
-'Bandung',
-'Phuket',
-'Bingin',
-'Balangan',
-'Jimbaran',
-'Ungasan',
-'Nusa Dua',
-'Padang Padang',
-'Gili Trawangan',
-'Seminyak',
-'Kuta',
-'Singapore',
-'Cemangi',
-'Penang',
-'Nusa Penida',
-'Gili Air'
-];
+
 
 const tableinfos = [
   {
     columns: clone(createColumns(columns)),
-    areas: clone(areas)
   }
 ];
 const title = "Arrival List";
-export { columns, tableinfos,areas,title };
+export { columns, tableinfos,title };

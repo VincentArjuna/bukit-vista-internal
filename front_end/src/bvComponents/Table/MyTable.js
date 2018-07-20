@@ -9,8 +9,6 @@ export default class MyTable extends Component {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.state = {
-      dataList : this.props.dataList.getAll(),
-      columns: this.props.columns,
       pagination: true,
       size: 'default',
     };
@@ -31,13 +29,13 @@ export default class MyTable extends Component {
 
   render() {
     const classes = `isoCustomizedTableWrapper`;
+
     return (
         <TableWrapper
           {...this.state}
-          onChange={this.onChange}
-          columns={this.state.columns}
-          dataSource={this.state.dataList}
+          columns={this.props.columns}
           className={classes}
+          dataSource={this.props.dataList}
         />
     );
   }
