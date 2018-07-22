@@ -7930,6 +7930,10 @@ react-moment-proptypes@^1.4.0:
   dependencies:
     moment ">=1.6.0"
 
+react-moment@^0.7.9:
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/react-moment/-/react-moment-0.7.9.tgz#fc6b5bf8952d27f134a42abfd7f42df2c839c1d7"
+
 react-motion-drawer@^2.1.7:
   version "2.1.7"
   resolved "https://registry.yarnpkg.com/react-motion-drawer/-/react-motion-drawer-2.1.7.tgz#c0e9bf85366ac6995a41c774f115fa4bc062b122"

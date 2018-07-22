@@ -6,11 +6,11 @@ const routes = [
     component: asyncComponent(() => import('./scenes/ArrivalList'))
   },
   {
-    path: 'booking/current',
+    path: 'current',
     component: asyncComponent(() => import('./scenes/Booking/scenes/Current'))
   },
   {
-    path: 'booking/archive',
+    path: 'archive',
     component: asyncComponent(() => import('./scenes/Booking/scenes/Archive'))
   }
 ];

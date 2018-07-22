@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col} from 'antd';
+import { Row, Col,DatePicker} from 'antd';
 import LayoutContentWrapper from "../Utility/layoutWrapper.js";
 import LayoutContent from "../Utility/layoutContent";
 import { InputSearch } from '../Searchbar/searchbar';
@@ -23,7 +23,7 @@ export default class Header extends Component {
             <LayoutContent>
             <Row style={rowStyle} gutter={gutter} justify="start">
                 <Col md={6} sm={12} xs={24} style={colStyle}>
-                <CustomDatePicker />
+                <DatePicker/>
                 </Col>
                 <Col md={16} sm={12} xs={24} style={colStyle}>
                 <InputSearch
