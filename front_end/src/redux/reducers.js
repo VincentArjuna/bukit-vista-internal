@@ -17,7 +17,12 @@ import YoutubeSearch from './youtubeSearch/reducers';
 import DevReducers from '../customApp/redux/reducers';
 import Articles from './articles/reducers';
 import Investors from './investors/reducers';
-import ArrivalList from '../bvScenes/Operation/scenes/ArrivalList/redux/reducers';
+import Table1 from '../bvScenes/Operation/scenes/ArrivalList/components/Table1/redux/reducers';
+import Table2 from '../bvScenes/Operation/scenes/ArrivalList/components/Table2/redux/reducers';
+import Table3 from '../bvScenes/Operation/scenes/ArrivalList/components/Table3/redux/reducers';
+import Table4 from '../bvScenes/Operation/scenes/ArrivalList/components/Table4/redux/reducers';
+import Table5 from '../bvScenes/Operation/scenes/ArrivalList/components/Table5/redux/reducers';
+//import ArrivalList from '../bvScenes/Operation/scenes/ArrivalList/redux/reducers';
 
 export default {
   Auth,
@@ -39,5 +44,10 @@ export default {
   Articles,
   Investors,
   ...DevReducers,
-  ...ArrivalList,
+  ...Table1,
+  ...Table2,
+  ...Table3,
+  ...Table4,
+  ...Table5
+ // ...ArrivalList,
 };

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TableWrapper, { CustomizedTableWrapper } from './antTable.style';
 import clone from 'clone';
 import { connect } from 'tls';
+import { runInThisContext } from 'vm';
 
 const scroll = { y: 240 };
 export default class MyTable extends Component {
@@ -29,7 +30,7 @@ export default class MyTable extends Component {
 
   render() {
     const classes = `isoCustomizedTableWrapper`;
-
+    console.log(this.props);
     return (
         <TableWrapper
           {...this.state}

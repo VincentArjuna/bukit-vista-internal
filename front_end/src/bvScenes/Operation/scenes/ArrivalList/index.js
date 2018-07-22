@@ -4,9 +4,12 @@ import LayoutContentWrapper from "../../../../bvComponents/Utility/layoutWrapper
 import PageHeader from "../../../../bvComponents/Utility/pageHeader.js";
 import basicStyle from '../../../../settings/basicStyle.js';
 import {columns,title} from './config.js';
-import Table from '../../../../bvComponents/Table';
+import Table1 from '../ArrivalList/components/Table1';
+import Table2 from '../ArrivalList/components/Table2';
+import Table3 from '../ArrivalList/components/Table3';
+import Table4 from '../ArrivalList/components/Table4';
+import Table5 from '../ArrivalList/components/Table5';
 import Header from '../../../../bvComponents/Header/index.js';
-import actions from './redux/arrivalList/actions';
 
 const areas = [
   { name:'Yogyakarta',
@@ -79,48 +82,56 @@ const areas = [
     code:'A0020'
   }
 ];
-const {renderData,renderDataSuccess}=actions;
-class ArrivalList extends Component {
+
+export default class ArrivalList extends Component {
 
   onSearch=e=>{
     alert('#TODO');
   }
   render() {
-    const {renderData,ArrivalList}=this.props;
-    this.props.ArrivalList.title=title;
     return (
       <div>
         <Header title={title} columns={columns}/>
-        {areas.map(area=>(
           <LayoutContentWrapper style={{ height: "100vh"}}>
-            <PageHeader>{area.name}</PageHeader>
-            {this.props.ArrivalList.area=area.code}
-            <Table
-              columns={columns}
-              mode={ArrivalList}
-              renderData={renderData}
-            />
+            <PageHeader>{areas[0].name}</PageHeader>
+            <Table1 columns={columns} area={areas[0].code}/>
           </LayoutContentWrapper>
-        ))}
-          <LayoutContentWrapper style={{ height: "5vh"}}>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[1].name}</PageHeader>
+            <Table2 columns={columns} area={areas[1].code}/>
           </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[2].name}</PageHeader>
+            <Table3 columns={columns} area={areas[2].code}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[3].name}</PageHeader>
+            <Table4 columns={columns} area={areas[3].code}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[4].name}</PageHeader>
+            <Table5 columns={columns} area={areas[4].code}/>
+          </LayoutContentWrapper>
+        <LayoutContentWrapper style={{ height: "5vh"}}>
+        </LayoutContentWrapper>
       </div>
     );
   }
 }
-{/* <Table 
-title="Arrival List"
-mode={ArrivalList}
-area={area.code}
-columns={columns}
-/> */}
 
-function mapStateToProps(state){
-  return {
-    ArrivalList:state.arrivalList
-  };
-}
-export default connect(
-  mapStateToProps,
-  {renderData}
-)(ArrivalList);
+{/* <LayoutContentWrapper style={{ height: "100vh"}}>
+<PageHeader></PageHeader>
+<Table2 columns={columns}/>
+</LayoutContentWrapper>
+<LayoutContentWrapper style={{ height: "100vh"}}>
+<PageHeader></PageHeader>
+<Table3 columns={columns}/>
+</LayoutContentWrapper>
+<LayoutContentWrapper style={{ height: "100vh"}}>
+<PageHeader></PageHeader>
+<Table4 columns={columns}/>
+</LayoutContentWrapper>
+<LayoutContentWrapper style={{ height: "100vh"}}>
+<PageHeader></PageHeader>
+<Table5 columns={columns}/>
+</LayoutContentWrapper> */}

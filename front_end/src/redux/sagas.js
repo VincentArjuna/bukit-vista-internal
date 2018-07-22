@@ -13,7 +13,12 @@ import devSagas from '../customApp/redux/sagas';
 import articles from './articles/sagas';
 import investors from './investors/sagas';
 
-import arrivalListSaga from '../bvScenes/Operation/scenes/ArrivalList/redux/sagas';
+import table1Saga from '../bvScenes/Operation/scenes/ArrivalList/components/Table1/redux/sagas';
+import table2Saga from '../bvScenes/Operation/scenes/ArrivalList/components/Table2/redux/sagas';
+import table3Saga from '../bvScenes/Operation/scenes/ArrivalList/components/Table3/redux/sagas';
+import table4Saga from '../bvScenes/Operation/scenes/ArrivalList/components/Table4/redux/sagas';
+import table5Saga from '../bvScenes/Operation/scenes/ArrivalList/components/Table5/redux/sagas';
+//import arrivalListSaga from '../bvScenes/Operation/scenes/ArrivalList/redux/sagas';import table1Saga from '../bvScenes/Operation/scenes/ArrivalList/components/Table1/redux/sagas';
 
 export default function* rootSaga(getState) {
   yield all([
@@ -30,6 +35,11 @@ export default function* rootSaga(getState) {
     devSagas(),
     articles(),
     investors(),
-    arrivalListSaga(),
+    table1Saga(),
+    table2Saga(),
+    table3Saga(),
+    table4Saga(),
+    table5Saga()
+    //arrivalListSaga(),
   ]);
 }
