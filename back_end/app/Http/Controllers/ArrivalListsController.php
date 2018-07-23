@@ -14,7 +14,7 @@ use DateTime;
 
 class ArrivalListsController extends Controller
 {
-    public function showArrival($area, $tgl)
+    public function showArrival($area, $tgl, Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $rawcheckin = date_create($tgl);
@@ -36,7 +36,7 @@ class ArrivalListsController extends Controller
                 }                
             }
         }
-        $paginated = fnpaginate::pager($ar);
+        $paginated = fnpaginate::pager($ar, $request);
         return $paginated;
     }
     

@@ -10,7 +10,6 @@ class fnPaginate
 {
     /**
      * Gera a paginação dos itens de um array ou collection.
-     * manual pagination from https://gist.github.com/vluzrmos/3ce756322702331fdf2bf414fea27bcb
     *
     * @param array|Collection      $items
     * @param int   $perPage
@@ -30,6 +29,7 @@ class fnPaginate
 
         //Create a new Laravel collection from the array data
         $collection = new Collection($results);
+        $collection->sortBy('created_at');
 
         //Define how many items we want to be visible in each page
         $per_page = 20;
