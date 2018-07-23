@@ -22,7 +22,9 @@ class Table1 extends Component {
 }
 
 function mapStateToProps(state) {
-  return { Table1: state.table1 };
+  return { 
+    Table1: state.table1
+  };
 }
 export default connect(
   mapStateToProps,

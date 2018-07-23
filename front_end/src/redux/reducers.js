@@ -23,6 +23,7 @@ import Table3 from '../bvScenes/Operation/scenes/ArrivalList/components/Table3/r
 import Table4 from '../bvScenes/Operation/scenes/ArrivalList/components/Table4/redux/reducers';
 import Table5 from '../bvScenes/Operation/scenes/ArrivalList/components/Table5/redux/reducers';
 import BookingCurrent from '../bvScenes/Operation/scenes/Booking/scenes/Current/redux/reducers';
+import Header from '../bvComponents/Header/redux/reducers';
 //import ArrivalList from '../bvScenes/Operation/scenes/ArrivalList/redux/reducers';
 
 export default {
@@ -50,6 +51,7 @@ export default {
   ...Table3,
   ...Table4,
   ...Table5,
-  ...BookingCurrent
+  ...BookingCurrent,
+  ...Header
  // ...ArrivalList,
 };

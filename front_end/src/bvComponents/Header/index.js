@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {connect} from 'react-redux';
 import { Row, Col,DatePicker} from 'antd';
 import LayoutContentWrapper from "../Utility/layoutWrapper.js";
 import LayoutContent from "../Utility/layoutContent";
@@ -7,13 +8,20 @@ import CustomDatePicker from '../Datepicker/datepicker';
 import PageHeader from "../Utility/pageHeader";
 import { Select } from 'antd';
 import basicStyle from '../../settings/basicStyle';
+import actions from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 
-
+const {filterDataBc} = actions;
 const Option= Select.Option;
-export default class Header extends Component {
-    onSearch=e=>{
-        alert('#TODO');
-      }
+class Header extends Component {
+    onSearch=value=>{
+        if(this.props.title === 'Booking / Current'){
+            alert("okay");
+            this.props.Current.param = value;
+            this.props.Current.filter = 'area';
+            this.props.filterDataBc(value,'area');
+            console.log(this.props);
+        }
+    }
       
     render() {
         const { rowStyle, colStyle, gutter } = basicStyle;
@@ -45,3 +53,12 @@ export default class Header extends Component {
         );
     }
 }
+
+function mapStateToProps(state){
+    return{
+        Header:state.header,
+        Current:state.bookingCurrent
+    };
+}
+
+export default connect(mapStateToProps,{filterDataBc})(Header);

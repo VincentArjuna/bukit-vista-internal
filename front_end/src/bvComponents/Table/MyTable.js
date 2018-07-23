@@ -30,7 +30,6 @@ export default class MyTable extends Component {
 
   render() {
     const classes = `isoCustomizedTableWrapper`;
-    console.log(this.props);
     return (
         <TableWrapper
           {...this.state}

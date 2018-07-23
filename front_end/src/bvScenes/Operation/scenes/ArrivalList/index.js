@@ -84,10 +84,6 @@ const areas = [
 ];
 
 export default class ArrivalList extends Component {
-
-  onSearch=e=>{
-    alert('#TODO');
-  }
   render() {
     return (
       <div>
@@ -118,20 +114,3 @@ export default class ArrivalList extends Component {
     );
   }
 }
-
-{/* <LayoutContentWrapper style={{ height: "100vh"}}>
-<PageHeader></PageHeader>
-<Table2 columns={columns}/>
-</LayoutContentWrapper>
-<LayoutContentWrapper style={{ height: "100vh"}}>
-<PageHeader></PageHeader>
-<Table3 columns={columns}/>
-</LayoutContentWrapper>
-<LayoutContentWrapper style={{ height: "100vh"}}>
-<PageHeader></PageHeader>
-<Table4 columns={columns}/>
-</LayoutContentWrapper>
-<LayoutContentWrapper style={{ height: "100vh"}}>
-<PageHeader></PageHeader>
-<Table5 columns={columns}/>
-</LayoutContentWrapper> */}

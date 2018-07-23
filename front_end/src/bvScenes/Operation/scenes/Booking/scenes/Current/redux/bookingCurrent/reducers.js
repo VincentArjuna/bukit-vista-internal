@@ -2,7 +2,8 @@ import actions from './actions';
 
 const initState={
     results:[],
-    param:null
+    param:null,
+    filter:null,
 }
 
 export default function reducer(state = initState,action){
@@ -10,8 +11,13 @@ export default function reducer(state = initState,action){
         case actions.RENDER_DATA_BC:
             return{
                 ...state,
-                param:action.payload.param
+                param:action.payload.param,
             };
+        case actions.FILTER_DATA_BC:
+            return{
+                ...state,
+                param:action.payload.param,
+            }
         case actions.RENDER_DATA_SUCCESS_BC:
             return{
                 ...state,
