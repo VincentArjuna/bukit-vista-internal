@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import moment from 'moment';
 import LayoutContentWrapper from "../../../../bvComponents/Utility/layoutWrapper.js";
 import PageHeader from "../../../../bvComponents/Utility/pageHeader.js";
 import basicStyle from '../../../../settings/basicStyle.js';
@@ -87,26 +88,27 @@ export default class ArrivalList extends Component {
   render() {
     return (
       <div>
-        <Header title={title} columns={columns}/>
+        <Header title={title} columns={columns} date={moment().toString()}/>
+        {console.log(moment().toString())}
           <LayoutContentWrapper style={{ height: "100vh"}}>
             <PageHeader>{areas[0].name}</PageHeader>
-            <Table1 columns={columns} area={areas[0].code}/>
+            <Table1 columns={columns} area={areas[0].code} date={moment().format('YYYY-MM-DD').toString()}/>
           </LayoutContentWrapper>
           <LayoutContentWrapper>
             <PageHeader>{areas[1].name}</PageHeader>
-            <Table2 columns={columns} area={areas[1].code}/>
+            <Table2 columns={columns} area={areas[1].code} date={moment().format('YYYY-MM-DD').toString()}/>
           </LayoutContentWrapper>
           <LayoutContentWrapper>
             <PageHeader>{areas[2].name}</PageHeader>
-            <Table3 columns={columns} area={areas[2].code}/>
+            <Table3 columns={columns} area={areas[2].code} date={moment().format('YYYY-MM-DD').toString()}/>
           </LayoutContentWrapper>
           <LayoutContentWrapper>
             <PageHeader>{areas[3].name}</PageHeader>
-            <Table4 columns={columns} area={areas[3].code}/>
+            <Table4 columns={columns} area={areas[3].code} date={moment().format('YYYY-MM-DD').toString()}/>
           </LayoutContentWrapper>
           <LayoutContentWrapper>
             <PageHeader>{areas[4].name}</PageHeader>
-            <Table5 columns={columns} area={areas[4].code}/>
+            <Table5 columns={columns} area={areas[4].code} date={moment().format('YYYY-MM-DD').toString()}/>
           </LayoutContentWrapper>
         <LayoutContentWrapper style={{ height: "5vh"}}>
         </LayoutContentWrapper>

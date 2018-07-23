@@ -9,6 +9,10 @@ import actions from './redux/bookingCurrent/actions';
 
 const {renderDataBc}=actions;
 class Current extends Component {
+  componentDidMount(){
+    this.props.Header.filterType=null;
+    this.props.Header.filterValue = null;
+  }
   render() {
     const {renderDataBc,Current}=this.props;
     return (    
@@ -29,7 +33,8 @@ class Current extends Component {
 
 function mapStateToProps(state){
   return {
-    Current :state.bookingCurrent
+    Current :state.bookingCurrent,
+    Header : state.header
   };
 }
 export default connect(

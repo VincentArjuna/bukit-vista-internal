@@ -11,12 +11,18 @@ export default function reducer(state = initState,action){
         case actions.RENDER_DATA1:
             return{
                 ...state,
-                area:action.payload.area
+                area:action.payload.area,
+                date:action.payload.date
             };
         case actions.RENDER_DATA_SUCCESS1:
             return{
                 ...state,
                 results:action.results
+            };
+        case actions.FILTER_DATA_AL1:
+            return{
+                ...state,
+                param:action.payload.param,
             };
         default:
             return state;

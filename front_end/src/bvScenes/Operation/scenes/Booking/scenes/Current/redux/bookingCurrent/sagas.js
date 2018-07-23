@@ -1,6 +1,6 @@
 import{all,takeEvery,put,call} from 'redux-saga/effects';
 import actions from './actions';
-const URL_AREA = 'http://localhost:8000/api/booking';
+const URL_AREA = 'http://localhost:8000/api/booking/';
 
 const onRenderRequest = async () =>
     await fetch(`${URL_AREA}`)
@@ -16,11 +16,10 @@ const onRenderRequestFilter = async (param,filter) =>
         
 function* renderRequest(){
     try{
-        const renderResult =yield call(onRenderRequest);
-        if(renderResult.data){
-            console.log(renderResult.data);
+        const renderResults =yield call(onRenderRequest);
+        if(renderResults.data){
             yield put(
-                actions.renderDataSuccessBc(renderResult.data)
+                actions.renderDataSuccessBc(renderResults.data)
             );
         }
     }catch(error){
@@ -30,12 +29,13 @@ function* renderRequest(){
 
 function* filterRequest({payload}){
     try{
-        const renderResult = yield call(onRenderRequestFilter,payload.param,payload.filter);
-        console.log(payload.param + '-oi-'+payload.filter);
-        if(renderResult.data){
-            console.log(renderResult.data);
+        const {param,filter}=payload;
+        const renderResults = yield call(onRenderRequestFilter,param,filter);
+        console.log(renderResults);
+        if(renderResults.data){
+            console.log(renderResults.data);
             yield put(
-                actions.renderDataSuccessBc(renderResult.data)
+                actions.renderDataSuccessBc(renderResults.data)
             );
         }
     }catch(error){

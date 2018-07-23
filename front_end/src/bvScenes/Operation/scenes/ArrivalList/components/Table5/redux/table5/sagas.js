@@ -1,11 +1,11 @@
 import{all,takeEvery,put,call} from 'redux-saga/effects';
 import actions from './actions';
 import axios from 'axios';
-const URL_AREA = 'http://localhost:8000/api/';
+const URL_AREA = 'http://localhost:8000/api/booking/';
 console.log(URL_AREA);
 
-const onRenderRequest = async (area) =>
-    await fetch(`${URL_AREA}booking/area/${area}`)
+const onRenderRequest = async (area,date) =>
+await fetch(`${URL_AREA}area/${encodeURIComponent(area)}/date/${encodeURIComponent(date)}`)
         .then(res=>res.json())
         .then(res=>res)
         .catch(error => error);
@@ -13,10 +13,10 @@ const onRenderRequest = async (area) =>
 function* renderRequest({payload}){
     const {area} = payload;
     try{
-        const renderResult = yield call(onRenderRequest,payload.area);
-        if(renderResult.results.data){
+        const renderResult = yield call(onRenderRequest,payload.area,payload.date);
+        if(renderResult.data){
             yield put(
-                actions.renderDataSuccess5(renderResult.results.data)
+                actions.renderDataSuccess5(renderResult.data)
             );
         }
     }catch(error){

@@ -12,7 +12,7 @@ const actions={
     }),
     filterDataBc:(param,filter) =>({
         type:actions.FILTER_DATA_BC,
-        payload:(param,filter)
+        payload:{param,filter}
     }),
 };
 
