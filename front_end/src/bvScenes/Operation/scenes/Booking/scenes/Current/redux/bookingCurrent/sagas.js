@@ -1,8 +1,8 @@
 import{all,takeEvery,put,call} from 'redux-saga/effects';
 import actions from './actions';
-const URL_AREA = 'http://localhost:8000/api/booking/';
+const URL_AREA = 'http://localhost:8000/api/booking';
 
-const onRenderRequest = async (param) =>
+const onRenderRequest = async () =>
     await fetch(`${URL_AREA}`)
         .then(res=>res.json())
         .then(res=>res)
@@ -14,11 +14,11 @@ const onRenderRequestFilter = async (param,filter) =>
             .then(res=>res)
             .catch(error => error);
         
-function* renderRequest({payload}){
-    const {param} = payload;
+function* renderRequest(){
     try{
-        const renderResult =yield call(onRenderRequest,param);
+        const renderResult =yield call(onRenderRequest);
         if(renderResult.data){
+            console.log(renderResult.data);
             yield put(
                 actions.renderDataSuccessBc(renderResult.data)
             );

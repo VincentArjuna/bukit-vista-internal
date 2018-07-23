@@ -6,6 +6,7 @@ import Input, {
   InputGroup,
   Textarea
 } from '../../../../../bvComponents/Uielements/input';
+import Notes from '../../../../../bvComponents/Notes';
 
 const FormItem = Form.Item;
 export default class extends Component {
@@ -41,11 +42,6 @@ export default class extends Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <Form layout="vertical">
-            <FormItem label="Title">
-              <Input type="textarea" />
-            </FormItem>
-          </Form>
         </Modal>
       </div>
     );

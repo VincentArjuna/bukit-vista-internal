@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LayoutContentWrapper from '../Utility/layoutContent'
+import LayoutContentWrapper from '../Utility/layoutContent';
 //import TableDemoStyle from './demo.style';
 import fakeData from './fakeData';
 import MyTable from './MyTable';
@@ -7,21 +7,10 @@ import MyTable from './MyTable';
 //const dataList = new fakeData(10);
 //const dataList= [];
 export default class Table extends Component {
+
   componentDidMount(){
-    this.loadData(this.props.mode.title);
+    this.props.renderData();
   }
-
-  loadData=title=>{
-    let param=null;
-    switch(title){
-      case "Arrival List":
-        param=this.props.mode.area;
-      default:
-        param=this.props.mode.area;
-    }
-    this.props.renderData(param);
-  }
-
   render() {
     const {results} = this.props.mode;
     const dataList=results;

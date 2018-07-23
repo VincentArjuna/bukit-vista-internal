@@ -19,7 +19,6 @@ class Header extends Component {
             this.props.Current.param = value;
             this.props.Current.filter = 'area';
             this.props.filterDataBc(value,'area');
-            console.log(this.props);
         }
     }
       

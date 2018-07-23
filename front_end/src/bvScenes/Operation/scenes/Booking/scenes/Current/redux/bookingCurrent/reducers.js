@@ -11,7 +11,6 @@ export default function reducer(state = initState,action){
         case actions.RENDER_DATA_BC:
             return{
                 ...state,
-                param:action.payload.param,
             };
         case actions.FILTER_DATA_BC:
             return{

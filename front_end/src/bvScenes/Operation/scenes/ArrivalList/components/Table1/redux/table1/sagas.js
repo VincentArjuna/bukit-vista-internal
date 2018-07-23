@@ -10,13 +10,15 @@ const onRenderRequest = async (area) =>
         .catch(error => error);
         
 function* renderRequest({payload}){
-    const {area} = payload;
     try{
-        const renderResult = yield call(onRenderRequest,area);
-        if(renderResult.data){
+        const renderResult = yield call(onRenderRequest,payload.area);
+        console.log('payload : '+ payload.area);
+        if(renderResult.results.data){
             yield put(
-                actions.renderDataSuccess1(renderResult.data)
+                actions.renderDataSuccess1(renderResult.results.data)
             );
+        }else{
+            console.log(renderResult);
         }
     }catch(error){
         console.log("saga error");

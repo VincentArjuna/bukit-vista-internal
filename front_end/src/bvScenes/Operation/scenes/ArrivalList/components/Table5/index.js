@@ -15,7 +15,7 @@ class Table5 extends Component {
     const {Table5} = this.props;
     return (
       <LayoutContentWrapper style={{overflow:'auto'}}>
-        <MyTable columns={this.props.columns} dataList={Table5.results}/>
+        <MyTable columns={this.props.columns} dataList={Table5.results} mode="arrivalList"/>
       </LayoutContentWrapper>
     );
   }

@@ -114,3 +114,4 @@ export default class ArrivalList extends Component {
     );
   }
 }
+

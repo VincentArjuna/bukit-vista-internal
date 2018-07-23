@@ -4,8 +4,6 @@ import {
   LinkCell,
   TextCell
 } from '../../../../bvComponents/Table/helper/helperCells';
-import EditCell from './components/editCell';
-import NotesCell from './components/notesCell';
 
 
 const renderCell = (object, type, key) => {
@@ -28,7 +26,7 @@ const columns = [
     render: object => renderCell(object, 'TextCell', 'unit_name')
   },
   {
-    title: 'ETA',
+    title: 'Guest Name',
     key: 'booking_guest_name',
     width: '50',
     render: object => renderCell(object, 'TextCell', 'booking_guest_name')
@@ -52,6 +50,12 @@ const columns = [
     render: object => renderCell(object, 'TextCell', 'booking_los')
   },
   {
+    title: 'ETA',
+    key: 'booking_eta',
+    width: '50',
+    render: object => renderCell(object, 'TextCell', 'booking_eta')
+  },
+  {
     title: 'Driver',
     key: 'booking_driver',
     width: '50',
@@ -71,32 +75,27 @@ const columns = [
   },
 ];
 
-const createColumns=(columns)=> {
-    const editColumn={
-      title:'Edit',
-      dataIndex:'edit',
-      render: (text, record, index) => (
-        <EditCell index={index} onDeleteCell={this.onDeleteCell} />
-      )
-    }
-    const notesColumn={
-      title:'Add Notes',
-      dataIndex:'notes',
-      render: (text, record, index) => (
-        <NotesCell index={index} onDeleteCell={this.onDeleteCell} />
-      )
-    }
-    columns.push(notesColumn);
-    columns.push(editColumn);
-    return columns;
-};
+// const createColumns=(columns)=> {
+//     const editColumn={
+//       title:'Edit',
+//       dataIndex:'edit',
+//       render: (text, record, index) => (
+//         <EditCell index={index} onDeleteCell={this.onDeleteCell} />
+//       )
+//     }
+//     const notesColumn={
+//       title:'Add Notes',
+//       dataIndex:'notes',
+//       render: (text, record, index) => (
+//         <NotesCell index={index} onDeleteCell={this.onDeleteCell} />
+//       )
+//     }
+//     columns.push(notesColumn);
+//     columns.push(editColumn);
+//     return columns;
+// };
 
 
 
-const tableinfos = [
-  {
-    columns: clone(createColumns(columns)),
-  }
-];
 const title = "Arrival List";
-export { columns, tableinfos,title };
+export { columns,title };

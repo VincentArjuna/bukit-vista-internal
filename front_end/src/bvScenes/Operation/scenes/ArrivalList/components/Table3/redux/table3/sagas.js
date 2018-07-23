@@ -12,10 +12,10 @@ const onRenderRequest = async (area) =>
 function* renderRequest({payload}){
     const {area} = payload;
     try{
-        const renderResult = yield call(onRenderRequest,area);
-        if(renderResult.data){
+        const renderResult = yield call(onRenderRequest,payload.area);
+        if(renderResult.results.data){
             yield put(
-                actions.renderDataSuccess3(renderResult.data)
+                actions.renderDataSuccess3(renderResult.results.data)
             );
         }
     }catch(error){
