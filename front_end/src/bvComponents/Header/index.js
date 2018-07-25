@@ -82,22 +82,22 @@ class Header extends Component {
             this.props.renderData3('A0003',this.props.Header.filterValue);
             this.props.renderData4('A0004',this.props.Header.filterValue);
             this.props.renderData5('A0005',this.props.Header.filterValue);
-            this.props.renderData5('A0006',this.props.Header.filterValue);
-            this.props.renderData5('A0007',this.props.Header.filterValue);
-            this.props.renderData5('A0008',this.props.Header.filterValue);
-            this.props.renderData5('A0009',this.props.Header.filterValue);
-            this.props.renderData5('A0010',this.props.Header.filterValue);
-            this.props.renderData5('A0011',this.props.Header.filterValue);
-            this.props.renderData5('A0012',this.props.Header.filterValue);
-            this.props.renderData5('A0013',this.props.Header.filterValue);
-            this.props.renderData5('A0014',this.props.Header.filterValue);
-            this.props.renderData5('A0015',this.props.Header.filterValue);
-            this.props.renderData5('A0016',this.props.Header.filterValue);
-            this.props.renderData5('A0017',this.props.Header.filterValue);
-            this.props.renderData5('A0018',this.props.Header.filterValue);
-            this.props.renderData5('A0019',this.props.Header.filterValue);
-            this.props.renderData5('A0020',this.props.Header.filterValue);
-            this.props.renderData5('A0021',this.props.Header.filterValue);
+            this.props.renderData6('A0006',this.props.Header.filterValue);
+            this.props.renderData7('A0007',this.props.Header.filterValue);
+            this.props.renderData8('A0008',this.props.Header.filterValue);
+            this.props.renderData9('A0009',this.props.Header.filterValue);
+            this.props.renderData10('A0010',this.props.Header.filterValue);
+            this.props.renderData11('A0011',this.props.Header.filterValue);
+            this.props.renderData12('A0012',this.props.Header.filterValue);
+            this.props.renderData13('A0013',this.props.Header.filterValue);
+            this.props.renderData14('A0014',this.props.Header.filterValue);
+            this.props.renderData15('A0015',this.props.Header.filterValue);
+            this.props.renderData16('A0016',this.props.Header.filterValue);
+            this.props.renderData17('A0017',this.props.Header.filterValue);
+            this.props.renderData18('A0018',this.props.Header.filterValue);
+            this.props.renderData19('A0019',this.props.Header.filterValue);
+            this.props.renderData20('A0020',this.props.Header.filterValue);
+            this.props.renderData21('A0021',this.props.Header.filterValue);
         }
 
     }

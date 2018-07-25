@@ -1,7 +1,7 @@
 import{all,takeEvery,put,call} from 'redux-saga/effects';
 import actions from './actions';
 
-const URL_AREA = 'http://localhost:8000/api/employee';
+const URL_AREA = 'https://internal.bukitvista.com/tools/api/employee';
 
 const onRenderRequest = async () =>
     await fetch(`${URL_AREA}`)

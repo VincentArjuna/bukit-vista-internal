@@ -44,6 +44,12 @@ const columns = [
     render: object => renderCell(object, 'TextCell', 'booking_check_out')
   },
   {
+    title: 'Profile',
+    key:'profile_name',
+    width:50,
+    render:object=>renderCell(object,'TextCell','profile_name')
+  },
+  {
     title: 'LOS',
     key: 'booking_los',
     width: '50',

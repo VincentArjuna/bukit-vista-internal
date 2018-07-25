@@ -76,7 +76,7 @@ export class App extends Component {
                     </Footer>
                   </Layout>
                 </Layout>
-                <ThemeSwitcher />
+                {/*<ThemeSwitcher />*/}
               </Layout>
             </AppHolder>
           </ThemeProvider>
