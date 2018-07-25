@@ -17,7 +17,7 @@ export default function reducer(state = initState,action){
         case actions.RENDER_DATA_SUCCESS5:
             return{
                 ...state,
-                results:action.results5
+                results:action.results
             };
         case actions.FILTER_DATA_AL5:
             return{

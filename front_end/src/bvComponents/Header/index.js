@@ -14,6 +14,22 @@ import aT2 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table2/r
 import aT3 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table3/redux/table3/actions';
 import aT4 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table4/redux/table4/actions';
 import aT5 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table5/redux/table5/actions';
+import aT6 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table6/redux/table6/actions';
+import aT7 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table7/redux/table7/actions';
+import aT8 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table8/redux/table8/actions';
+import aT9 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table9/redux/table9/actions';
+import aT10 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table10/redux/table10/actions';
+import aT11 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table11/redux/table11/actions';
+import aT12 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table12/redux/table12/actions';
+import aT13 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table13/redux/table13/actions';
+import aT14 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table14/redux/table14/actions';
+import aT15 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table15/redux/table15/actions';
+import aT16 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table16/redux/table16/actions';
+import aT17 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table17/redux/table17/actions';
+import aT18 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table18/redux/table18/actions';
+import aT19 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table19/redux/table19/actions';
+import aT20 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table20/redux/table20/actions';
+import aT21 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table21/redux/table21/actions';
 
 const {filterDataBc} = actions;
 const {renderData1} = aT1;
@@ -21,6 +37,22 @@ const {renderData2} = aT2;
 const {renderData3} = aT3;
 const {renderData4} = aT4;
 const {renderData5} = aT5;
+const {renderData6} = aT6;
+const {renderData7} = aT7;
+const {renderData8} = aT8;
+const {renderData9} = aT9;
+const {renderData10} = aT10;
+const {renderData11} = aT11;
+const {renderData12} = aT12;
+const {renderData13} = aT13;
+const {renderData14} = aT14;
+const {renderData15} = aT15;
+const {renderData16} = aT16;
+const {renderData17} = aT17;
+const {renderData18} = aT18;
+const {renderData19} = aT19;
+const {renderData20} = aT20;
+const {renderData21} = aT21;
 
 const Option= Select.Option;
 class Header extends Component {
@@ -50,6 +82,22 @@ class Header extends Component {
             this.props.renderData3('A0003',this.props.Header.filterValue);
             this.props.renderData4('A0004',this.props.Header.filterValue);
             this.props.renderData5('A0005',this.props.Header.filterValue);
+            this.props.renderData5('A0006',this.props.Header.filterValue);
+            this.props.renderData5('A0007',this.props.Header.filterValue);
+            this.props.renderData5('A0008',this.props.Header.filterValue);
+            this.props.renderData5('A0009',this.props.Header.filterValue);
+            this.props.renderData5('A0010',this.props.Header.filterValue);
+            this.props.renderData5('A0011',this.props.Header.filterValue);
+            this.props.renderData5('A0012',this.props.Header.filterValue);
+            this.props.renderData5('A0013',this.props.Header.filterValue);
+            this.props.renderData5('A0014',this.props.Header.filterValue);
+            this.props.renderData5('A0015',this.props.Header.filterValue);
+            this.props.renderData5('A0016',this.props.Header.filterValue);
+            this.props.renderData5('A0017',this.props.Header.filterValue);
+            this.props.renderData5('A0018',this.props.Header.filterValue);
+            this.props.renderData5('A0019',this.props.Header.filterValue);
+            this.props.renderData5('A0020',this.props.Header.filterValue);
+            this.props.renderData5('A0021',this.props.Header.filterValue);
         }
 
     }
@@ -100,8 +148,41 @@ function mapStateToProps(state){
         Table3:state.table3,
         Table4:state.table4,
         Table5:state.table5,
+        Table6:state.table6,
+        Table7:state.table7,
+        Table8:state.table8,
+        Table9:state.table9,
+        Table10:state.table10,
+        Table11:state.table11,
+        Table12:state.table12,
+        Table13:state.table13,
+        Table14:state.table14,
+        Table15:state.table15,
+        Table16:state.table16,
+        Table17:state.table17,
+        Table18:state.table18,
+        Table19:state.table19,
+        Table20:state.table20,
+        Table21:state.table21,
     };
 }
 
 export default connect(mapStateToProps,
-    {filterDataBc,renderData1,renderData2,renderData3,renderData4,renderData5})(Header);
+    {filterDataBc,renderData1,renderData2,renderData3,renderData4,renderData5,
+    renderData6,
+    renderData7,
+    renderData8,
+    renderData9,
+    renderData10,
+    renderData11,
+    renderData12,
+    renderData13,
+    renderData14,
+    renderData15,
+    renderData16,
+    renderData17,
+    renderData18,
+    renderData19,
+    renderData20,
+    renderData21,
+})(Header);

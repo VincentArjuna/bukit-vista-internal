@@ -1,7 +1,7 @@
 import{all,takeEvery,put,call} from 'redux-saga/effects';
 import actions from './actions';
 import axios from 'axios';
-const URL_AREA = 'http://localhost:8000/api/booking/';
+const URL_AREA = 'https://internal.bukitvista.com/tools/api/booking/';
 console.log(URL_AREA);
 
 const onRenderRequest = async (area,date) =>

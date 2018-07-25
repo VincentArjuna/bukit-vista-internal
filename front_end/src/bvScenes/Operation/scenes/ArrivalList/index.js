@@ -10,6 +10,23 @@ import Table2 from '../ArrivalList/components/Table2';
 import Table3 from '../ArrivalList/components/Table3';
 import Table4 from '../ArrivalList/components/Table4';
 import Table5 from '../ArrivalList/components/Table5';
+import Table6 from '../ArrivalList/components/Table6';
+import Table7 from '../ArrivalList/components/Table7';
+import Table8 from '../ArrivalList/components/Table8';
+import Table9 from '../ArrivalList/components/Table9';
+import Table10 from '../ArrivalList/components/Table10';
+import Table11 from '../ArrivalList/components/Table11';
+import Table12 from '../ArrivalList/components/Table12';
+import Table13 from '../ArrivalList/components/Table13';
+import Table14 from '../ArrivalList/components/Table14';
+import Table15 from '../ArrivalList/components/Table15';
+import Table16 from '../ArrivalList/components/Table16';
+import Table17 from '../ArrivalList/components/Table17';
+import Table18 from '../ArrivalList/components/Table18';
+import Table19 from '../ArrivalList/components/Table19';
+import Table20 from '../ArrivalList/components/Table20';
+import Table21 from '../ArrivalList/components/Table21';
+
 import Header from '../../../../bvComponents/Header/index.js';
 
 const areas = [
@@ -81,6 +98,10 @@ const areas = [
   {
     name:'Nusa Penida',
     code:'A0020'
+  },
+  {
+    name:'Gili Air',
+    code:'A0021'
   }
 ];
 
@@ -90,9 +111,10 @@ export default class ArrivalList extends Component {
       <div>
         <Header title={title} columns={columns} date={moment().toString()}/>
         {console.log(moment().toString())}
-          <LayoutContentWrapper style={{ height: "100vh"}}>
+          <LayoutContentWrapper>
             <PageHeader>{areas[0].name}</PageHeader>
             <Table1 columns={columns} area={areas[0].code} date={moment().format('YYYY-MM-DD').toString()}/>
+            {console.log("date : " + moment().format('YYYY-MM-DD').toString())}
           </LayoutContentWrapper>
           <LayoutContentWrapper>
             <PageHeader>{areas[1].name}</PageHeader>
@@ -110,6 +132,72 @@ export default class ArrivalList extends Component {
             <PageHeader>{areas[4].name}</PageHeader>
             <Table5 columns={columns} area={areas[4].code} date={moment().format('YYYY-MM-DD').toString()}/>
           </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[5].name}</PageHeader>
+            <Table6 columns={columns} area={areas[5].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[6].name}</PageHeader>
+            <Table7 columns={columns} area={areas[6].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[7].name}</PageHeader>
+            <Table8 columns={columns} area={areas[7].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[8].name}</PageHeader>
+            <Table9 columns={columns} area={areas[8].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[9].name}</PageHeader>
+            <Table10 columns={columns} area={areas[9].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[10].name}</PageHeader>
+            <Table11 columns={columns} area={areas[10].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[11].name}</PageHeader>
+            <Table12 columns={columns} area={areas[12].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[12].name}</PageHeader>
+            <Table13 columns={columns} area={areas[13].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[13].name}</PageHeader>
+            <Table14 columns={columns} area={areas[14].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[14].name}</PageHeader>
+            <Table15 columns={columns} area={areas[14].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[15].name}</PageHeader>
+            <Table16 columns={columns} area={areas[15].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[16].name}</PageHeader>
+            <Table17 columns={columns} area={areas[16].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[17].name}</PageHeader>
+            <Table18 columns={columns} area={areas[17].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[18].name}</PageHeader>
+            <Table19 columns={columns} area={areas[18].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[19].name}</PageHeader>
+            <Table20 columns={columns} area={areas[19].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+          <LayoutContentWrapper>
+            <PageHeader>{areas[20].name}</PageHeader>
+            <Table21 columns={columns} area={areas[20].code} date={moment().format('YYYY-MM-DD').toString()}/>
+          </LayoutContentWrapper>
+
+
         <LayoutContentWrapper style={{ height: "5vh"}}>
         </LayoutContentWrapper>
       </div>

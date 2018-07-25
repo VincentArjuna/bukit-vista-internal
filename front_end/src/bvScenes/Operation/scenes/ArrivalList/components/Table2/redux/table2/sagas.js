@@ -1,6 +1,6 @@
 import{all,takeEvery,put,call} from 'redux-saga/effects';
 import actions from './actions';
-const URL_AREA = 'http://localhost:8000/api/booking/';
+const URL_AREA = 'https://internal.bukitvista.com/tools/api/booking/';
 
 const onRenderRequest = async (area,date) =>
     await fetch(`${URL_AREA}area/${encodeURIComponent(area)}/date/${encodeURIComponent(date)}`)
