@@ -38,10 +38,10 @@ class fnPaginate
         $currentPageResults = $collection->slice(($currentPage-1) * $per_page, $per_page)->all();
 
         //Create our paginator and add it to the data array
-        $data['results'] = new LengthAwarePaginator($currentPageResults, count($collection), $per_page);
+        $data = new LengthAwarePaginator($currentPageResults, count($collection), $per_page);
 
         //Set base url for pagination links to follow e.g custom/url?page=6
-        $data['results']->setPath($request->url());
+        $data->setPath($request->url());
         
         return $data;
     } 

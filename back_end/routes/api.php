@@ -91,9 +91,11 @@ Route::get('booking/check_out/{id}', 'BookingsController@showCheckOut');
 //Display specified by 'profile_id'
 Route::get('booking/profile/{id}', 'BookingsController@showProfile');
 //Display specified by 'listing_id'
-Route::get('booking/listing/{id}', 'BookingsController@showListing');
+Route::get('booking/listing_id/{id}', 'BookingsController@showListing');
 //Display specified by 'area_id'
 Route::get('booking/area/{id}', 'BookingsController@showArea');
+//Display payment by prop
+Route::get('booking/property/payment/{id}', 'BookingsController@showPayment');
 //Add 'booking'
 Route::post('booking/add','BookingsController@create');
 //Update 'booking'
@@ -102,6 +104,7 @@ Route::post('booking/update/{id}', 'BookingsController@update');
 Route::get('booking/delete/{id}', 'BookingsController@softDelete');
 //restore softdeleted booking
 Route::get('booking/restore/{id}', 'BookingsController@restore');
+Route::get('booking/received/{id}', 'BookingsController@showrec');
 
 //Properties
 //Display all 'Properties'
@@ -178,6 +181,8 @@ Route::get('profile/restore/{id}', 'ProfilesController@restore');
 //ArrivalList
 //Display arrival (check_in and area)
 Route::get('booking/area/{area}/date/{tgl}', 'ArrivalListsController@showArrival');
+//Download as CSV
+Route::get('booking/area/{area}/date/{tgl}/download','ArrivalListsController@csvWriter');
 
 //Log
 //Display all log
