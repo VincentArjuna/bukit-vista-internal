@@ -1,21 +1,16 @@
 const actions={
     RENDER_DATA5:'RENDER_DATA5',
-    RENDER_DATA_SUCCESS5 :'RENDER_DATA_SUCCESS5',
+    RENDER_DATA_SUCCESS5:'RENDER_DATA_SUCCESS5',
     ADD_NOTES5:'ADD_NOTES5',
     RENDER_NOTES5:'RENDER_NOTES5',
-    FILTER_DATA_AL5:'FILTER_DATA_AL5',
-    renderData5 : (area,date)=>({
+    renderData5 : (area,date,filter_type,filterer,date_type)=>({
         type: actions.RENDER_DATA5,
-        payload:{area,date}
+        payload:{area,date,filter_type,filterer,date_type}
     }),
-    renderDataSuccess5:results=>({
+    renderDataSuccess5:(results)=>({
         type: actions.RENDER_DATA_SUCCESS5,
         results
-    }),
-    filterDataAl5:(param,filter) =>({
-        type:actions.FILTER_DATA_AL5,
-        payload:{param,filter}
-    }),
+    })
 };
 
 export default actions;

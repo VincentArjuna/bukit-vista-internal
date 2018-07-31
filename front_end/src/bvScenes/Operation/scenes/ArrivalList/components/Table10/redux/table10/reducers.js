@@ -6,23 +6,22 @@ const initState={
     title:null
 }
 
-export default function reducer(state = initState,action){
+export default function tableReducer(state = initState,action){
     switch(action.type){
         case actions.RENDER_DATA10:
             return{
                 ...state,
                 area:action.payload.area,
-                date:action.payload.date
+                date:action.payload.date,
+                filter_type:action.payload.filter_type,
+                filterer:action.payload.filterer,
+                date_type:action.payload.date_type,
             };
         case actions.RENDER_DATA_SUCCESS10:
+            console.log(action.results);
             return{
                 ...state,
                 results:action.results
-            };
-        case actions.FILTER_DATA_AL10:
-            return{
-                ...state,
-                param:action.payload.param,
             };
         default:
             return state;

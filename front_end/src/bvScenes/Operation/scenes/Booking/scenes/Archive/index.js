@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import LayoutContentWrapper from "../../../../../../components/utility/layoutWrapper.js";
-import LayoutContent from "../../../../../../components/utility/layoutContent.js"
+import LayoutContentWrapper from "../../../../../../bvComponents/Utility/layoutWrapper.js";
+import LayoutContent from "../../../../../../bvComponents/Utility/layoutContent.js"
 
 export default class Archive extends Component {
   render() {

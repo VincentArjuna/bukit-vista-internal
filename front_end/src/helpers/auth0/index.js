@@ -1,7 +1,7 @@
 import Auth0Lock from 'auth0-lock';
 import history from './history';
 import { Auth0Config } from '../../settings';
-import { notification } from '../../components';
+import { notification } from 'antd';
 
 class Auth0Helper {
   isValid = Auth0Config.clientID && Auth0Config.domain;

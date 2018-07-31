@@ -9,7 +9,6 @@ import authAction from '../redux/auth/actions';
 import appActions from '../redux/app/actions';
 import Sidebar from '../bvComponents/Sidebar/Sidebar';
 import Topbar from '../bvComponents/Topbar/Topbar';
-import ThemeSwitcher from '../containers/ThemeSwitcher';
 import AppRouter from './AppRouter';
 import { siteConfig } from '../settings';
 import { AppLocale } from '../bvApp';
@@ -76,7 +75,6 @@ export class App extends Component {
                     </Footer>
                   </Layout>
                 </Layout>
-                {/*<ThemeSwitcher />*/}
               </Layout>
             </AppHolder>
           </ThemeProvider>
@@ -89,8 +87,8 @@ export class App extends Component {
 export default connect(
   state => ({
     auth: state.Auth,
-    locale: state.LanguageSwitcher.language.locale,
-    selectedTheme: state.ThemeSwitcher.changeThemes.themeName,
+    locale: 'en',
+    selectedTheme: 'themedefault',
     height: state.App.height
   }),
   { logout, toggleAll }

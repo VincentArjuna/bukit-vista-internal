@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Popover } from "antd";
 import { connect } from "react-redux";
-import IntlMessages from "../../components/utility/intlMessages";
-import Scrollbar from "../../components/utility/customScrollBar";
+import IntlMessages from "../../bvComponents/Utility/intlMessages";
+import Scrollbar from "../../bvComponents/Utility/customScrollBar";
 import TopbarDropdownWrapper from "./topbarDropdown.style";
 
 import Image from "../../image/user3.png";
@@ -108,5 +108,5 @@ class TopbarMessage extends Component {
 
 export default connect(state => ({
   ...state.App,
-  customizedTheme: state.ThemeSwitcher.topbarTheme
+  customizedTheme: 'themedefault'
 }))(TopbarMessage);

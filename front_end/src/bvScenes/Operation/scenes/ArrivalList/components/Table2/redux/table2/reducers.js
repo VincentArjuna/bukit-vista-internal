@@ -12,18 +12,16 @@ export default function reducer(state = initState,action){
             return{
                 ...state,
                 area:action.payload.area,
-                date:action.payload.date
+                date:action.payload.date,
+                filter_type:action.payload.filter_type,
+                filterer:action.payload.filterer,
+                date_type:action.payload.date_type,
             };
         case actions.RENDER_DATA_SUCCESS2:
             console.log(action.results);
             return{
                 ...state,
                 results:action.results
-            };
-        case actions.FILTER_DATA_AL2:
-            return{
-                ...state,
-                param:action.payload.param,
             };
         default:
             return state;

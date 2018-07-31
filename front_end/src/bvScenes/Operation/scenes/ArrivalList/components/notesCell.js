@@ -6,7 +6,6 @@ import Input, {
   InputGroup,
   Textarea
 } from '../../../../../bvComponents/Uielements/input';
-import Notes from '../../../../../bvComponents/Notes';
 
 const FormItem = Form.Item;
 export default class extends Component {

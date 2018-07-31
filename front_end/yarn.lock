@@ -147,6 +147,12 @@
   dependencies:
     csstype "^2.2.0"
 
+"@types/react@^16.0.18":
+  version "16.4.7"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.7.tgz#f33f6d759a7e1833befa15224d68942d178a5a3f"
+  dependencies:
+    csstype "^2.2.0"
+
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
@@ -1809,6 +1815,10 @@ chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0, chalk@^2.4.1:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
+
+change-emitter@^0.1.2:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/change-emitter/-/change-emitter-0.1.6.tgz#e8b2fe3d7f1ab7d69a32199aff91ea6931409515"
 
 chardet@^0.4.0:
   version "0.4.2"
@@ -3620,7 +3630,7 @@ fbjs@^0.3.1:
     ua-parser-js "^0.7.9"
     whatwg-fetch "^0.9.0"
 
-fbjs@^0.8.15, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.9:
+fbjs@^0.8.1, fbjs@^0.8.15, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.9:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   dependencies:
@@ -8013,6 +8023,16 @@ react-reconciler@^0.7.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
+react-redux-subspace@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/react-redux-subspace/-/react-redux-subspace-2.5.0.tgz#ed1e37cab43370a998d01a1ac7c32ddd55dd9f99"
+  dependencies:
+    "@types/react" "^16.0.18"
+    hoist-non-react-statics "^2.3.1"
+    prop-types "^15.6.0"
+    recompose "^0.26.0"
+    redux-subspace "^2.5.0"
+
 react-redux@^5.0.4:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.7.tgz#0dc1076d9afb4670f993ffaef44b8f8c1155a4c8"
@@ -8339,6 +8359,15 @@ recharts@^1.0.0-alpha.2:
     recharts-scale "0.3.2"
     reduce-css-calc "1.3.0"
 
+recompose@^0.26.0:
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.26.0.tgz#9babff039cb72ba5bd17366d55d7232fbdfb2d30"
+  dependencies:
+    change-emitter "^0.1.2"
+    fbjs "^0.8.1"
+    hoist-non-react-statics "^2.3.1"
+    symbol-observable "^1.0.4"
+
 recursive-readdir@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/recursive-readdir/-/recursive-readdir-2.2.1.tgz#90ef231d0778c5ce093c9a48d74e5c5422d13a99"
@@ -8428,6 +8457,17 @@ redux-saga-firebase@0.10.0:
 redux-saga@^0.16.0:
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.0.tgz#0a231db0a1489301dd980f6f2f88d8ced418f724"
+
+redux-subspace-saga@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/redux-subspace-saga/-/redux-subspace-saga-2.5.0.tgz#37ad1e107ab12e1b12f2887874d972f5230a77dd"
+  dependencies:
+    babel-runtime "^6.26.0"
+    redux-subspace "^2.5.0"
+
+redux-subspace@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/redux-subspace/-/redux-subspace-2.5.0.tgz#d81aae582b027cd539c634fb454fd04e6f0d295c"
 
 redux-thunk@^2.2.0:
   version "2.3.0"
@@ -9402,7 +9442,7 @@ sw-toolbox@^3.4.0:
     path-to-regexp "^1.0.1"
     serviceworker-cache-polyfill "^4.0.0"
 
-symbol-observable@^1.0.2, symbol-observable@^1.0.3:
+symbol-observable@^1.0.2, symbol-observable@^1.0.3, symbol-observable@^1.0.4:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
 

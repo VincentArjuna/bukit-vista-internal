@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import LayoutContentWrapper from "../../../../../../components/utility/layoutWrapper.js";
-import LayoutContent from "../../../../../../components/utility/layoutContent";
+import LayoutContentWrapper from "../../../../../../bvComponents/Utility/layoutWrapper.js";
+import LayoutContent from "../../../../../../bvComponents/Utility/layoutContent";
 import {columns,title} from './config.js';
 import Table from '../../../../../../bvComponents/Table';
 import Header from '../../../../../../bvComponents/Header/index.js';
@@ -18,7 +18,7 @@ class Current extends Component {
     return (    
         <div>
           <Header title={title} columns={columns}/>
-            <LayoutContentWrapper style={{ height: "100vh"}}>
+            <LayoutContentWrapper>
               <Table 
                 columns={columns}
                 mode={Current}

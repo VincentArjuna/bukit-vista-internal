@@ -1,5 +1,5 @@
 import qs from 'qs';
-import options from '../containers/Sidebar/options';
+import options from '../bvComponents/Sidebar/options';
 
 export function getInitData() {
   const initData = qs.parse(window.location.search.slice(1));

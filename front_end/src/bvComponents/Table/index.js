@@ -15,9 +15,9 @@ export default class Table extends Component {
     const {results} = this.props.mode;
     const dataList=results;
     return (
-      <LayoutContentWrapper style={{overflow:'auto'}}>
+        <LayoutContentWrapper>
         <MyTable columns={this.props.columns} mode={this.props.mode} dataList={this.props.mode.results} />
-      </LayoutContentWrapper>
+        </LayoutContentWrapper>
     );
   }
 }

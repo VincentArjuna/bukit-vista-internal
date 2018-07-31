@@ -30,43 +30,13 @@ const PublicRoutes = ({ history, isLoggedIn }) => {
         <Route
           exact
           path={"/"}
-          component={asyncComponent(() => import("./containers/Page/signin"))}
-        />
-        <Route
-          exact
-          path={"/404"}
-          component={asyncComponent(() => import("./containers/Page/404"))}
-        />
-        <Route
-          exact
-          path={"/500"}
-          component={asyncComponent(() => import("./containers/Page/500"))}
+          component={asyncComponent(() => import("./bvScenes/Sign/scenes/SignIn"))}
         />
         <Route
           exact
           path={"/signin"}
-          component={asyncComponent(() => import("./containers/Page/signin"))}
+          component={asyncComponent(() => import("./bvScenes/Sign/scenes/SignIn"))}
         />
-        <Route
-          exact
-          path={"/signup"}
-          component={asyncComponent(() => import("./containers/Page/signup"))}
-        />
-        <Route
-          exact
-          path={"/forgotpassword"}
-          component={asyncComponent(() =>
-            import("./containers/Page/forgotPassword")
-          )}
-        />
-        <Route
-          exact
-          path={"/resetpassword"}
-          component={asyncComponent(() =>
-            import("./containers/Page/resetPassword")
-          )}
-        />
-
         <Route
           path="/auth0loginCallback"
           render={props => {

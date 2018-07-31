@@ -7,12 +7,9 @@ import actions from '../Table1/redux/table1/actions';
 const {renderData1} = actions;
 class Table1 extends Component {
   componentDidMount(){
-      this.props.renderData1(this.props.area,this.props.date);
+      this.props.renderData1(this.props.area,this.props.date,0,null,0);
   }
-
-
   render() {
-
     const {Table1} = this.props;
     return (
       <LayoutContentWrapper style={{overflow:'auto'}}>

@@ -7,7 +7,7 @@ import actions from '../Table10/redux/table10/actions';
 const {renderData10} = actions;
 class Table10 extends Component {
   componentDidMount(){
-      this.props.renderData10(this.props.area,this.props.date);
+      this.props.renderData10(this.props.area,this.props.date,0,null,0);
   }
 
 
