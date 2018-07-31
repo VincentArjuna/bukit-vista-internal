@@ -14,11 +14,6 @@ const options = [
           key: 'current',
           label: 'Current',
           leftIcon: 'ion-document'
-        },
-        {
-            key: 'archive',
-            label: 'Archive',
-            leftIcon: 'ion-document'
         }
       ]
     }

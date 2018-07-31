@@ -4,7 +4,7 @@ import Box from  '../../../../bvComponents/Utility/box';
 import moment from 'moment';
 import LayoutContentWrapper from "../../../../bvComponents/Utility/layoutWrapper.js";
 import basicStyle from '../../../../settings/basicStyle.js';
-import {columns,title,areas} from './config.js';
+import {columns,title,areas,filterTypes} from './config.js';
 import { Collapse } from 'antd';
 import CollapseWrapper from '../../../../bvComponents/Collapse/collapse.style';
 import ContentHolder from '../../../../bvComponents/Utility/contentHolder';
@@ -45,7 +45,7 @@ export default class ArrivalList extends Component {
     const { rowStyle, colStyle, gutter } = basicStyle;
     return (
       <div>
-        <Header title={title} columns={columns} date={moment().format('YYYY-MM-DD').toString()}/>  
+        <Header title={title} filters={filterTypes} date={moment().format('YYYY-MM-DD').toString()}/>  
         <LayoutContentWrapper>
           <Box>    
             <Row style={rowStyle} justify="start" align="middle">
@@ -126,22 +126,3 @@ export default class ArrivalList extends Component {
     );
   }
 }
-
-{/* 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- */}

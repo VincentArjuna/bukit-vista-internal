@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import LayoutContentWrapper from "../../../../../../bvComponents/Utility/layoutWrapper.js";
 import LayoutContent from "../../../../../../bvComponents/Utility/layoutContent";
-import {columns,title} from './config.js';
+import {columns,title,filterTypes} from './config.js';
 import Table from '../../../../../../bvComponents/Table';
 import Header from '../../../../../../bvComponents/Header/index.js';
 import actions from './redux/bookingCurrent/actions';
@@ -17,7 +17,7 @@ class Current extends Component {
     const {renderDataBc,Current}=this.props;
     return (    
         <div>
-          <Header title={title} columns={columns}/>
+          <Header title={title} columns={columns} filters={filterTypes}/>
             <LayoutContentWrapper>
               <Table 
                 columns={columns}

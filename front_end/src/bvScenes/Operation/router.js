@@ -8,10 +8,6 @@ const routes = [
   {
     path: 'current',
     component: asyncComponent(() => import('./scenes/Booking/scenes/Current'))
-  },
-  {
-    path: 'archive',
-    component: asyncComponent(() => import('./scenes/Booking/scenes/Archive'))
   }
 ];
 const operationRoutes=routes;

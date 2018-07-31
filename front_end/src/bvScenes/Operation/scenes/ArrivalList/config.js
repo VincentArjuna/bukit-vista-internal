@@ -155,6 +155,19 @@ const areas = [
     code:'A0021'
   }
 ];
-
+const filterTypes=[
+  {
+    key:'1',
+    name:'Guest name'
+  },
+  {
+    key:'2',
+    name:'Unit Name'
+  },
+  {
+    key:'3',
+    name:'Profile'
+  }
+];
 const title = "Arrival List";
-export { columns,title,areas };
+export { columns,title,areas,filterTypes };

@@ -94,6 +94,23 @@ const columns=[
         render: object => renderCell(object, 'TextCell', 'listing_id')
     },
 ];
-
+const filterTypes=[
+    {
+      key:'1',
+      name:'Booking Code'
+    },
+    {
+      key:'2',
+      name:'Guest Name'
+    },
+    {
+      key:'3',
+      name:'Listing Name'
+    },
+    {
+        key:'4',
+        name:'Profile'
+    }
+  ];
 const title= "Booking / Current";
-export {columns,title};
+export {columns,title,filterTypes};

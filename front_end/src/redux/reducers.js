@@ -25,6 +25,7 @@ import Table21 from '../bvScenes/Operation/scenes/ArrivalList/components/Table21
 import BookingCurrent from '../bvScenes/Operation/scenes/Booking/scenes/Current/redux/reducers';
 import Header from '../bvComponents/Header/redux/reducers';
 import LoadEmployee from '../bvScenes/Operation/scenes/ArrivalList/components/redux/reducers';
+import DateRange from '../bvComponents/DateRange/redux/reducers';
 //import ArrivalList from '../bvScenes/Operation/scenes/ArrivalList/redux/reducers';
 
 export default {
@@ -53,6 +54,7 @@ export default {
   ...Table21,
   ...BookingCurrent,
   ...Header,
-  ...LoadEmployee
+  ...LoadEmployee,
+  ...DateRange
  // ...ArrivalList,
 };
