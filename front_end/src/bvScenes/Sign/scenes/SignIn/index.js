@@ -46,7 +46,7 @@ class SignIn extends Component {
           <div className="isoLoginContent">
             <div className="isoLogoWrapper">
               <Link to="/dashboard">
-                <IntlMessages id="page.signInTitle" />
+                INTERNAL TOOLS BUKITVISTA
               </Link>
             </div>
 
@@ -66,40 +66,6 @@ class SignIn extends Component {
                 <Button type="primary" onClick={this.handleLogin}>
                   <IntlMessages id="page.signInButton" />
                 </Button>
-              </div>
-
-              <p className="isoHelperText">
-                <IntlMessages id="page.signInPreview" />
-              </p>
-
-              <div className="isoInputWrapper isoOtherLogin">
-                <Button onClick={this.handleLogin} type="primary btnFacebook">
-                  <IntlMessages id="page.signInFacebook" />
-                </Button>
-                <Button onClick={this.handleLogin} type="primary btnGooglePlus">
-                  <IntlMessages id="page.signInGooglePlus" />
-                </Button>
-
-                {Auth0.isValid && (
-                  <Button
-                    onClick={() => {
-                      Auth0.login(this.handleLogin);
-                    }}
-                    type="primary btnAuthZero"
-                  >
-                    <IntlMessages id="page.signInAuth0" />
-                  </Button>
-                )}
-
-                {/*Firebase.isValid && <FirebaseLogin login={this.handleLogin} />*/}
-              </div>
-              <div className="isoCenterComponent isoHelperWrapper">
-                <Link to="/forgotpassword" className="isoForgotPass">
-                  <IntlMessages id="page.signInForgotPass" />
-                </Link>
-                <Link to="/signup">
-                  <IntlMessages id="page.signInCreateAccount" />
-                </Link>
               </div>
             </div>
           </div>

@@ -34,7 +34,7 @@ import aT19 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table19
 import aT20 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table20/redux/table20/actions';
 import aT21 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table21/redux/table21/actions';
 
-const {filterDataBc} = actions;
+const {renderDataBc} = actions;
 const {renderData1} = aT1;
 const {renderData2} = aT2;
 const {renderData3} = aT3;
@@ -79,7 +79,7 @@ class Header extends Component {
                 alert("Please select a filter");
             }else{
                 if(this.props.DateRange.range===true){
-                    this.props.Header.dateType=2;
+                    this.props.Header.dateType=3;
                 }else{
                     if(this.props.DateRange.check_in !=null){
                         this.props.Header.date = this.props.DateRange.check_in;
@@ -91,7 +91,26 @@ class Header extends Component {
                 }
 
                 if(this.props.title === 'Booking / Current'){
-                    this.props.filterDataBc(this.props.Header.filterType,this.props.Header.filterValue);
+                    if(this.props.DateRange.check_in === null && this.props.DateRange.check_out===null){
+                        this.props.Header.dateType=0;
+                    }else{
+                        if(this.props.DateRange.check_in !=null){
+                            this.props.Header.date = this.props.DateRange.check_in;
+                            this.props.Header.dateType= 1;
+                        }else{
+                            this.props.Header.date = this.props.DateRange.check_out;
+                            this.props.Header.dateType=2;
+                        }
+
+                        if(this.props.DateRange.range===true){
+                            this.props.Header.dateType=3;
+                        }
+                    }
+                    //alert("date :"+this.props.Header.date);
+                    //alert("dateType :"+this.props.Header.dateType);
+                    //alert("filterType : "+this.props.Header.filterType);
+                    //alert("value : "+value);
+                    this.props.renderDataBc(this.props.Header.date,value,this.props.Header.dateType,this.props.Header.filterType);
                 }else if(this.props.title === 'Arrival List'){
                     this.props.renderData1('A0001',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
                     this.props.renderData2('A0002',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
@@ -191,7 +210,7 @@ function mapStateToProps(state) {
   }
   export default connect(
     mapStateToProps,
-    {filterDataBc,
+    {renderDataBc,
         renderData1,
         renderData2,
         renderData3,

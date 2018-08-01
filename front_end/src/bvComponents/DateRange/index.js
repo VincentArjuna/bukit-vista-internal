@@ -26,7 +26,7 @@ import aT19 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table19
 import aT20 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table20/redux/table20/actions';
 import aT21 from '../../bvScenes/Operation/scenes/ArrivalList/components/Table21/redux/table21/actions';
 
-const {filterDataBc} = actions;
+const {renderDataBc} = actions;
 const {renderData1} = aT1;
 const {renderData2} = aT2;
 const {renderData3} = aT3;
@@ -113,6 +113,8 @@ class DateRange extends Component {
       this.props.renderData19('A0019',this.state.pickDate,0,null,this.state.mode);
       this.props.renderData20('A0020',this.state.pickDate,0,null,this.state.mode);
       this.props.renderData21('A0021',this.state.pickDate,0,null,this.state.mode);    
+    }else{
+      this.props.renderDataBc(this.state.pickDate,null,this.state.mode+1,0);
     }
   }
 
@@ -150,7 +152,7 @@ class DateRange extends Component {
 
   handleEndOpenChange = (open) => {
     this.setState({ endOpen: open });
-    this.props.DateRange.check_in !== null ? this.props.DateRange.range=true:null;
+    this.props.DateRange.check_in !== null ? this.props.DateRange.range=true:this.props.DateRange.range=false;
   }
 
   render() {
@@ -215,7 +217,7 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  {filterDataBc,
+  {renderDataBc,
     renderData1,
     renderData2,
     renderData3,

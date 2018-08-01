@@ -2,18 +2,20 @@
 const actions={
     RENDER_DATA_BC:'RENDER_DATA_BC',
     RENDER_DATA_SUCCESS_BC :'RENDER_DATA_SUCCESS_BC',
-    FILTER_DATA_BC: 'FILTER_DATA_BC',
-    renderDataBc : ()=>({
+    renderDataBc : (date,filterer,date_type,filter_type)=>({
         type: actions.RENDER_DATA_BC,
+        payload:{date,filterer,date_type,filter_type,page:1}
     }),
-    renderDataSuccessBc:results=>({
+    renderDataSuccessBc:(results,total,page)=>({
         type: actions.RENDER_DATA_SUCCESS_BC,
-        results
+        results,
+        total,
+        page
     }),
-    filterDataBc:(param,filter) =>({
-        type:actions.FILTER_DATA_BC,
-        payload:{param,filter}
-    }),
+    onPageChange:(date,filterer,date_type,filter_type,page)=>({
+        type: actions.RENDER_DATA_BC,
+        payload:{date,filterer,date_type,filter_type,page}
+    })
 };
 
 export default actions;

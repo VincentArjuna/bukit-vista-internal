@@ -28,13 +28,7 @@ class TopbarUser extends Component {
     const content = (
       <TopbarDropdownWrapper className="isoUserDropdown">
         <a className="isoDropdownLink">
-          <IntlMessages id="themeSwitcher.settings" />
-        </a>
-        <a className="isoDropdownLink">
           <IntlMessages id="sidebar.feedback" />
-        </a>
-        <a className="isoDropdownLink">
-          <IntlMessages id="topbar.help" />
         </a>
         <a className="isoDropdownLink" onClick={this.props.logout}>
           <IntlMessages id="topbar.logout" />

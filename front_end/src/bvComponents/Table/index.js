@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import LayoutContentWrapper from '../Utility/layoutContent';
-//import TableDemoStyle from './demo.style';
 import fakeData from './fakeData';
 import MyTable from './MyTable';
 
@@ -9,11 +8,10 @@ import MyTable from './MyTable';
 export default class Table extends Component {
 
   componentDidMount(){
-    this.props.renderData();
+    this.props.renderData(null,null,0,0);
   }
   render() {
     const {results} = this.props.mode;
-    const dataList=results;
     return (
         <LayoutContentWrapper>
         <MyTable columns={this.props.columns} mode={this.props.mode} dataList={this.props.mode.results} />

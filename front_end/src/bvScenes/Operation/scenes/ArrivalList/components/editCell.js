@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import { Modal,Form ,DatePicker} from 'antd';
+import { Modal,Form ,DatePicker,TimePicker} from 'antd';
 import Button from '../../../../../bvComponents/Uielements/button';
 import Select,{SelectOption}from '../../../../../bvComponents/Uielements/select';
 import Input, {
@@ -38,6 +38,13 @@ class EditCell extends Component {
     });
   }
 
+  handleEditData = () =>{
+    // const form = this.formRef.props.form;
+    // form.ValidateFields((values)=>{
+    //   console.log(values);
+    // });
+  }
+
   componentDidMount(){
       this.props.renderDataEmployee();
   }
@@ -53,19 +60,28 @@ class EditCell extends Component {
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          footer={[
+            <Button key="back" onClick={this.handleCancel}>Return</Button>,
+            <Button key="submit" type="primary" onClick={this.handleEditData}>
+              Submit
+            </Button>
+          ]}
         >
           <Form layout="vertical">
+            <FormItem>
+              <Input hidden={true}/>
+            </FormItem>
             <FormItem label="Unit Name">
-              <Input type="textarea" defaultValue={dataList[index].booking_unit_name}/>
+              <Input disabled={true} type="textarea" defaultValue={dataList[index].unit_name}/>
             </FormItem>
             <FormItem label="Guest Name">
-              <Input type="textarea" defaultValue={dataList[index].booking_guest_name}/>
+              <Input disabled={true} type="textarea" defaultValue={dataList[index].booking_guest_name}/>
             </FormItem>
             <FormItem label="ETA">
-              <Input type="textarea" defaultValue={dataList[index].booking_eta}/>
+              <TimePicker defaultValue={moment('12:08', 'HH:mm')} format={'HH:mm'} />
             </FormItem>
             <FormItem label="Check In">
-            <DatePicker dateFormat="YYYY-MM-DD"
+            <DatePicker disabled={true} dateFormat="YYYY-MM-DD"
                 defaultValue={dataList[index].booking_check_in ? moment(dataList[index].booking_check_in, 'YYYY-MM-DD') : moment()}
               />
             </FormItem>
@@ -75,7 +91,7 @@ class EditCell extends Component {
               />
             </FormItem>
             <FormItem label="LOS">
-              <Input type="textarea" defaultValue={dataList[index].booking_los}/>
+              <Input disabled={true} type="textarea" defaultValue={dataList[index].booking_los}/>
             </FormItem>
             <FormItem label="Driver">
               <Select>
