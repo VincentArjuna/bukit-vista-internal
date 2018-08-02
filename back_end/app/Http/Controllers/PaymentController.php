@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use League\Csv\Reader;
 use App\Payment;
 use App\PaymentBooking;
+use App\Bookings;
+use App\Listing;
 
 class PaymentController extends Controller
 {
@@ -50,7 +52,7 @@ class PaymentController extends Controller
         $reader->setHeaderOffset(0);
         $payment_id = '';
         foreach ($reader as $offset => $record) {
-            if($record['Type'] == 'Payout')
+            /*if($record['Type'] == 'Payout')
             {
                 $pb_ammount = floatval($record['Paid Out']);
                 date_default_timezone_set('Asia/Kuala_Lumpur');
@@ -79,7 +81,51 @@ class PaymentController extends Controller
                 $pbs->pb_currency = $currency;
                 $pbs->save();
             }
-            
+            */
+            if($record['Type'] == 'Reservation')
+            {
+                $booking_id = $record['Confirmation Code'];
+                $bookings = Bookings::where('booking_id', $booking_id)->get();
+                if($bookings->isEmpty()){
+                    $booking = new Bookings;
+                    $booking_earned = floatval($record['Amount']);
+                    $guest_name = $record['Guest'];
+                    $currency = $this->curency_to_int($record['Currency']);
+                    $tmpci = explode('/',$record['Start Date']);
+                    $los = $record['Nights'];
+                    $ci = $tmpci[2].'-'.$tmpci[0].'-'.$tmpci[1];
+                    $co = date('Y-m-d', strtotime($ci. ' + '.$los.' days'));
+                    
+                    //$co = $tmpco->format('Y-m-d');
+                    $tmplist = $record['Listing'];
+                    $listings = Listing::where('listing_name', $tmplist)->get();
+                    if($listings->isEmpty())
+                    {
+                        $booking->listing_id = 'L0000';
+                        $booking->temp_column = $tmplist;
+                    }else
+                    {
+                        $booking->listing_id = $listings[0]->listing_id;
+                    }
+                    $bstatus = 1;
+                    $booking->booking_id = $booking_id;
+                    $booking->booking_guest_name = $guest_name;
+                    $booking->booking_check_in = $ci;
+                    $booking->booking_check_out = $co;
+                    $booking->booking_status = $bstatus;
+                    $booking->booking_currency = $currency;
+                    $booking->booking_earned = $booking_earned;
+                    $booking->save();
+                }else
+                {
+                    $booking = $bookings[0];
+                    $bearned = floatval($record['Amount']);
+                    $dbearned = $booking->booking_earned;
+                    $bearned = $bearned+$dbearned;
+                    $booking->booking_earned = $bearned;
+                    $booking->save();
+                }
+            }
         }
         return 'Succeed';
     }

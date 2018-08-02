@@ -18,7 +18,12 @@ class UserController extends Controller
         $users = Users::Latest()->paginate(20);
         return $users;
     }
-
+    public function newUser_ID()
+    {
+        $ctr = Users::Latest()->count();
+        $user_id='U'.sprintf("%04s", $ctr);
+        return $user_id;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -26,21 +31,7 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-        $ctr = Users::Latest()->count();
-        if($ctr>10){
-            $user_id = 'U000'.$ctr;
-        }else if($ctr>100)
-        {
-            $user_id = 'U00'.$ctr;
-        }else if ($ctr>1000)
-        {
-            $user_id = 'U0'.$ctr;
-        }else
-        {
-            $user_id = 'U'.$ctr;
-        }
-        $users = new Users;
-        $users->user_id = $user_id;
+        $users->user_id = newUser_ID();
         $users->user_email = $request->input('data.user_email');
         $users->user_password = $request->input('data.user_email');
         $users->employee_id = $request->input('data.employee_id');
@@ -48,16 +39,7 @@ class UserController extends Controller
         return 'User Created';
     }
     
-    public function validate(Request $request){
-        $users->Users::where('user_email', $request->input('data.user_email'))->first();
-        if($users->user_password == $request->input('data.user_password'))
-        {
-            return true;
-        }else
-        {
-            return false;
-        }
-    }
+
     /**
      * Store a newly created resource in storage.
      *

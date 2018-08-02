@@ -13,31 +13,78 @@ use App\Properties;
 use App\fnPaginate;
 use App\Profiles;
 use App\Areas;
+use App\BookingEmployee;
 use DateTime;
 
 class ArrivalListsController extends Controller
 {
-    public function showArrival($area, $tgl, Request $request)
+    public function showArrival(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $ar = [];
-        $arr = [];
+        $date_type = $request->input('data.date_type');
+        $date = $request->input('data.date');
+        $filter_type = $request->input('data.filter_type');
+        $filterer = $request->input('data.filterer');
+        $area = $request->input('data.area');
         $properties = Properties::where('area_id', $area)->get();
         foreach($properties as $property){
             $units = Unit::where('property_id', $property->property_id)->get();
+            if ($filter_type == 2)
+            {
+                $matcher_unit = ['property_id' => $property->property_id,
+                                 'unit_name' => $filterer];
+                $units = Unit::where($matcher_unit);
+            }
             foreach($units as $unit){
                 $listings = Listing::where('unit_id', $unit->unit_id)->get();
+                if($filter_type == 3){
+                    $profile_id = Profiles::where('profile_name', $filterer)->first()->profile_id;
+                    $matcher_profile = ['unit_id'=>$unit->unit_id,
+                                        'profile_id'=>$profile_id];
+                    $listings = Listing::where($matcher_profile)->get(); 
+                }
                 foreach ($listings as $listing){
-                    $bookings = Bookings::where('listing_id',$listing->listing_id)->where('booking_check_in', $tgl)->get();
+                    $matcher_booking =[];
+                    $bookings = Bookings::where('listing_id',$listing->listing_id)->get();
+                    if($filter_type == 1){
+                        if($date_type == 0){
+                            $matcher_booking = ['listing_id'=>$listing->listing_id,
+                                                'booking_guest_name'=>$filterer,
+                                                'booking_check_in'=>$date];
+                        }else if ($date_type == 1)
+                        {
+                            $matcher_booking = ['listing_id'=>$listing->listing_id,
+                                                'booking_guest_name'=>$filterer,
+                                                'booking_check_out'=>$date];
+                        }
+                        $bookings = Bookings::where($matcher_booking)->get();   
+                    }else
+                    {
+                        if($date_type == 0){
+                            $matcher_booking = ['listing_id'=>$listing->listing_id,
+                                                'booking_check_in'=>$date];
+                        }else if ($date_type == 1)
+                        {
+                            $matcher_booking = ['listing_id'=>$listing->listing_id,
+                                                'booking_check_out'=>$date];
+                        }
+                        $bookings = Bookings::where($matcher_booking)->get(); 
+                    }
                     foreach ($bookings as $booking){
                         $profiles = Profiles::where('profile_id', $listing->profile_id)->get();
                         $profile = $profiles[0];
+                        $bes = BookingEmployee::where('booking_id', $booking->booking_id)->get();
                         $merged = collect();
                         $merged = $merged->merge($booking);
                         $merged = $merged->merge($unit);
                         $merged = $merged->merge($profile);
                         $data['booking_los'] = $this->LoS($booking->booking_id);
                         $merged = $merged->merge($data);
+                        foreach($bes as $bos)
+                        {
+                            $merged = $merged->merge($bos);
+                        }
                         array_push($ar,$merged);
                     }
                 }                
@@ -57,55 +104,39 @@ class ArrivalListsController extends Controller
         return $loss;
     }
     
-    public function csvWriter($area, $tgl, Request $request)
+    public function csvWriter($tgl)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $ar = [];
-        $arr = [];
-        $properties = Properties::where('area_id', $area)->get();
-        foreach($properties as $property){
-            $units = Unit::where('property_id', $property->property_id)->get();
-            foreach($units as $unit){
-                $listings = Listing::where('unit_id', $unit->unit_id)->get();
-                foreach ($listings as $listing){
-                    $bookings = Bookings::where('listing_id',$listing->listing_id)->where('booking_check_in', $tgl)->get();
-                    foreach ($bookings as $booking){
-                        $profiles = Profiles::where('profile_id', $listing->profile_id)->get();
-                        $profile = $profiles[0];
-                        $merged = collect();
-                        $merged = $merged->merge($booking);
-                        $merged = $merged->merge($unit);
-                        $merged = $merged->merge($profile);
-                        $data['booking_los'] = $this->LoS($booking->booking_id);
-                        $merged = $merged->merge($data);
-                        array_push($ar,$merged);
-                    }
-                }                
-            }
+        $bookings = Bookings::where('booking_check_in', $tgl)->get();
+        foreach($bookings as $booking){
+            $listings = Listing::where('listing_id', $booking->listing_id)->first();
+            $units = Unit::where('unit_id', $listings->unit_id)->first();
+            $profiles = Profiles::where('profile_id', $listings->profile_id)->first();
+            $merged = collect();
+            $merged = $merged->merge($booking);
+            $merged = $merged->merge($units);
+            $merged = $merged->merge($profiles);
+            $data['booking_los'] = $this->LoS($booking->booking_id);
+            $merged = $merged->merge($data);
+            array_push($ar, $merged);
         }
         try {
-            $name = Areas::where('area_id',$area)->first()->area_name;
-            $name = $name.'_'.$tgl.'.csv';
+            $name = 'CHECK_IN-'.$tgl.'.csv';
             $wr = Writer::createFromPath(storage_path('Csv/'.$name), 'w+');
-            $wr->insertOne(['Booking Id',
-                            'Guest Name',
+            $wr->insertOne(['Guest Name',
                             'Check In',
                             'Check Out',
-                            'Conversation Url',
                             'Unit Name',
-                            'Profile',
-                            'Length Of Stay']);
+                            'Profile']);
             foreach ($ar as $arr)
             {
                 $prname = Profiles::where('profile_id', $arr['profile_id'])->first()->profile_name;
-                $tmp = [$arr['booking_id'],
-                        $arr['booking_guest_name'],
+                $tmp = [$arr['booking_guest_name'],
                         $arr['booking_check_in'],
                         $arr['booking_check_out'],
-                        $arr['booking_conversation_url'],
                         $arr['unit_name'],
-                        $prname,
-                        $arr['booking_los']
+                        $prname
                 ];
                 $wr->insertOne($tmp);
             }
