@@ -32,16 +32,16 @@ class fnPaginate
         $collection->sortBy('created_at');
 
         //Define how many items we want to be visible in each page
-        $per_page = 20;
+        $per_page = 10;
 
         //Slice the collection to get the items to display in current page
         $currentPageResults = $collection->slice(($currentPage-1) * $per_page, $per_page)->all();
 
         //Create our paginator and add it to the data array
-        $data['results'] = new LengthAwarePaginator($currentPageResults, count($collection), $per_page);
+        $data = new LengthAwarePaginator($currentPageResults, count($collection), $per_page);
 
         //Set base url for pagination links to follow e.g custom/url?page=6
-        $data['results']->setPath($request->url());
+        $data->setPath($request->url());
         
         return $data;
     } 

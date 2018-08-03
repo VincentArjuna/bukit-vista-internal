@@ -75,29 +75,11 @@ Route::get('employee/restore/{id}', 'EmployeeController@restore');
 
 //Booking
 //Display all 'booking'
-Route::get('booking','BookingsController@index');
-//display all soft_deleted
-Route::get('booking/show_del', 'BookingsController@showDeleted');
-//Display 'booking' specified by 'booking_id'
-Route::get('booking/{id}', 'BookingsController@showId');
-//Display 'booking' specified by 'guest_name'
-Route::get('booking/guest/{id}', 'BookingsController@showGuest');
-//Display 'booking' specified by 'booking_source'
-Route::get('booking/source/{id}', 'BookingsController@showSource');
-//Display 'booking' specified by 'check_in'
-Route::get('booking/check_in/{id}', 'BookingsController@showCheckIn');
-//Display 'booking' specified by 'check_out'
-Route::get('booking/check_out/{id}', 'BookingsController@showCheckOut');
-//Display specified by 'profile_id'
-Route::get('booking/profile/{id}', 'BookingsController@showProfile');
-//Display specified by 'listing_id'
-Route::get('booking/listing/{id}', 'BookingsController@showListing');
-//Display specified by 'area_id'
-Route::get('booking/area/{id}', 'BookingsController@showArea');
+Route::post('booking','BookingsController@bookingList');
 //Add 'booking'
 Route::post('booking/add','BookingsController@create');
 //Update 'booking'
-Route::post('booking/update/{id}', 'BookingsController@update');
+Route::post('booking/update', 'BookingsController@update');
 //soft delete 'booking'
 Route::get('booking/delete/{id}', 'BookingsController@softDelete');
 //restore softdeleted booking
@@ -177,7 +159,9 @@ Route::get('profile/restore/{id}', 'ProfilesController@restore');
 
 //ArrivalList
 //Display arrival (check_in and area)
-Route::get('booking/area/{area}/date/{tgl}', 'ArrivalListsController@showArrival');
+Route::post('arrival', 'ArrivalListsController@showArrival');
+//Download as CSV
+Route::get('booking/{tgl}/download','ArrivalListsController@csvWriter');
 
 //Log
 //Display all log
@@ -220,3 +204,11 @@ Route::post('notes/add', 'NotesController@create');
 Route::post('notes/update/{id}', 'NotesController@update');
 //softdelete note
 Route::get('notes/softdelete/{id}', 'NotesController@softDelete');
+
+//Booking_Employee
+//Store
+Route::post('be_store', 'BEController@store');
+
+//Login
+//Checker
+Route::post('login', 'LoginController@validate');

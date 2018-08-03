@@ -4,20 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-
 class LoginController extends Controller
 {
-    public function check(Request $request)
+    public function validate(Request $request)
     {
-        $email = $request->input('user_email');
-        $password = $request->input('user_password');
-        $users = User::where('user_email', $email)->first();
-        if ($users->password == $password)
+        $users = Users::where('user_email', $request->input('data.user_email'))->first();
+        if($users->user_password == $request->input('data.user_password'))
         {
-
+            return true;
         }else
         {
-            
+            return false;
         }
     }
 }
