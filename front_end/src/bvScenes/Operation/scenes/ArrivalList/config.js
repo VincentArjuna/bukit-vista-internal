@@ -44,28 +44,10 @@ const columns = [
     render: object => renderCell(object, 'TextCell', 'booking_check_out')
   },
   {
-    title: 'Profile',
-    key:'profile_name',
-    width:50,
-    render:object=>renderCell(object,'TextCell','profile_name')
-  },
-  {
-    title: 'LOS',
-    key: 'booking_los',
-    width: '50',
-    render: object => renderCell(object, 'TextCell', 'booking_los')
-  },
-  {
     title: 'ETA',
     key: 'booking_eta',
     width: '50',
     render: object => renderCell(object, 'TextCell', 'booking_eta')
-  },
-  {
-    title: 'Driver',
-    key: 'booking_driver',
-    width: '50',
-    render: object => renderCell(object, 'TextCell', 'booking_driver')
   },
   {
     title: 'Host',
@@ -75,9 +57,9 @@ const columns = [
   },
   {
     title: 'Status',
-    key: 'booking_status',
+    key: 'booking_guest_status',
     width: '50',
-    render: object => renderCell(object, 'TextCell', 'booking_status')
+    render: object => renderCell(object, 'TextCell', 'booking_guest_status')
   },
 ];
 const areas = [
@@ -169,5 +151,6 @@ const filterTypes=[
     name:'Profile'
   }
 ];
+
 const title = "Arrival List";
 export { columns,title,areas,filterTypes };

@@ -6,6 +6,7 @@ import { InputSearch } from '../Searchbar/searchbar';
 import DateRange from '../DateRange/index';
 import PageHeader from "../Utility/pageHeader";
 import { Select } from 'antd';
+import Button from '../../bvComponents/Uielements/button';
 import basicStyle from '../../settings/basicStyle';
 
 /**
@@ -145,6 +146,13 @@ class Header extends Component {
     onInput=event=> {
         this.setState({searchValue: event.target.value});
     }
+    handleBooking=event=>{
+        alert('booking');
+    }
+    handleDownloadCsv=event=>{
+        alert('download csv');
+    }
+
     render() {
         const { rowStyle, colStyle, gutter } = basicStyle;
         return(
@@ -162,6 +170,7 @@ class Header extends Component {
                     onSearch={this.onSearch.bind(this)}
                     onChange={this.onInput.bind(this)}
                 />
+
                 </Col>
                 <Col md={2} sm={24} xs={24} style={colStyle}>
                 <Select defaultValue="Filter.."
@@ -171,6 +180,15 @@ class Header extends Component {
                         <Option value={filter.key}>{filter.name}</Option>
                     ))}
                 </Select>
+                </Col>
+            </Row>
+            <Row style={rowStyle} gutter={gutter} justify="start">
+                <Col md={21} style={colStyle}>
+                </Col>
+                <Col md={3} sm={12} xs={24} style={colStyle}>
+                    {this.props.title=='Booking / Current'?
+                        <Button type="primary" onClick={this.handleBooking}>Add Booking</Button> :
+                        <Button type="primary" onClick={this.handleDownloadCsv}>Download CSV</Button>}
                 </Col>
             </Row>
             </LayoutContent>

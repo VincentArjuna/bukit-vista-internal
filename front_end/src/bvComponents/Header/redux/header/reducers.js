@@ -1,3 +1,4 @@
+import actions from './actions';
 const initState={
     date:null,
     filterType:0,
@@ -6,6 +7,14 @@ const initState={
     reset:false
 }
 
-export default function reducer(state=initState){
-    return state;
+export default function reducer(state = initState,action){
+    switch(action.type){
+        case actions.GET_CSV:
+            return{
+                ...state,
+                date:action.payload.date,
+            };
+        default:
+            return state;
+    }
 }

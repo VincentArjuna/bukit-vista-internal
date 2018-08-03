@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import TableWrapper, { CustomizedTableWrapper } from './antTable.style';
 import clone from 'clone';
-import { connect } from 'tls';
-import { runInThisContext } from 'vm';
 import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/editCell';
 import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/notesCell';
-const scroll = { y: 240 };
+
 export default class MyTable extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +14,7 @@ export default class MyTable extends Component {
     };
   }
   componentDidMount(){
-    (this.props.mode === 'arrivalList' ? this.state.columns=this.createColumns(this.state.columns):null);
+    (this.props.mode === 'arrivalList' ? this.setState({ columns:this.createColumns(clone(this.props.columns)),}):null);
   }
 
   createColumns=(columns)=> {
@@ -42,7 +40,6 @@ export default class MyTable extends Component {
 
   render() {
     const classes = `isoCustomizedTableWrapper`;
-    console.log(this.props);
     return (
         <TableWrapper
           {...this.state}

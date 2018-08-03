@@ -3,7 +3,8 @@ import actions from './actions';
 const initState={
     results:[],
     area:null,
-    title:null
+    title:null,
+    loading:false
 }
 
 export default function tableReducer(state = initState,action){
@@ -16,12 +17,14 @@ export default function tableReducer(state = initState,action){
                 filter_type:action.payload.filter_type,
                 filterer:action.payload.filterer,
                 date_type:action.payload.date_type,
+                loading:true
             };
         case actions.RENDER_DATA_SUCCESS21:
             console.log(action.results);
             return{
                 ...state,
-                results:action.results
+                results:action.results,
+                loading:false
             };
         default:
             return state;
