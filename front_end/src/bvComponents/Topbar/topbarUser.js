@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Popover from '../../components/uielements/popover';
-import IntlMessages from '../../components/utility/intlMessages';
+import Popover from '../../bvComponents/Uielements/popover';
+import IntlMessages from '../../bvComponents/Utility/intlMessages';
 import userpic from '../../image/user1.png';
 import authAction from '../../redux/auth/actions';
 import TopbarDropdownWrapper from './topbarDropdown.style';
@@ -28,13 +28,7 @@ class TopbarUser extends Component {
     const content = (
       <TopbarDropdownWrapper className="isoUserDropdown">
         <a className="isoDropdownLink">
-          <IntlMessages id="themeSwitcher.settings" />
-        </a>
-        <a className="isoDropdownLink">
           <IntlMessages id="sidebar.feedback" />
-        </a>
-        <a className="isoDropdownLink">
-          <IntlMessages id="topbar.help" />
         </a>
         <a className="isoDropdownLink" onClick={this.props.logout}>
           <IntlMessages id="topbar.logout" />

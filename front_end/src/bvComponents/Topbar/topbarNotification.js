@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Popover } from "antd";
 import { connect } from "react-redux";
-import IntlMessages from "../../components/utility/intlMessages";
+import IntlMessages from "../../bvComponents/Utility/intlMessages";
 import TopbarDropdownWrapper from "./topbarDropdown.style";
 
 const demoNotifications = [
@@ -90,5 +90,5 @@ class TopbarNotification extends Component {
 
 export default connect(state => ({
   ...state.App,
-  customizedTheme: state.ThemeSwitcher.topbarTheme
+  customizedTheme: 'themedefault',
 }))(TopbarNotification);

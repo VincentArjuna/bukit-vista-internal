@@ -1,26 +1,44 @@
 import{all,takeEvery,put,call} from 'redux-saga/effects';
 import actions from './actions';
-const URL_AREA = 'http://localhost:8000/api/booking';
+import { stringify } from 'querystring';
 
-const onRenderRequest = async () =>
-    await fetch(`${URL_AREA}`)
-        .then(res=>res.json())
-        .then(res=>res)
-        .catch(error => error);
+const URL_BOOKING = 'https://internal.bukitvista.com/tools/api/booking';
 
-const onRenderRequestFilter = async (param,filter) =>
-        await fetch(`${URL_AREA}${encodeURIComponent(filter)}/${encodeURIComponent(param)}`)
-            .then(res=>res.json())
-            .then(res=>res)
-            .catch(error => error);
+const onRenderRequest = async (param) =>
+    await fetch(`${URL_BOOKING}?page=${param[4]}`, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        },
+        body:stringify( 
+        {
+          'data[date]': param[0],
+          'data[filterer]': param[1],
+          'data[date_type]':param[2],
+          'data[filter_type]': param[3]})
+    }).then(res=>res.json())
+    .then(res=>res)
+    .catch(error => error);
         
-function* renderRequest(){
+function* renderRequest({payload}){
     try{
-        const renderResult =yield call(onRenderRequest);
-        if(renderResult.data){
-            console.log(renderResult.data);
+        const param=[
+            payload.date,
+            payload.filterer,
+            payload.date_type,
+            payload.filter_type,
+            payload.page
+        ];
+        const renderResults =yield call(onRenderRequest,param);
+        if(renderResults.data){
             yield put(
-                actions.renderDataSuccessBc(renderResult.data)
+                actions.renderDataSuccessBc(
+                    renderResults.data,
+                    renderResults.current_page,
+                    renderResults.total
+                )
             );
         }
     }catch(error){
@@ -28,21 +46,6 @@ function* renderRequest(){
     }
 }
 
-function* filterRequest({payload}){
-    try{
-        const renderResult = yield call(onRenderRequestFilter,payload.param,payload.filter);
-        console.log(payload.param + '-oi-'+payload.filter);
-        if(renderResult.data){
-            console.log(renderResult.data);
-            yield put(
-                actions.renderDataSuccessBc(renderResult.data)
-            );
-        }
-    }catch(error){
-        console.log("error filter");
-    }
-}
 export default function* rootSaga() {
     yield all([takeEvery(actions.RENDER_DATA_BC,renderRequest)]);
-    yield all([takeEvery(actions.FILTER_DATA_BC,filterRequest)]);
 }

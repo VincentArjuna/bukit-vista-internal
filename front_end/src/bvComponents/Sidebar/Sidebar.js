@@ -4,12 +4,12 @@ import clone from "clone";
 import { Link } from "react-router-dom";
 import { Layout } from "antd";
 import options from "./options";
-import Scrollbars from "../../components/utility/customScrollBar.js";
-import Menu from "../../components/uielements/menu";
-import IntlMessages from "../../components/utility/intlMessages";
+import Scrollbars from "../../bvComponents/Utility/customScrollBar.js";
+import Menu from "../../bvComponents/Uielements/menu";
+import IntlMessages from "../../bvComponents/Utility/intlMessages";
 import SidebarWrapper from "./sidebar.style";
 import appActions from "../../redux/app/actions";
-import Logo from "../../components/utility/logo";
+import Logo from "../../bvComponents/Utility/logo";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -174,7 +174,7 @@ class Sidebar extends Component {
 export default connect(
   state => ({
     app: state.App,
-    customizedTheme: state.ThemeSwitcher.sidebarTheme,
+    customizedTheme: 'themedefault',
     height: state.App.height
   }),
   { toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed }

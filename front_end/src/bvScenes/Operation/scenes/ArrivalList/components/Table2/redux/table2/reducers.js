@@ -3,7 +3,8 @@ import actions from './actions';
 const initState={
     results:[],
     area:null,
-    title:null
+    title:null,
+    loading:false
 }
 
 export default function reducer(state = initState,action){
@@ -11,13 +12,19 @@ export default function reducer(state = initState,action){
         case actions.RENDER_DATA2:
             return{
                 ...state,
-                area:action.payload.area
+                area:action.payload.area,
+                date:action.payload.date,
+                filter_type:action.payload.filter_type,
+                filterer:action.payload.filterer,
+                date_type:action.payload.date_type,
+                loading:true
             };
         case actions.RENDER_DATA_SUCCESS2:
             console.log(action.results);
             return{
                 ...state,
-                results:action.results
+                results:action.results,
+                loading:false
             };
         default:
             return state;
