@@ -1,14 +1,14 @@
 import React,{Component} from 'react';
-import {connect} from '../../../../../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-redux';
+import {connect} from 'react-redux';
 import moment from 'moment';
 import {Modal, Form, Input, Radio ,TimePicker,DatePicker} from 'antd';
-import Button from '../../../../../bvComponents/Uielements/button';
-import Select,{SelectOption}from '../../../../../bvComponents/Uielements/select';
-import actions from '../../../../Operation/scenes/ArrivalList/components/redux/helperCells/actions';
+import Button from '../../../../../../bvComponents/Uielements/button';
+import Select,{SelectOption}from '../../../../../../bvComponents/Uielements/select';
+import actions from '../../../../../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/redux/editCell/actions';
 
 const FormItem = Form.Item;
 const Option = SelectOption;
-const {renderDataEmployee} = actions;
+const {renderDataEmployee,editBooking,editBookingEmployee} = actions;
 
 const CollectionCreateForm = Form.create()(
   class extends React.Component {
@@ -18,8 +18,9 @@ const CollectionCreateForm = Form.create()(
       return (
         <Modal
           visible={visible}
-          title="Create a new collection"
-          okText="Create"
+          title="Details"
+          okText="Update"
+          cancelText="Back"
           onCancel={onCancel}
           onOk={onCreate}
         >
@@ -50,7 +51,7 @@ const CollectionCreateForm = Form.create()(
             </FormItem>
             <FormItem label="Host">
                 {getFieldDecorator('host',{
-                  initialValue:null
+                  initialValue:this.props.dataList[this.props.index].host.employee_id?this.props.dataList[this.props.index].host.employee_id:null
                 })(
                 <Select>
                   {this.props.employees.map(employee=>
@@ -60,7 +61,7 @@ const CollectionCreateForm = Form.create()(
             </FormItem>
             <FormItem label="Driver">
                 {getFieldDecorator('driver',{
-                  initialValue:null
+                  initialValue:this.props.dataList[this.props.index].driver.employee_id?this.props.dataList[this.props.index].driver.employee_id:null
                 })(
                 <Select>
                   {this.props.employees.map(employee=>
@@ -110,10 +111,24 @@ class EditCell extends Component {
       if (err) {
         return;
       }
-
-      console.log('Received values of form: ', moment(values["check_out"]).format('YYYY-MM-DD').toString());
-      console.log(moment(values["eta"]).format('HH:mm').toString());
-      console.log(values["host"]);
+      console.log(values)
+      this.props.editBooking(
+        values["booking_id"],
+        moment(values["check_out"]).format('YYYY-MM-DD').toString(),
+        moment(values["eta"]).format('HH:mm').toString(),
+        values["status"]);
+        //host
+      this.props.editBookingEmployee(
+        values["booking_id"],
+        values["host"],
+        0
+      );
+      //driver
+      this.props.editBookingEmployee(
+        values["booking_id"],
+        values["driver"],
+        1
+      );
       form.resetFields();
       this.setState({ visible: false });
     });
@@ -128,7 +143,7 @@ class EditCell extends Component {
   render() {
     return (
       <div>
-        <Button ghost onClick={this.showModal}>Edit</Button>
+        <Button ghost onClick={this.showModal}>Details</Button>
         <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
@@ -136,7 +151,7 @@ class EditCell extends Component {
           onCreate={this.handleCreate}
           dataList={this.props.dataList}
           index={this.props.index}
-          employees={this.props.LoadEmployee.results}
+          employees={this.props.EditCell.results}
         />
       </div>
     );
@@ -145,10 +160,10 @@ class EditCell extends Component {
 
 function mapStateToProps(state) {
   return { 
-    LoadEmployee: state.loadEmployee
+    EditCell: state.editCell
   };
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee }
+  { renderDataEmployee ,editBooking,editBookingEmployee}
 )(EditCell);

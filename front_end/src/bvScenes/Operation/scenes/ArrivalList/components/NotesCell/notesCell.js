@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Modal,Form } from 'antd';
-import Button from '../../../../../bvComponents/Uielements/button';
+import Button from '../../../../../../bvComponents/Uielements/button';
 import Input, {
   InputSearch,
   InputGroup,
   Textarea
-} from '../../../../../bvComponents/Uielements/input';
+} from '../../../../../../bvComponents/Uielements/input';
 
 const FormItem = Form.Item;
 export default class extends Component {

@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
-import loadEmployee from './helperCells/sagas'
+import editCell from './editCell/sagas'
 
-export default function* loadEmployeeSaga() {
-  yield all([loadEmployee()]);
+export default function* editCellSaga() {
+  yield all([editCell()]);
 }

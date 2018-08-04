@@ -1,3 +1,3 @@
-import loadEmployee from '../redux/helperCells/reducers';
+import editCell from '../redux/editCell/reducers';
 
-export default { loadEmployee };
+export default { editCell};

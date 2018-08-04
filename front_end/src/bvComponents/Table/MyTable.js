@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import TableWrapper, { CustomizedTableWrapper } from './antTable.style';
 import clone from 'clone';
-import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/editCell';
-import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/notesCell';
+import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/editCell';
+import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/notesCell';
 
 export default class MyTable extends Component {
   constructor(props) {
@@ -19,8 +19,8 @@ export default class MyTable extends Component {
 
   createColumns=(columns)=> {
     const editColumn={
-      title:'Edit',
-      dataIndex:'edit',
+      title:'Details',
+      dataIndex:'details',
       render: (text, record, index) => (
         <EditCell index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList}/>
       )
@@ -40,6 +40,7 @@ export default class MyTable extends Component {
 
   render() {
     const classes = `isoCustomizedTableWrapper`;
+    console.log(this.state.columns);
     return (
         <TableWrapper
           {...this.state}

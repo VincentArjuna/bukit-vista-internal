@@ -24,7 +24,7 @@ import table20Saga from '../bvScenes/Operation/scenes/ArrivalList/components/Tab
 import table21Saga from '../bvScenes/Operation/scenes/ArrivalList/components/Table21/redux/sagas';
 
 import bookingCurrentSaga from '../bvScenes/Operation/scenes/Booking/scenes/Current/redux/sagas';
-import loadEmployeeSaga from '../bvScenes/Operation/scenes/ArrivalList/components/redux/sagas';
+import editCellSaga from '../bvScenes/Operation/scenes/ArrivalList/components/EditCell/redux/sagas';
 import headerSaga from '../bvComponents/Header/redux/sagas';
 //import arrivalListSaga from '../bvScenes/Operation/scenes/ArrivalList/redux/sagas';import table1Saga from '../bvScenes/Operation/scenes/ArrivalList/components/Table1/redux/sagas';
 
@@ -53,7 +53,7 @@ export default function* rootSaga(getState) {
     table20Saga(),
     table21Saga(),
     bookingCurrentSaga(),
-    loadEmployeeSaga(),
+    editCellSaga(),
     //arrivalListSaga(),
   ]);
 }

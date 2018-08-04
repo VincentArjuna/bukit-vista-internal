@@ -6,7 +6,7 @@ import actions from '../Table14/redux/table14/actions';
 import Spin from '../../../../../../bvComponents/Spin/spin.style';
 const style = {
   textAlign: 'center',
-  background: '#f1f3f6',
+  background: '#ffffff',
   padding: '30px 50px'
 };
 const {renderData14} = actions;

@@ -7,7 +7,12 @@ import {
 
 
 const renderCell = (object, type, key) => {
-  const value = object[key];
+  let value;
+  if(key==='host.employee_name'){
+    value=object['host']['employee_name'];
+  }else{
+    value=object[key];
+  }
   switch (type) {
     case 'LinkCell':
       return LinkCell(value);
@@ -45,15 +50,15 @@ const columns = [
   },
   {
     title: 'ETA',
-    key: 'booking_eta',
+    key: 'booking_guest_eta',
     width: '50',
-    render: object => renderCell(object, 'TextCell', 'booking_eta')
+    render: object => renderCell(object, 'TextCell', 'booking_guest_eta')
   },
   {
     title: 'Host',
-    key: 'booking_host',
+    key: 'host.employee_name',
     width: '50',
-    render: object => renderCell(object, 'TextCell', 'booking_host')
+    render: object => renderCell(object, 'TextCell', 'host.employee_name')
   },
   {
     title: 'Status',
@@ -62,6 +67,7 @@ const columns = [
     render: object => renderCell(object, 'TextCell', 'booking_guest_status')
   },
 ];
+
 const areas = [
   { name:'Yogyakarta',
     code:'A0001'
