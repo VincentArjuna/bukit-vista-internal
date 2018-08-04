@@ -54,15 +54,19 @@ class BEController extends Controller
             $bes->employee_id = $employee_id;
             $bes->be_role = $be_role;
             $bes->save();
-        }else if($ctr == 1)
+        }else
         {
-            $bes = BookingEmployee::where('booking_id', $booking_id)->first();
-            $bes_role = $bes->be_role;
-            if($bes_role == $be_role)
+            $checker = true;
+            foreach($bes as $bo)
             {
-                $bes->employee_id = $employee_id;
-                $bes->save();
-            }else
+                if ($bo->be_role == $be_role)
+                {
+                    $checker = false;
+                    $bo->employee_id = $employee_id;
+                    $bo->save();
+                }
+            }
+            if($checker)
             {
                 $bes = new BookingEmployee;
                 $bes->be_id = $this->new_be_id();
@@ -71,12 +75,7 @@ class BEController extends Controller
                 $bes->be_role = $be_role;
                 $bes->save();
             }
-        }else if ($ctr == 2)
-        {
-            $matcher = ['booking_id'=>$booking_id, 'be_role'=>$be_role];
-            $bes = BookingEmployee::where($matcher)->first();
-            $bes->employee_id = $employee_id;
-            $bes->save();
+            return $bes;
         }
     }
 

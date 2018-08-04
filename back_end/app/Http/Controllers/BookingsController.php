@@ -12,11 +12,10 @@ use App\Unit;
 use App\Profiles;
 use App\fnPaginate;
 use App\PaymentBooking;
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
+use Illuminate\Support\Facades\Cache;
 
 class BookingsController extends Controller
 {
-    use Cachable;
     /**
      * Display a listing of the resource.
      *
@@ -46,7 +45,6 @@ class BookingsController extends Controller
         $bookings->booking_guest_eta = $request->input('data.booking_guest_eta');
         $bookings->booking_guest_status = $request->input('data.booking_guest_status');
         $bookings->booking_comm_channel = $request->input('data.booking_comm_channel');
-        $bookings->booking_notes = $request->input('data.booking_notes');
         $bookings->booking_earned = $request->input('data.booking_earned');
         $bookings->booking_currency = $request->input('data.booking_currency');
         $bookings->booking_source = $request->input('data.booking_source');
@@ -88,20 +86,20 @@ class BookingsController extends Controller
                 return $bookings;
             }else if ($filter_type == 1)
             {
-                $bookings = Bookings::where('booking_id', $filterer)->paginate(10);
+                $bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->paginate(10);
                 return $bookings;
             }else if ($filter_type == 2)
             {
-                $bookings = Bookings::where('booking_guest_name', $filterer)->paginate(10);
+                $bookings = Bookings::where('booking_guest_name', 'like', '%'.$filterer.'%')->paginate(10);
                 return $bookings;
             }else if ($filter_type == 3)
             {
-                $listings = Listing::where('listing_name', $filterer)->first();
+                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->first();
                 $bookings = Bookings::where('listing_id', $listings->listing_id)->paginate(10);
                 return $bookings;
             }else if ($filter_type == 4)
             {
-                $profiles = Profiles::where('profile_name', $filterer)->first();
+                $profiles = Profiles::where('profile_name','like', '%'.$filterer.'%')->first();
                 $listings = Listing::where('profile_id', $profiles->profile_id)->get();
                 $bookings = Bookings::get();
                 $ar = collect();
@@ -121,23 +119,23 @@ class BookingsController extends Controller
                 return $bookings;
             }else if ($filter_type == 1)
             {
-                $matcher = ['booking_id'=>$filterer, 'booking_check_in'=> $date];
-                $bookings = Bookings::where($matcher)->paginate(10);
+                $matcher = ['booking_check_in'=> $date];
+                $bookings = Bookings::where($matcher)->where('booking_id','like','%'.$filterer.'%')->paginate(10);
                 return $bookings;
             }else if ($filter_type == 2)
             {
-                $matcher = ['booking_guest_name'=>$filterer, 'booking_check_in'=> $date];
-                $bookings = Bookings::where($matcher)->paginate(10);
+                $matcher = ['booking_check_in'=> $date];
+                $bookings = Bookings::where($matcher)->where('booking_guest_name', 'like', $filterer)->paginate(10);
                 return $bookings;
             }else if ($filter_type == 3)
             {
-                $listings = Listing::where('listing_name', $filterer)->first();
+                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->first();
                 $matcher = ['listing_id'=>$listings->listing_id, 'booking_check_in'=> $date];                
                 $bookings = Bookings::where($matcher)->paginate(10);
                 return $bookings;
             }else if ($filter_type == 4)
             {
-                $profiles = Profiles::where('profile_name', $filterer)->first();
+                $profiles = Profiles::where('profile_name', 'like', '%'.$filterer.'%')->first();
                 $listings = Listing::where('profile_id', $profiles->profile_id)->get();
                 $bookings = Bookings::get();
                 $ar = collect();
@@ -158,23 +156,23 @@ class BookingsController extends Controller
                 return $bookings;
             }else if ($filter_type == 1)
             {
-                $matcher = ['booking_id'=>$filterer, 'booking_check_out'=> $date];
-                $bookings = Bookings::where($matcher)->paginate(10);
+                $matcher = ['booking_check_out'=> $date];
+                $bookings = Bookings::where($matcher)->where('booking_id','like','%'.$filterer.'%')->paginate(10);
                 return $bookings;
             }else if ($filter_type == 2)
             {
-                $matcher = ['booking_guest_name'=>$filterer, 'booking_check_out'=> $date];
-                $bookings = Bookings::where($matcher)->paginate(10);
+                $matcher = ['booking_check_out'=> $date];
+                $bookings = Bookings::where($matcher)->where('booking_guest_name', 'like', '%'.$filterer.'%')->paginate(10);
                 return $bookings;
             }else if ($filter_type == 3)
             {
-                $listings = Listing::where('listing_name', $filterer)->first();
+                $listings = Listing::where('listing_name', 'like', '%'.$filterer.'%')->first();
                 $matcher = ['listing_id'=>$listings->listing_id, 'booking_check_out'=> $date];                
                 $bookings = Bookings::where($matcher)->paginate(10);
                 return $bookings;
             }else if ($filter_type == 4)
             {
-                $profiles = Profiles::where('profile_name', $filterer)->first();
+                $profiles = Profiles::where('profile_name', ' like', '%'.$filterer.'%')->first();
                 $listings = Listing::where('profile_id', $profiles->profile_id)->get();
                 $bookings = Bookings::get();
                 $ar = collect();
@@ -195,23 +193,21 @@ class BookingsController extends Controller
                 return $bookings;
             }else if ($filter_type == 1)
             {
-                $matcher = ['booking_id'=>$filterer];
-                $bookings = Bookings::where($matcher)->where('booking_received_timestamp','like', $date.'%')->paginate(10);
+                $bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->where('booking_received_timestamp','like', $date.'%')->paginate(10);
                 return $bookings;
             }else if ($filter_type == 2)
             {
-                $matcher = ['booking_guest_name'=>$filterer];
-                $bookings = Bookings::where($matcher)->where('booking_received_timestamp','like', $date.'%')->paginate(10);
+                $bookings = Bookings::where('booking_guest_name', 'like', '%'.$filterer.'%')->where('booking_received_timestamp','like', $date.'%')->paginate(10);
                 return $bookings;
             }else if ($filter_type == 3)
             {
-                $listings = Listing::where('listing_name', $filterer)->first();
+                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->first();
                 $matcher = ['listing_id'=>$listings->listing_id];                
                 $bookings = Bookings::where($matcher)->where('booking_received_timestamp','like', $date.'%')->paginate(10);
                 return $bookings;
             }else if ($filter_type == 4)
             {
-                $profiles = Profiles::where('profile_name', $filterer)->first();
+                $profiles = Profiles::where('profile_name','like', '%'.$filterer.'%')->first();
                 $listings = Listing::where('profile_id', $profiles->profile_id)->get();
                 $bookings = Bookings::get();
                 $ar = collect();
@@ -277,7 +273,6 @@ class BookingsController extends Controller
             $bookings->listing_id = $request->input('data.listing_id');
         }else
         {
-            $bookings->booking_check_in = $request->input('data.booking_check_in');
             $bookings->booking_check_out = $request->input('data.booking_check_out');
             $bookings->booking_guest_eta = $request->input('data.booking_guest_eta');
             $bookings->booking_guest_status = $request->input('data.booking_guest_status');
