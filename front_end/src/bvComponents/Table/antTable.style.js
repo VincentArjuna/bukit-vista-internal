@@ -16,7 +16,9 @@ const TableWrapper = styled(Table)`
   .ant-table-body {
     overflow-x: auto;
   }
-
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0px;
+  }
   .ant-table-thead > tr > th {
     color: ${palette('secondary', 2)};
     font-size: 13px;

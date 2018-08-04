@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {connect} from 'react-redux';
 import { Row, Col } from 'antd';
 import Box from  '../../../../bvComponents/Utility/box';
 import moment from 'moment';
@@ -40,12 +41,13 @@ const Collapses = props => (
 );
 
 
-export default class ArrivalList extends Component {
+class ArrivalList extends Component {
   render() {
     const { rowStyle, colStyle, gutter } = basicStyle;
+    alert(this.props.DateRange.date);
     return (
       <div>
-        <Header title={title} filters={filterTypes} date={moment().format('YYYY-MM-DD').toString()}/>  
+        <Header title={title} filters={filterTypes} date={this.props.DateRange.date}/>  
         <LayoutContentWrapper>
           <Box>    
             <Row style={rowStyle} justify="start" align="middle">
@@ -53,67 +55,67 @@ export default class ArrivalList extends Component {
               <ContentHolder>
                   <Collapses defaultActiveKey={['1']}>
                     <Panel header={areas[0].name} key={1}>
-                      <Table1 area={areas[0].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table1 area={areas[0].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[1].name} key={2}>
-                      <Table2 area={areas[1].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table2 area={areas[1].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[2].name} key={3}>
-                    <Table3 area={areas[2].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                    <Table3 area={areas[2].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[3].name} key={4}>
-                      <Table4 area={areas[3].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table4 area={areas[3].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[4].name} key={5}>
-                      <Table5 area={areas[4].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table5 area={areas[4].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[5].name} key={6}>
-                      <Table6 area={areas[5].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table6 area={areas[5].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[6].name} key={7}>
-                    <Table7 area={areas[6].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                    <Table7 area={areas[6].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[7].name} key={8}>
-                      <Table8 area={areas[7].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table8 area={areas[7].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[8].name} key={9}>
-                      <Table9 area={areas[8].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table9 area={areas[8].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[9].name} key={10}>
-                      <Table10 area={areas[9].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table10 area={areas[9].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[10].name} key={11}>
-                      <Table11 area={areas[10].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table11 area={areas[10].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[11].name} key={12}>
-                      <Table12 area={areas[11].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table12 area={areas[11].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[12].name} key={13}>
-                      <Table13 area={areas[12].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table13 area={areas[12].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[13].name} key={14}>
-                      <Table14 area={areas[13].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table14 area={areas[13].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[14].name} key={15}>
-                      <Table15 area={areas[14].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table15 area={areas[14].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[15].name} key={16}>
-                      <Table16 area={areas[15].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table16 area={areas[15].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[16].name} key={17}>
-                      <Table17 area={areas[16].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table17 area={areas[16].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[17].name} key={18}>
-                      <Table18 area={areas[17].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table18 area={areas[17].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[18].name} key={19}>
-                      <Table19 area={areas[18].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table19 area={areas[18].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[19].name} key={20}>
-                      <Table20 area={areas[19].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table20 area={areas[19].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                     <Panel header={areas[20].name} key={21}>
-                      <Table21 area={areas[20].code} date={moment().format('YYYY-MM-DD').toString()} columns={columns}/>
+                      <Table21 area={areas[20].code} date={this.props.DateRange.date} columns={columns}/>
                     </Panel>
                   </Collapses>
                 </ContentHolder>
@@ -126,3 +128,10 @@ export default class ArrivalList extends Component {
     );
   }
 }
+function mapStateToProps(state){
+  return{
+    DateRange:state.daterange
+  };
+}
+
+export default connect(mapStateToProps,null)(ArrivalList);

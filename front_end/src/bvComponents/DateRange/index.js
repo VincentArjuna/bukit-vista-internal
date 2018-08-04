@@ -51,141 +51,52 @@ const {renderData21} = aT21;
 
 
 class DateRange extends Component {
-  state = {
-    startValue: null,
-    endValue: null,
-    endOpen: false,
-    pickDate:null,
-    mode:0
-  };
-
-  disabledStartDate = (startValue) => {
-    const endValue = this.state.endValue;
-    if (!startValue || !endValue) {
-      return false;
-    }
-    return startValue.valueOf() > endValue.valueOf();
-  }
-
-  disabledEndDate = (endValue) => {
-    const startValue = this.state.startValue;
-    if (!endValue || !startValue) {
-      return false;
-    }
-    return endValue.valueOf() <= startValue.valueOf();
-  }
-
-  onChange = (field, value) => {
-    this.setState({
-      [field]: value,
-    });
-    if(field ==='startValue'){
-      this.props.DateRange.range=false;
-      if(value != null){
-        this.props.DateRange.check_in=value.format('YYYY-MM-DD');
-        this.setState({pickDate:this.props.DateRange.check_in,mode:0});
-      }
-    } else{
-      if(value != null){
-        this.props.DateRange.check_out=value.format('YYYY-MM-DD');
-        this.setState({pickDate:this.props.DateRange.check_out,mode:1});
-      }
-    }
+  onChange = (value) => {
+    value === null? this.props.DateRange.date = moment().format('YYYY-MM-DD').toString() : this.props.DateRange.date = moment(value).format('YYYY-MM-DD').toString();
+    alert(value);
     if(this.props.title==='Arrival List'){
-      this.props.renderData1('A0001',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData2('A0002',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData3('A0003',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData4('A0004',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData5('A0005',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData6('A0006',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData7('A0007',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData8('A0008',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData9('A0009',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData10('A0010',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData11('A0011',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData12('A0012',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData13('A0013',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData14('A0014',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData15('A0015',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData16('A0016',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData17('A0017',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData18('A0018',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData19('A0019',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData20('A0020',this.state.pickDate,0,null,this.state.mode);
-      this.props.renderData21('A0021',this.state.pickDate,0,null,this.state.mode);    
+      this.props.renderData1('A0001',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData2('A0002',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData3('A0003',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData4('A0004',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData5('A0005',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData6('A0006',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData7('A0007',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData8('A0008',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData9('A0009',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData10('A0010',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData11('A0011',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData12('A0012',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData13('A0013',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData14('A0014',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData15('A0015',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData16('A0016',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData17('A0017',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData18('A0018',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData19('A0019',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData20('A0020',this.props.DateRange.date,0,null,this.props.DateRange.dateType);
+      this.props.renderData21('A0021',this.props.DateRange.date,0,null,this.props.DateRange.dateType);    
     }else{
-      this.props.renderDataBc(this.state.pickDate,null,this.state.mode+1,0);
+      this.props.renderDataBc(this.props.DateRange.date,null,this.props.DateRange.dateType+1,0);
     }
   }
 
-  handleOnChange=()=>{
-    
-  }
-//check_in
-  onStartChange = (value) => {
-    this.onChange('startValue', value);
-    if(this.props.title==='Arrival List'){
-      this.props.DateRange.check_out=null;
-      let temp = 'endValue';
-      this.setState({
-        [temp]:null
-      })
-    }
-  }
-//check_out
-  onEndChange = (value) => {
-    this.onChange('endValue', value);
-    if(this.props.title==='Arrival List'){
-      this.props.DateRange.check_in=null;
-      let temp = 'startValue';
-      this.setState({
-        [temp]:null
-      })
-    }
-  }
 
-  handleStartOpenChange = (open) => {
-    if (!open) {
-      this.setState({ endOpen: true});
-    }
-  }
-
-  handleEndOpenChange = (open) => {
-    this.setState({ endOpen: open });
-    this.props.DateRange.check_in !== null ? this.props.DateRange.range=true:this.props.DateRange.range=false;
-  }
 
   render() {
-    const { startValue, endValue, endOpen } = this.state;
     return (
       <div>
-      {this.props.title==='Booking' ?
-        (<DatePicker
-        disabledDate={this.disabledStartDate}
-        format="YYYY-MM-DD"
-        value={this.state.startValue}
-        placeholder="Check In"
-        onChange={this.onStartChange}
-        onOpenChange={this.handleStartOpenChange}
-        />) :
-        (<DatePicker
-        disabledDate={this.disabledStartDate}
-        format="YYYY-MM-DD"
-        value={this.state.startValue}
-        placeholder="Check In"
-        onChange={this.onStartChange}
-        />)}
         <DatePicker
-          disabledDate={this.disabledEndDate}
-          format="YYYY-MM-DD"
-          value={endValue}
-          placeholder="Check Out"
-          onChange={this.onEndChange}
-          open={endOpen}
-          onOpenChange={this.handleEndOpenChange}
+        format="YYYY-MM-DD"
+        value={moment(this.props.DateRange.date,'YYYY-MM-DD')}
+        onChange={this.onChange}
         />
       </div>
     );
+  }
+
+  componentDidMount(){
+    this.props.DateRange.date=moment().format('YYYY-MM-DD').toString();
   }
 }
 function mapStateToProps(state) {

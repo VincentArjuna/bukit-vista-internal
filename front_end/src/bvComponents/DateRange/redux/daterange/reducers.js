@@ -1,7 +1,7 @@
 const initState={
-    check_in:null,
-    check_out:null,
-    range:null
+    date:null,
+    dateType:0,
+    mode:null
 }
 
 export default function reducer(state=initState){

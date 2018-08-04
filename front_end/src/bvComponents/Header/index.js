@@ -68,78 +68,8 @@ class Header extends Component {
         searchValue:''
     }
     onSearch=value=>{
-        //event.preventDefault();
-        
-        if(value === ''){
-            alert("Please enter a value");
-        }else{
-            if(this.props.DateRange.check_in===null && this.props.DateRange.check_out===null){
-                this.props.DateRange.check_in=this.props.date;
-            }
-            if(this.props.Header.filterType===null){
-                alert("Please select a filter");
-            }else{
-                if(this.props.DateRange.range===true){
-                    this.props.Header.dateType=3;
-                }else{
-                    if(this.props.DateRange.check_in !=null){
-                        this.props.Header.date = this.props.DateRange.check_in;
-                        this.props.Header.dateType= 0
-                    }else{
-                        this.props.Header.date = this.props.DateRange.check_out;
-                        this.props.Header.dateType=1;
-                    }
-                }
-
-                if(this.props.title === 'Booking / Current'){
-                    if(this.props.DateRange.check_in === null && this.props.DateRange.check_out===null){
-                        this.props.Header.dateType=0;
-                    }else{
-                        if(this.props.DateRange.check_in !=null){
-                            this.props.Header.date = this.props.DateRange.check_in;
-                            this.props.Header.dateType= 1;
-                        }else{
-                            this.props.Header.date = this.props.DateRange.check_out;
-                            this.props.Header.dateType=2;
-                        }
-
-                        if(this.props.DateRange.range===true){
-                            this.props.Header.dateType=3;
-                        }
-                    }
-                    //alert("date :"+this.props.Header.date);
-                    //alert("dateType :"+this.props.Header.dateType);
-                    //alert("filterType : "+this.props.Header.filterType);
-                    //alert("value : "+value);
-                    this.props.renderDataBc(this.props.Header.date,value,this.props.Header.dateType,this.props.Header.filterType);
-                }else if(this.props.title === 'Arrival List'){
-                    this.props.renderData1('A0001',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData2('A0002',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData3('A0003',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData4('A0004',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData5('A0005',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData6('A0006',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData7('A0007',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData8('A0008',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData9('A0009',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData10('A0010',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData11('A0011',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData12('A0012',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData13('A0013',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData14('A0014',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData15('A0015',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData16('A0016',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData17('A0017',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData18('A0018',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData19('A0019',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData20('A0020',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.props.renderData21('A0021',this.props.Header.date,this.props.Header.filterType,value,this.props.Header.dateType);
-                    this.setState({searchValue: ''});
-                }
-            }
-        }
+        alert(value);
     }
-
     handleChangeSelect=value=>{
         this.props.Header.filterType=value;
     }
@@ -152,7 +82,10 @@ class Header extends Component {
     handleDownloadCsv=event=>{
         alert('download csv');
     }
-
+    handleChangeDateMode=value=>{
+        this.props.DateRange.dateType=value;
+        alert(this.props.DateRange.dateType);
+    }
     render() {
         const { rowStyle, colStyle, gutter } = basicStyle;
         return(
@@ -160,11 +93,20 @@ class Header extends Component {
             <LayoutContent>
             <PageHeader>{this.props.title}</PageHeader>
             <Row style={rowStyle} gutter={gutter} justify="start">
-                <Col md={8} sm={12} xs={24} style={colStyle}>
+                <Col md={4} sm={12} xs={24} style={colStyle}>
                     <DateRange title={this.props.title}/>             
                 </Col>
-                <Col md={14} sm={12} xs={24} style={colStyle}>
-
+                <Col md={3} sm={12} xs={24} style={colStyle}>
+                    <Select defaultValue="0" onChange={this.handleChangeDateMode}>
+                        <Option value="0">
+                            Check In
+                        </Option>
+                        <Option value="1">
+                            Check Out
+                        </Option>
+                    </Select>
+                </Col>
+                <Col md={15} sm={12} xs={24} style={colStyle}>
                 <InputSearch
                     placeholder="Search..."
                     onSearch={this.onSearch.bind(this)}
@@ -186,7 +128,7 @@ class Header extends Component {
                 <Col md={21} style={colStyle}>
                 </Col>
                 <Col md={3} sm={12} xs={24} style={colStyle}>
-                    {this.props.title=='Booking / Current'?
+                    {this.props.title==='Booking / Current'?
                         <Button type="primary" onClick={this.handleBooking}>Add Booking</Button> :
                         <Button type="primary" onClick={this.handleDownloadCsv}>Download CSV</Button>}
                 </Col>

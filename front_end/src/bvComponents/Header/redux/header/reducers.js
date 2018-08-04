@@ -1,10 +1,8 @@
 import actions from './actions';
 const initState={
-    date:null,
     filterType:0,
     filterValue:null,
-    dateType:0,
-    reset:false
+    reset:false,
 }
 
 export default function reducer(state = initState,action){

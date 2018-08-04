@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TableWrapper, { CustomizedTableWrapper } from './antTable.style';
+import {Table} from 'antd';
 import clone from 'clone';
 import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/editCell';
 import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/notesCell';
