@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+
+use Illuminate\Support\Facades\Cache;
 /*
 |--------------------------------------------------------------------------
 | API Routes
