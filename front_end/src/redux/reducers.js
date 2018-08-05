@@ -4,7 +4,7 @@ import ArrivalTable from '../bvScenes/Operation/scenes/ArrivalList/components/Ar
 import BookingCurrent from '../bvScenes/Operation/scenes/Booking/scenes/Current/redux/reducers';
 import EditCell from '../bvScenes/Operation/scenes/ArrivalList/components/EditCell/redux/reducers';
 import DateRange from '../bvComponents/DateRange/redux/reducers';
-
+import Searchbar from '../bvComponents/Searchbar/redux/reducers';
 
 export default {
   Auth,
@@ -12,5 +12,6 @@ export default {
   ...ArrivalTable,
   ...BookingCurrent,
   ...EditCell,
-  ...DateRange
+  ...DateRange,
+  ...Searchbar,
 };

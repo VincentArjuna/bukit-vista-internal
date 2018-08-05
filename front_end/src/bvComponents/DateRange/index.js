@@ -10,7 +10,11 @@ const Group = Input.Group;
 const {renderData} = actions;
 class DateRange extends Component {
   onChange = (value) => {
-    this.props.DateRange.date=value.format('YYYY-MM-DD').toString();
+    if(value == null){
+      this.props.DateRange.date=moment().format('YYYY-MM-DD').toString();
+    }else{
+      this.props.DateRange.date=value.format('YYYY-MM-DD').toString();
+    }
     this.renderChange();
   }
   handleChangeDateMode=(value)=>{

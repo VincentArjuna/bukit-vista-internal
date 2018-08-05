@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import TableWrapper, { CustomizedTableWrapper } from './antTable.style';
-import {Table} from 'antd';
 import clone from 'clone';
 import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/editCell';
 import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/notesCell';
@@ -44,7 +43,7 @@ export default class MyTable extends Component {
     return (
         <TableWrapper
           {...this.state}
-          pagination={true}
+          pagination={{total:this.props.total}}
           className={classes}
           dataSource={this.props.dataList}
         />
