@@ -154,7 +154,7 @@ class EditCell extends Component {
       if (err) {
         return;
       }
-      console.log(values)
+        
       this.props.editBooking(
         values["booking_id"],
         moment(values["check_out"]).format('YYYY-MM-DD').toString(),

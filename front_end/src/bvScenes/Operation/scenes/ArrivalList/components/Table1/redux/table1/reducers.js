@@ -20,7 +20,7 @@ export default function reducer(state = initState,action){
                 loading:true,
             };
         case actions.RENDER_DATA_SUCCESS1:
-            console.log(action.results);
+             
             return{
                 ...state,
                 results:action.results,

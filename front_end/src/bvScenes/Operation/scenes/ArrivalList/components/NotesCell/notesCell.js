@@ -18,14 +18,14 @@ export default class extends Component {
   }
 
   handleOk = (e) => {
-    console.log(e);
+     
     this.setState({
       visible: false,
     });
   }
 
   handleCancel = (e) => {
-    console.log(e);
+     
     this.setState({
       visible: false,
     });

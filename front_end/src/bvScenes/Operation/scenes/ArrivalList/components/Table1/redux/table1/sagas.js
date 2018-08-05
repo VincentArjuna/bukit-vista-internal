@@ -25,7 +25,7 @@ const onRenderRequest = async (param) =>
 
 function* renderRequest({payload}){
     try{
-        console.log(payload);
+          
         const param=[
             payload.area,
             payload.date,
@@ -35,7 +35,7 @@ function* renderRequest({payload}){
         ];
         const renderResult = yield call(onRenderRequest,param);
         if(renderResult.data){
-            console.log(renderResult.data);
+              
             yield put(
                 actions.renderDataSuccess1(renderResult.data)
             );

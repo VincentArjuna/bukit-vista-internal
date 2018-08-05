@@ -20,7 +20,7 @@ export default function tableReducer(state = initState,action){
                 loading:true
             };
         case actions.RENDER_DATA_SUCCESS4:
-            console.log(action.results);
+             
             return{
                 ...state,
                 results:action.results,
