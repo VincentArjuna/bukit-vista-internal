@@ -9,106 +9,174 @@ import {columns,title,areas,filterTypes} from './config.js';
 import { Collapse } from 'antd';
 import CollapseWrapper from '../../../../bvComponents/Collapse/collapse.style';
 import ContentHolder from '../../../../bvComponents/Utility/contentHolder';
+import Spin from '../../../../bvComponents/Spin/spin.style';
 
 import Header from '../../../../bvComponents/Header/index.js';
-//import Table1 from '../ArrivalList/components/Table1';
-import Table2 from '../ArrivalList/components/Table2';
 import MyTable from '../../../../bvComponents/Table/MyTable';
-import actions from '../ArrivalList/components/Table1/redux/table1/actions';
+import actions from '../ArrivalList/components/ArrivalTable/redux/arrivalTable/actions';
+
 const Panel = Collapse.Panel;
 const Collapses = props => (
   <CollapseWrapper>
     <Collapse {...props}>{props.children}</Collapse>
   </CollapseWrapper>
 );
-const {testFunc}=actions;
+const style = {
+  textAlign: 'center',
+  background: '#ffffff',
+  padding: '30px 50px',
+  height:'100%'
+};
+const {renderData,initializeState,resetState}=actions;
+
 class ArrivalList extends Component {
   componentDidMount(){
-    this.props.testFunc(0,'A0001',"2018-08-08",0,null,0);
-    this.props.testFunc(1,'A0002',"2018-08-08",0,null,0);
+    this.props.Table.checkCount=0;
+    this.props.Table.totalData=0;
+    const areasLen = areas.length;
+    areas.map((area,i)=>{areasLen === i ? this.props.initializeState(i):this.props.initializeState(area.key);});
+    areas.map((area,i)=>{
+      areasLen === i ? this.props.renderData(i,area.code,moment().format('YYYY-MM-DD').toString(),0,null,0):this.props.renderData(area.key,area.code,moment().format('YYYY-MM-DD'),0,null,0);
+    });
   }
   render() {
-    const { rowStyle, colStyle, gutter } = basicStyle;
-    return (
-      <div>
-        <Header title={title} filters={filterTypes} date={moment().format('YYYY-MM-DD').toString()}/>  
-        <LayoutContentWrapper>
-          <Box>    
-            <Row style={rowStyle} justify="start" align="middle">
-              <Col md={24} sm={12} xs={24} style={colStyle}>
-                {this.props.Table1.tableData[0].area}
-                {this.props.Table1.tableData[1].area}
-                <MyTable columns={columns} dataList={this.props.Table1.tableData[0].results} mode="arrivalList"/>
-                <MyTable columns={columns} dataList={this.props.Table1.tableData[1].results} mode="arrivalList"/>
-              </Col>
-            </Row>
-          </Box>
-        </LayoutContentWrapper>
-      </div>
-    );
+    const { rowStyle, colStyle } = basicStyle;
+    if(this.props.Table.checkCount === areas.length){
+      return (
+        <div>
+          <Header totalData={this.props.Table.totalData} title={title} filters={filterTypes} date={moment().format('YYYY-MM-DD').toString()}/>  
+          <LayoutContentWrapper>
+            <Box>    
+              <Row style={rowStyle} justify="start" align="middle">
+                <Col md={24} sm={12} xs={24} style={colStyle}>
+                <ContentHolder>
+                  <Collapses>
+                    {this.props.Table.tableData[0].total > 0 ? 
+                      <Panel header={areas[0].name + ' / ' + this.props.Table.tableData[0].total} key={0}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[0].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[1].total > 0 ? 
+                      <Panel header={areas[1].name + ' / ' + this.props.Table.tableData[1].total} key={1}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[1].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[2].total > 0 ? 
+                      <Panel header={areas[2].name + ' / ' + this.props.Table.tableData[2].total} key={2}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[2].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[3].total > 0 ? 
+                      <Panel header={areas[3].name + ' / ' + this.props.Table.tableData[3].total} key={3}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[3].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[4].total > 0 ? 
+                      <Panel header={areas[4].name + ' / ' + this.props.Table.tableData[4].total} key={4}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[4].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[5].total > 0 ? 
+                      <Panel header={areas[5].name + ' / ' + this.props.Table.tableData[5].total} key={5}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[5].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[6].total > 0 ? 
+                      <Panel header={areas[6].name + ' / ' + this.props.Table.tableData[6].total} key={6}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[6].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[7].total > 0 ? 
+                      <Panel header={areas[7].name + ' / ' + this.props.Table.tableData[7].total} key={7}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[7].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[8].total > 0 ? 
+                      <Panel header={areas[8].name + ' / ' + this.props.Table.tableData[8].total} key={8}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[8].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[9].total > 0 ? 
+                      <Panel header={areas[9].name + ' / ' + this.props.Table.tableData[9].total} key={9}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[9].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[10].total > 0 ? 
+                      <Panel header={areas[10].name + ' / ' + this.props.Table.tableData[10].total} key={10}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[10].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[11].total > 0 ? 
+                      <Panel header={areas[11].name + ' / ' + this.props.Table.tableData[11].total} key={11}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[11].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[12].total > 0 ? 
+                      <Panel header={areas[12].name + ' / ' + this.props.Table.tableData[12].total} key={12}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[12].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                    {this.props.Table.tableData[13].total > 0 ? 
+                      <Panel header={areas[13].name + ' / ' + this.props.Table.tableData[13].total} key={13}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[13].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                      {this.props.Table.tableData[14].total > 0 ? 
+                      <Panel header={areas[14].name + ' / ' + this.props.Table.tableData[14].total} key={14}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[14].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                      {this.props.Table.tableData[15].total > 0 ? 
+                      <Panel header={areas[15].name + ' / ' + this.props.Table.tableData[15].total} key={15}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[15].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                      {this.props.Table.tableData[16].total > 0 ? 
+                      <Panel header={areas[16].name + ' / ' + this.props.Table.tableData[16].total} key={16}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[16].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                      {this.props.Table.tableData[17].total > 0 ? 
+                      <Panel header={areas[17].name + ' / ' + this.props.Table.tableData[17].total} key={17}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[17].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                      {this.props.Table.tableData[18].total > 0 ? 
+                      <Panel header={areas[18].name + ' / ' + this.props.Table.tableData[18].total} key={18}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[18].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                      {this.props.Table.tableData[19].total > 0 ? 
+                      <Panel header={areas[19].name + ' / ' + this.props.Table.tableData[19].total} key={19}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[19].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                      {this.props.Table.tableData[20].total > 0 ? 
+                      <Panel header={areas[20].name + ' / ' + this.props.Table.tableData[20].total} key={20}>
+                        <MyTable columns={columns} dataList={this.props.Table.tableData[20].results} mode="arrivalList"/>
+                      </Panel> 
+                    : null}
+                  </Collapses>
+                </ContentHolder>
+                </Col>
+              </Row>
+            </Box>
+          </LayoutContentWrapper>
+        </div>
+      );
+    }else{
+      return(
+        <div style={style}>
+          <Spin size="large"/>
+        </div>
+      );
+    }
   }
 }
 function mapStateToProps(state){
   return{
-    Table1 : state.table1
+    Table: state.arrivalTable
   };
 }
-export default connect(mapStateToProps,{testFunc}) (ArrivalList);
-// export default connect(mapStateToProps,null)(ArrivalList);
-{/* <Panel header={areas[2].name} key={3}>
-<Table3 area={areas[2].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[3].name} key={4}>
-  <Table4 area={areas[3].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[4].name} key={5}>
-  <Table5 area={areas[4].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[5].name} key={6}>
-  <Table6 area={areas[5].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[6].name} key={7}>
-<Table7 area={areas[6].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[7].name} key={8}>
-  <Table8 area={areas[7].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[8].name} key={9}>
-  <Table9 area={areas[8].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[9].name} key={10}>
-  <Table10 area={areas[9].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[10].name} key={11}>
-  <Table11 area={areas[10].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[11].name} key={12}>
-  <Table12 area={areas[11].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[12].name} key={13}>
-  <Table13 area={areas[12].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[13].name} key={14}>
-  <Table14 area={areas[13].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[14].name} key={15}>
-  <Table15 area={areas[14].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[15].name} key={16}>
-  <Table16 area={areas[15].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[16].name} key={17}>
-  <Table17 area={areas[16].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[17].name} key={18}>
-  <Table18 area={areas[17].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[18].name} key={19}>
-  <Table19 area={areas[18].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[19].name} key={20}>
-  <Table20 area={areas[19].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel>
-<Panel header={areas[20].name} key={21}>
-  <Table21 area={areas[20].code} date={this.props.DateRange.date} columns={columns}/>
-</Panel> */}
+
+export default connect(mapStateToProps,{renderData,initializeState,resetState})(ArrivalList);

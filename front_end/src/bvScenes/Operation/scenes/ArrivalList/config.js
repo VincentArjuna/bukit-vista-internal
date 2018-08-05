@@ -69,76 +69,107 @@ const columns = [
 ];
 
 const areas = [
-  { name:'Yogyakarta',
+  { 
+    key:0,
+    name:'Yogyakarta',
     code:'A0001'
   },
-  { name:'Uluwatu',
+  { key:1,
+    name:'Uluwatu',
     code:'A0002'
   },
-  { name:'Canggu',
+  { 
+    key:2,
+    name:'Canggu',
     code:'A0003'
   },
-  { name:'Ubud',
+  { 
+    key:3,
+    name:'Ubud',
     code:'A0004'
   },
-  { name:'Jakarta',
+  { 
+    key:4,
+    name:'Jakarta',
     code:'A0005'
   },
-  { name:'Bandung',
+  {
+    key:5,
+    name:'Bandung',
     code:'A0006'
   },
-  { name:'Phuket',
+  {
+    key:6,
+    name:'Phuket',
     code:'A0007'
   },
-  { name:'Bingin',
+  { 
+    key:7,
+    name:'Bingin',
     code:'A0008'
   },
-  { name:'Balangan',
+  { 
+    key:8,
+    name:'Balangan',
     code:'A0009'
   },
-  { name:'Jimbaran',
+  { 
+    key:9,
+    name:'Jimbaran',
     code:'A0010'
   },
-  { name:'Ungasan',
+  { 
+    key:10,
+    name:'Ungasan',
     code:'A0011'
   },
   {
+    key:11,
     name:'Nusa Dua',
     code:'A0012'
   },
   {
+    key:12,
     name:'Padang Padang',
     code:'A0013'
   },
   {
+    key:13,
     name:'Gili Trawangan',
     code:'A0014'
   },
   {
+    key:14,
     name:'Seminyak',
     code:'A0015'
   },
   {
+    key:15,
     name:'Kuta',
     code:'A0016'
   },
   {
+    key:16,
     name:'Singapore',
     code:'A0017'
   },
   {
+    key:17,
     name:'Cemangi',
     code:'A0018'
   },
   {
+    key:18,
     name:'Penang',
     code:'A0019'
   },
   {
+    key:19,
     name:'Nusa Penida',
     code:'A0020'
   },
   {
+    key:20,
     name:'Gili Air',
     code:'A0021'
   }

@@ -8,7 +8,6 @@ import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/No
 export default class MyTable extends Component {
   constructor(props) {
     super(props);
-    //this.onChange = this.onChange.bind(this);
     this.state = {
       size: 'default',
       columns: clone(this.props.columns)
@@ -36,7 +35,7 @@ export default class MyTable extends Component {
     columns.push(notesColumn);
     columns.push(editColumn);
     return columns;
-};
+  };
 
 
   render() {

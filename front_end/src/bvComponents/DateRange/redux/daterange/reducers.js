@@ -1,5 +1,6 @@
+import moment from 'moment';
 const initState={
-    date:null,
+    date:moment().format('YYYY-MM-DD').toString(),
     dateType:0,
     mode:null
 }
