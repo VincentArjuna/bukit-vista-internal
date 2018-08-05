@@ -2,6 +2,7 @@ import{all,takeEvery,put,call} from 'redux-saga/effects';
 import axios from 'axios';
 import actions from './actions';
 import { stringify } from 'querystring';
+import { tokensToFunction } from '../../../../../../../../../node_modules/path-to-regexp';
 
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/arrival';
 
@@ -47,7 +48,30 @@ function* renderRequest({payload}){
     }
 }
 
+function* tryRenderRequest({payload}){
+    try{
+        const param=[
+            payload.area,
+            payload.date,
+            payload.filter_type,
+            payload.filterer,
+            payload.date_type
+        ];
+        const renderResult = yield call(onRenderRequest,param);
+        if(renderResult.data){  
+            yield put(
+                actions.tryFuncResult(payload.index,renderResult.data)
+            );
+        }else{
+            console.log('error'+renderResult);
+        }
+    }catch(error){
+        console.log("error message : "+ error);
+    }
+}
+
 
 export default function* rootSaga() {
     yield all([takeEvery(actions.RENDER_DATA1,renderRequest)]);
+    yield all([takeEvery(actions.TEST_FUNC,tryRenderRequest)]);
 }

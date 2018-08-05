@@ -11,37 +11,22 @@ import CollapseWrapper from '../../../../bvComponents/Collapse/collapse.style';
 import ContentHolder from '../../../../bvComponents/Utility/contentHolder';
 
 import Header from '../../../../bvComponents/Header/index.js';
-import Table1 from '../ArrivalList/components/Table1';
+//import Table1 from '../ArrivalList/components/Table1';
 import Table2 from '../ArrivalList/components/Table2';
-// import Table3 from '../ArrivalList/components/Table3';
-// import Table4 from '../ArrivalList/components/Table4';
-// import Table5 from '../ArrivalList/components/Table5';
-// import Table6 from '../ArrivalList/components/Table6';
-// import Table7 from '../ArrivalList/components/Table7';
-// import Table8 from '../ArrivalList/components/Table8';
-// import Table9 from '../ArrivalList/components/Table9';
-// import Table10 from '../ArrivalList/components/Table10';
-// import Table11 from '../ArrivalList/components/Table11';
-// import Table12 from '../ArrivalList/components/Table12';
-// import Table13 from '../ArrivalList/components/Table13';
-// import Table14 from '../ArrivalList/components/Table14';
-// import Table15 from '../ArrivalList/components/Table15';
-// import Table16 from '../ArrivalList/components/Table16';
-// import Table17 from '../ArrivalList/components/Table17';
-// import Table18 from '../ArrivalList/components/Table18';
-// import Table19 from '../ArrivalList/components/Table19';
-// import Table20 from '../ArrivalList/components/Table20';
-// import Table21 from '../ArrivalList/components/Table21';
-
-
+import MyTable from '../../../../bvComponents/Table/MyTable';
+import actions from '../ArrivalList/components/Table1/redux/table1/actions';
 const Panel = Collapse.Panel;
 const Collapses = props => (
   <CollapseWrapper>
     <Collapse {...props}>{props.children}</Collapse>
   </CollapseWrapper>
 );
-
+const {testFunc}=actions;
 class ArrivalList extends Component {
+  componentDidMount(){
+    this.props.testFunc(0,'A0001',"2018-08-08",0,null,0);
+    this.props.testFunc(1,'A0002',"2018-08-08",0,null,0);
+  }
   render() {
     const { rowStyle, colStyle, gutter } = basicStyle;
     return (
@@ -51,16 +36,10 @@ class ArrivalList extends Component {
           <Box>    
             <Row style={rowStyle} justify="start" align="middle">
               <Col md={24} sm={12} xs={24} style={colStyle}>
-              <ContentHolder>
-                  <Collapses defaultActiveKey={['1']}>
-                    <Panel header={areas[0].name} key={1}>
-                      <Table1 area={areas[0].code} date={this.props.DateRange.date} columns={columns}/>
-                    </Panel>
-                    <Panel header={areas[1].name} key={2}>
-                      <Table2 area={areas[1].code} date={this.props.DateRange.date} columns={columns}/>
-                    </Panel>
-                  </Collapses>
-                </ContentHolder>
+                {this.props.Table1.tableData[0].area}
+                {this.props.Table1.tableData[1].area}
+                <MyTable columns={columns} dataList={this.props.Table1.tableData[0].results} mode="arrivalList"/>
+                <MyTable columns={columns} dataList={this.props.Table1.tableData[1].results} mode="arrivalList"/>
               </Col>
             </Row>
           </Box>
@@ -69,12 +48,12 @@ class ArrivalList extends Component {
     );
   }
 }
-// function mapStateToProps(state){
-//   return{
-//     DateRange:state.daterange
-//   };
-// }
-export default ArrivalList;
+function mapStateToProps(state){
+  return{
+    Table1 : state.table1
+  };
+}
+export default connect(mapStateToProps,{testFunc}) (ArrivalList);
 // export default connect(mapStateToProps,null)(ArrivalList);
 {/* <Panel header={areas[2].name} key={3}>
 <Table3 area={areas[2].code} date={this.props.DateRange.date} columns={columns}/>
