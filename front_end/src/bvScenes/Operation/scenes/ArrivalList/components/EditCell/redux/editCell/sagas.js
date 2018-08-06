@@ -40,7 +40,11 @@ const onEditRequestBooking = async(param)=>
         'data[booking_id]': param[1],
         'data[booking_check_out]': param[2],
         'data[booking_guest_eta]':param[3],
-        'data[booking_guest_status]': param[4] })
+        'data[booking_guest_status]': param[4],
+        'data[booking_guest_phone]':param[5],
+        'data[booking_comm_channel]':param[6],
+        'data[booking_notes]':param[7]
+     })
     }).then(res=>res.json())
     .then(res=>res)
     .catch(error => error);
@@ -54,7 +58,11 @@ function* editRequestBooking({payload}){
             payload.booking_check_out,
             payload.booking_guest_eta,
             payload.booking_guest_status,
+            payload.booking_guest_phone,
+            payload.booking_comm_channel,
+            payload.booking_notes
         ];
+        console.log(param);
         yield call(onEditRequestBooking,param);
     }catch(error){
         console.log("saga error");

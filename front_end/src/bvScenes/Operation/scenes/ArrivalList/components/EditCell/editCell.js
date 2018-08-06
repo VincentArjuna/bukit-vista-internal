@@ -49,6 +49,13 @@ const CollectionCreateForm = Form.create()(
                 initialValue:this.props.dataList[this.props.index].booking_guest_eta ? moment(this.props.dataList[this.props.index].booking_guest_eta,'HH:mm'):moment('12:00','HH:mm')
               })(<TimePicker format={'HH:mm'} />)}
             </FormItem>
+            <FormItem label="Guest Phone">
+                {getFieldDecorator('phone',{
+                  initialValue:this.props.dataList[this.props.index].booking_guest_phone
+                })(
+                  <Input/>
+                )}
+              </FormItem>
             <FormItem label="Host">
                 {getFieldDecorator('host',{
                   initialValue:this.props.dataList[this.props.index].host.employee_id?this.props.dataList[this.props.index].host.employee_id:null
@@ -78,6 +85,25 @@ const CollectionCreateForm = Form.create()(
                     <Option value={1}>Checked In</Option>
                     <Option value={2}>Checked In, Not Meeting Host</Option>
                 </Select>)}
+              </FormItem>
+                {console.log(this.props.dataList[this.props.index].booking_comm_channel)}
+            <FormItem label="Communication Channel">
+                {getFieldDecorator('comm',{
+                  initialValue:this.props.dataList[this.props.index].booking_comm_channel
+                })(
+                <Select>
+                    <Option value="1">Whatsapp</Option>
+                    <Option value="2">Airbnb Message</Option>
+                    <Option value="3">WeChat</Option>
+                    <Option value="4">Booking.com</Option>
+                    <Option value="5">Agoda</Option>
+                </Select>)}
+              </FormItem>
+              <FormItem label="Notes">
+                {getFieldDecorator('notes',{
+                  initialValue:this.props.dataList[this.props.index].booking_notes
+                })(
+                <Input/>)}
               </FormItem>
             <FormItem>
             {getFieldDecorator('booking_id',{
@@ -112,12 +138,16 @@ class EditCell extends Component {
       if (err) {
         return;
       }
-        
+        console.log(values["comm"])
       this.props.editBooking(
         values["booking_id"],
         moment(values["check_out"]).format('YYYY-MM-DD').toString(),
         moment(values["eta"]).format('HH:mm').toString(),
-        values["status"]);
+        values["status"],
+        values["phone"],
+        values["comm"],
+        values["notes"]
+      );
         //host
       this.props.editBookingEmployee(
         values["booking_id"],
@@ -132,7 +162,6 @@ class EditCell extends Component {
       );
       form.resetFields();
       this.setState({ visible: false });
-      this.renderChange();
     });
   }
   renderChange=()=>{

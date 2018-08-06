@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {connect} from 'react-redux';
+import moment from 'moment';
 import { Row, Col} from 'antd';
 import LayoutContent from "../Utility/layoutContent";
 import Searchbar from '../Searchbar/searchbar';
@@ -11,13 +12,16 @@ import basicStyle from '../../settings/basicStyle';
 import {Input} from 'antd';
 import AddBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/components/addBooking';
 
+import actions from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
+
 const Option= Select.Option;
+const {downloadCsv} = actions;
 class Header extends Component {
     handleBooking=event=>{
         alert('booking');
     }
     handleDownloadCsv=event=>{
-        alert('download csv');
+        this.props.downloadCsv(moment().format('YYYY-MM-DD').toString());
     }
     render() {
         const { rowStyle, colStyle, gutter } = basicStyle;
@@ -48,7 +52,7 @@ class Header extends Component {
         );
     }
 }
-export default Header;
+export default connect(null,{downloadCsv})(Header);
 
 
 

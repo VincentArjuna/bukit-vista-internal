@@ -34,6 +34,11 @@ export default function reducer(state = initState,action){
                 ...state,
                 response:action.response
             }
+        case actions.DOWNLOAD_CSV:
+            return{
+                ...state,
+                response:action.response
+            }
         default:
             return state;
     }

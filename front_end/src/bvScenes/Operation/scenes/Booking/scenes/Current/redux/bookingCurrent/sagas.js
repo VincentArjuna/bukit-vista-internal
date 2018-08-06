@@ -1,5 +1,5 @@
 import{all,takeEvery,put,call} from 'redux-saga/effects';
-
+import axios from 'axios';
 import actions from './actions';
 import { stringify } from 'querystring';
 import moment from'moment';
@@ -54,6 +54,28 @@ const onAddBookingRequest=async(param)=>
     .then(res=>res)
     .catch(error => error);
 
+const onDownloadRequest=async(param)=>
+    axios({
+        url:`${URL_BOOKING}/${param}/download`,
+        method: 'GET',
+        responseType: 'blob', // important
+    }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download',`ARRIVAL_LIST`);
+        document.body.appendChild(link);
+        link.click();
+    });
+  
+function* downloadCsv({payload}){
+    try{
+        const param = payload.date;
+        yield call(onDownloadRequest,param);
+    }catch(error){
+        console.log("Error Download : "+error)
+    }
+}
 function* renderRequest({payload}){
     try{
         const param=[
@@ -106,4 +128,5 @@ function* addBooking({payload}){
 export default function* rootSaga() {
     yield all([takeEvery(actions.RENDER_DATA_BC,renderRequest)]);
     yield all([takeEvery(actions.ADD_BOOKING,addBooking)]);
+    yield all([takeEvery(actions.DOWNLOAD_CSV,downloadCsv)]);
 }

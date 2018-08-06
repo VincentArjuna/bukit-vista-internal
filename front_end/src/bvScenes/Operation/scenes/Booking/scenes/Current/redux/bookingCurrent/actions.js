@@ -4,6 +4,7 @@ const actions={
     RENDER_DATA_SUCCESS_BC :'RENDER_DATA_SUCCESS_BC',
     ADD_BOOKING:'ADD_BOOKING',
     ADD_BOOKING_RESPONSE:'ADD_BOOKING_RESPONSE',
+    DOWNLOAD_CSV:'DOWNLOAD_CSV',
     renderDataBc : (date,filterer,date_type,filter_type)=>({
         type: actions.RENDER_DATA_BC,
         payload:{date,filterer,date_type,filter_type,page:1}
@@ -25,6 +26,10 @@ const actions={
     addBookingResponse:(response)=>({
         type:actions.ADD_BOOKING_RESPONSE,
         response
+    }),
+    downloadCsv:(date)=>({
+        type:actions.DOWNLOAD_CSV,
+        payload:{date}
     })
 };
 

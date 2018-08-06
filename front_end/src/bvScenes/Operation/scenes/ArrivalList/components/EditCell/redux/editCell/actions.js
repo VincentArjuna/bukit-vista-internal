@@ -7,9 +7,9 @@ const actions={
     EDIT_BOOKING_RESPONSE:'EDIT_BOOKING_RESPONSE',
     EDIT_BOOKING_EMPLOYEE_RESPONSE:'EDIT_BOOKING_EMPLOYEE_RESPONSE',
 
-    editBooking :(booking_id,booking_check_out,booking_guest_eta,booking_guest_status)=>({
+    editBooking :(booking_id,booking_check_out,booking_guest_eta,booking_guest_status,booking_guest_phone,booking_comm_channel,booking_notes)=>({
         type:actions.EDIT_BOOKING,
-        payload:{updateType:1,booking_id,booking_check_out,booking_guest_eta,booking_guest_status}
+        payload:{updateType:1,booking_id,booking_check_out,booking_guest_eta,booking_guest_status,booking_guest_phone,booking_comm_channel,booking_notes}
     }),
     editBookingEmployee:(booking_id,employee_id,be_role)=>({
         type:actions.EDIT_BOOKING_EMPLOYEE,
