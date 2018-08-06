@@ -5,11 +5,11 @@ import {Modal, Form, Input, Radio ,TimePicker,DatePicker} from 'antd';
 import Button from '../../../../../../bvComponents/Uielements/button';
 import Select,{SelectOption}from '../../../../../../bvComponents/Uielements/select';
 import actions from '../../../../../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/redux/editCell/actions';
-
+import actionArrival from '../../../../../../bvScenes/Operation/scenes/ArrivalList/components/ArrivalTable/redux/arrivalTable/actions';
 const FormItem = Form.Item;
 const Option = SelectOption;
 const {renderDataEmployee,editBooking,editBookingEmployee} = actions;
-
+const {renderData}=actionArrival;
 const CollectionCreateForm = Form.create()(
   class extends React.Component {
     render() {
@@ -103,6 +103,7 @@ class EditCell extends Component {
 
   handleCancel = () => {
     this.setState({ visible: false });
+    this.props.Table.singleSearch=false;
   }
 
   handleCreate = () => {
@@ -131,14 +132,22 @@ class EditCell extends Component {
       );
       form.resetFields();
       this.setState({ visible: false });
+      this.renderChange();
     });
   }
-
+  renderChange=()=>{
+    this.props.Table.checkCount=0;
+    this.props.Table.totalData=0;
+    this.props.renderData(this.props.key,this.props.area,
+      this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType)
+    
+  }
   saveFormRef = (formRef) => {
     this.formRef = formRef;
   }
   componentDidMount(){
     this.props.renderDataEmployee();
+    this.props.Table.singleSearch=true;
   }
   render() {
     return (
@@ -161,10 +170,12 @@ class EditCell extends Component {
 function mapStateToProps(state) {
   return { 
     EditCell: state.editCell,
-    Header:state.header
+    Table:state.arrivalTable,
+    Searchbar:state.searchbar,
+    DateRange:state.daterange
   };
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee ,editBooking,editBookingEmployee}
+  { renderDataEmployee ,editBooking,editBookingEmployee,renderData}
 )(EditCell);

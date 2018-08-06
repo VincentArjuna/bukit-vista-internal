@@ -3,13 +3,14 @@ import { Route } from 'react-router-dom';
 import asyncComponent from '../helpers/AsyncFunc';
 //import customRoutes from '../../customApp/router';
 import operationRoutes from '../bvScenes/Operation/router';
-
+import marketBuildingRoutes from '../bvScenes/MarketBuilding/router';
 const routes = [
   {
     path: '',
     component: asyncComponent(() => import('../bvScenes/Operation/scenes/ArrivalList')),
   },
   ...operationRoutes,
+  ...marketBuildingRoutes,
 ];
 
 class AppRouter extends Component {

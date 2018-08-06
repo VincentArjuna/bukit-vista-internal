@@ -72,7 +72,8 @@ function* editRequestBookingEmployee({payload}){
     }catch(error){
         console.log("saga error");
     }
-}function* renderRequestEmployee({}){
+}
+function* renderRequestEmployee({}){
     try{
         const renderResult = yield call(onRenderRequestEmployee);
         if(renderResult.data){

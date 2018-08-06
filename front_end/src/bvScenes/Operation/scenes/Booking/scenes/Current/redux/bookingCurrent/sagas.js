@@ -36,8 +36,8 @@ function* renderRequest({payload}){
             yield put(
                 actions.renderDataSuccessBc(
                     renderResults.data,
+                    renderResults.total,
                     renderResults.current_page,
-                    renderResults.total
                 )
             );
         }

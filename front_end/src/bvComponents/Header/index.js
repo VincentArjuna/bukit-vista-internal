@@ -9,6 +9,7 @@ import { Select } from 'antd';
 import Button from '../../bvComponents/Uielements/button';
 import basicStyle from '../../settings/basicStyle';
 import {Input} from 'antd';
+import AddBooking from './addBooking';
 
 const Option= Select.Option;
 class Header extends Component {
@@ -26,10 +27,10 @@ class Header extends Component {
                 <PageHeader>{this.props.title}</PageHeader>
                 <Row style={rowStyle} gutter={gutter} justify="start">
                     <Col md={7} sm={12} xs={24} style={colStyle}>
-                        <DateRange/>
+                        <DateRange title={this.props.title}/>
                     </Col>
                     <Col md={17} sm={12} xs={24} style={colStyle}>
-                        <Searchbar/>
+                        <Searchbar title={this.props.title}/>
                     </Col>
                 </Row>
                 <Row style={rowStyle} gutter={gutter} justify="start">
@@ -38,7 +39,7 @@ class Header extends Component {
                     </Col>
                     <Col push={15} md={3} sm={12} xs={24} style={colStyle}>
                         {this.props.title==='Booking / Current'?
-                            <Button type="primary" onClick={this.handleBooking}>Add Booking</Button> :
+                            <AddBooking/>:
                             <Button type="primary" onClick={this.handleDownloadCsv}>Download CSV</Button>}
                     </Col>
                 </Row>

@@ -21,7 +21,7 @@ export default class MyTable extends Component {
       title:'Details',
       dataIndex:'details',
       render: (text, record, index) => (
-        <EditCell index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList}/>
+        <EditCell key={this.props.key} index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList}/>
       )
     }
     const notesColumn={
@@ -43,7 +43,10 @@ export default class MyTable extends Component {
     return (
         <TableWrapper
           {...this.state}
-          pagination={{total:this.props.total}}
+          pagination={{
+            total:this.props.total,
+            onChange:(page)=>{this.props.onPageChange(0,0,0,0,this.props.page)}
+          }}
           className={classes}
           dataSource={this.props.dataList}
         />

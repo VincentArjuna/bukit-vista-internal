@@ -3,7 +3,8 @@ import actions from './actions';
 const initState={
     tableData:{},
     checkCount:0,
-    totalData:0
+    totalData:0,
+    singleRender:false,
 }
 
 export default function reducer(state = initState,action){

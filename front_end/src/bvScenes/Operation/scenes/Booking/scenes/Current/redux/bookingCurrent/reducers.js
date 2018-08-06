@@ -4,6 +4,7 @@ const initState={
     results:[],
     page:1,
     total:0,
+    page:1
 }
 
 export default function reducer(state = initState,action){

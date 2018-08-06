@@ -3,27 +3,30 @@ import { connect } from 'react-redux';
 import LayoutContentWrapper from "../../../../../../bvComponents/Utility/layoutWrapper.js";
 import LayoutContent from "../../../../../../bvComponents/Utility/layoutContent";
 import {columns,title,filterTypes} from './config.js';
-import Table from '../../../../../../bvComponents/Table';
+import MyTable from '../../../../../../bvComponents/Table/MyTable';
 import Header from '../../../../../../bvComponents/Header/index.js';
 import actions from './redux/bookingCurrent/actions';
 
-const {renderDataBc}=actions;
+const {renderDataBc,onPageChange}=actions;
 class Current extends Component {
   componentDidMount(){
-    this.props.Header.filterType=null;
-    this.props.Header.filterValue = null;
+    this.props.renderDataBc(0,0,0,0);
   }
   render() {
-    const {renderDataBc,Current}=this.props;
     return (    
         <div>
           <Header title={title} columns={columns} filters={filterTypes}/>
             <LayoutContentWrapper>
-              <Table 
+              <LayoutContent>
+              <MyTable 
                 columns={columns}
                 mode={Current}
-                renderData={renderDataBc}  
+                dataList={this.props.Current.results}
+                total={this.props.Current.total}
+                page={this.props.Current.page}
+                onPageChange={onPageChange}
               />
+                </LayoutContent>
             </LayoutContentWrapper>
         </div>
     );
@@ -34,11 +37,10 @@ class Current extends Component {
 function mapStateToProps(state){
   return {
     Current :state.bookingCurrent,
-    Header : state.header
   };
 }
 export default connect(
   mapStateToProps,
-  {renderDataBc}
+  {renderDataBc,onPageChange}
 )(Current);
 
