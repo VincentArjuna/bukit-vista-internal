@@ -9,7 +9,7 @@ import { Select } from 'antd';
 import Button from '../../bvComponents/Uielements/button';
 import basicStyle from '../../settings/basicStyle';
 import {Input} from 'antd';
-import AddBooking from './addBooking';
+import AddBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/components/addBooking';
 
 const Option= Select.Option;
 class Header extends Component {

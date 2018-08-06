@@ -24,6 +24,16 @@ export default function reducer(state = initState,action){
                 page:action.current_page,
                 total:action.total
             };
+        case actions.ADD_BOOKING:
+            return{
+                ...state,
+                payload:action.payload
+            }
+        case actions.ADD_BOOKING_RESPONSE:
+            return{
+                ...state,
+                response:action.response
+            }
         default:
             return state;
     }

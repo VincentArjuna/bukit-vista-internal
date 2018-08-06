@@ -11,11 +11,15 @@ const onRenderRequestListing = async () =>
                 
 function* renderRequestListing({}){
     try{
+        console.log("Hello");
         const renderResult = yield call(onRenderRequestListing);
+        console.log(renderResult);
         if(renderResult.data){
             yield put(
                 actions.renderDataListingSuccess(renderResult.data)
             );
+        }else{
+            console.log("sad");
         }
     }catch(error){
         console.log("saga error");

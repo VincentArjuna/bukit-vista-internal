@@ -2,16 +2,18 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {Modal, Form, Input,InputNumber, Radio ,TimePicker,DatePicker} from 'antd';
-import Button from '../../bvComponents/Uielements/button';
-import Select,{SelectOption}from '../../bvComponents/Uielements/select';
-import actions from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/redux/editCell/actions';
-import aBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
-import { getFileItem } from '../../../node_modules/antd/lib/upload/utils';
+import Button from '../../../../../../../bvComponents/Uielements/button';
+import Select,{SelectOption}from '../../../../../../../bvComponents/Uielements/select';
+import actions from '../../../../../../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/redux/editCell/actions';
+import aBooking from '../../../../../../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
+import aListing from '../../../../../../../bvScenes/MarketBuilding/scenes/Listing/redux/listing/actions';
+
 const FormItem = Form.Item;
 const Option = SelectOption;
 
 const {renderDataEmployee,editBooking,editBookingEmployee} = actions;
-const {renderDataBc}=aBooking;
+const {renderDataBc,addBooking}=aBooking;
+const{renderDataListing}=aListing;
 const CollectionCreateForm = Form.create()(
 class extends React.Component {
     render() {
@@ -29,42 +31,52 @@ class extends React.Component {
         <Form layout="vertical">
             <FormItem label="Booking ID">
                 {getFieldDecorator(
-                    'booking_id'
+                    'booking_id', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
                 )(<Input/>)}
             </FormItem>
             <FormItem label="Guest Name">
                 {getFieldDecorator(
-                    'booking_guest_name'
+                    'guest_name', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
                 )(<Input/>)}
             </FormItem>
             <FormItem label="Check In">
                 {getFieldDecorator(
-                    'booking_check_in'
+                    'check_in', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
                 )(<DatePicker/>)}
             </FormItem>
             <FormItem label="Check Out">
                 {getFieldDecorator(
-                    'booking_check_out'
+                    'check_out', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
                 )(<DatePicker/>)}
             </FormItem>
             <FormItem label="Guest Number">
                 {getFieldDecorator(
-                    'booking_guest_number'
+                    'number', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
                 )(<InputNumber/>)}
             </FormItem>
             <FormItem label="Guest Phone">
                 {getFieldDecorator(
-                    'booking_guest_phone'
+                    'phone'
                 )(<Input/>)}
             </FormItem>
             <FormItem label="Guest ETA">
                 {getFieldDecorator(
-                    'booking_guest_eta'
-                )(<TimePicker/>)}
+                    'eta'
+                )(<TimePicker format="HH:mm"/>)}
             </FormItem>
             <FormItem label="Communication Channel">
                 {getFieldDecorator(
-                    'booking_comm_channel'
+                    'comm'
                 )(
                     <Select>
                         <Option value={0}>Whatsapp</Option>
@@ -74,12 +86,16 @@ class extends React.Component {
             </FormItem>
             <FormItem label="Earned">
                 {getFieldDecorator(
-                    'booking_earned'
+                    'earned', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
                 )(<InputNumber />)}
             </FormItem>
             <FormItem label="Currency">
                 {getFieldDecorator(
-                    'booking_currency'
+                    'currency', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
                 )(
                     <Select>
                         <Option value={1}>IDR</Option>
@@ -89,11 +105,33 @@ class extends React.Component {
             </FormItem>
             <FormItem label="Listing">
                 {getFieldDecorator(
-                    'listing_id'
+                    'listing_id', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
                 )(
                     <Select>
+                        {this.props.listings.map(listing=>
+                            <Option value={listing.listing_id}>{listing.listing_name}</Option>
+                        )}
                     </Select>
                 )}
+            </FormItem>
+            <FormItem label="Source">
+                {getFieldDecorator(
+                    'source', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
+                )(
+                    <Select>
+                        <Option value={1}>Airbnb</Option>
+                        <Option value={2}>Traveloka</Option>
+                     </Select>
+                )}
+            </FormItem>
+            <FormItem label="Conversation URL">
+                {getFieldDecorator(
+                    'conversation'
+                )(<Input/>)}
             </FormItem>
             </Form>
         </Modal>
@@ -122,20 +160,34 @@ class AddBooking extends Component {
       if (err) {
         return;
       }
-        
+      console.log(values);
+      this.props.addBooking(
+          moment(values["check_in"]).format('YYYY-MM-DD').toString(),
+          moment(values["check_out"]).format('YYYY-MM-DD').toString(),
+          (values["comm"]!==undefined?values["comm"]:""),
+          values["currency"],
+          values["earned"],
+          (values["eta"]!==undefined?moment(values["eta"]).format('HH:mm').toString():""),
+          values["guest_name"],
+          values["number"],
+          (values["phone"]!==undefined?values["phone"]:""),
+          values["booking_id"],
+          values["listing_id"],
+          values["source"],
+          (values["conversation"]!==undefined?values["conversation"]:"")
+        );
       form.resetFields();
-      this.setState({ visible: false });
-      this.renderChange();
+      this.setState({ visible: false });;
     });
   }
-  renderChange=()=>{
-    
-  }
+
   saveFormRef = (formRef) => {
     this.formRef = formRef;
   }
   componentDidMount(){
     this.props.renderDataBc(0,0,0,0);
+    this.props.renderDataListing();
+
   }
   render() {
     return (
@@ -148,6 +200,7 @@ class AddBooking extends Component {
           onCreate={this.handleCreate}
           dataList={this.props.Current.results}
           index={this.props.index}
+          listings={this.props.Listing.results}
         />
       </div>
     );
@@ -160,9 +213,10 @@ function mapStateToProps(state) {
     Current:state.bookingCurrent,
     Searchbar:state.searchbar,
     DateRange:state.daterange,
+    Listing:state.listing,
   };
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee ,editBooking,editBookingEmployee,renderDataBc}
+  { renderDataEmployee ,editBooking,editBookingEmployee,renderDataBc,renderDataListing,addBooking}
 )(AddBooking);

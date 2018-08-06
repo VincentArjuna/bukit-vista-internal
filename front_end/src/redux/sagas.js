@@ -13,5 +13,6 @@ export default function* rootSaga(getState) {
     arrivalTableSaga(),
     bookingCurrentSaga(),
     editCellSaga(),
+    listingSaga()
   ]);
 }
