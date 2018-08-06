@@ -63,7 +63,7 @@ const onDownloadRequest=async(param)=>
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download',`ARRIVAL_LIST`);
+        link.setAttribute('download',`ARRIVAL_LIST.csv`);
         document.body.appendChild(link);
         link.click();
     });
