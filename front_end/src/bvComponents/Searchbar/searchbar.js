@@ -42,6 +42,7 @@ class Searchbar extends Component{
             this.props.renderDataBc(this.props.DateRange.date,this.props.Searchbar.filterer,this.props.DateRange.dateType,this.props.Searchbar.filterType);
         }
       }
+      
       handleChangeFilterMode=(value)=>{
         this.props.Searchbar.filterType = value;
         this.renderChange();
