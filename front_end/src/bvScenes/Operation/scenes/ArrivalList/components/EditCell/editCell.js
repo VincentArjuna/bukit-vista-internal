@@ -1,15 +1,21 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {Modal, Form, Input, Radio ,TimePicker,DatePicker} from 'antd';
+import {Modal, Form, Input,InputNumber, Radio ,TimePicker,DatePicker} from 'antd';
 import Button from '../../../../../../bvComponents/Uielements/button';
 import Select,{SelectOption}from '../../../../../../bvComponents/Uielements/select';
-import actions from '../../../../../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/redux/editCell/actions';
-import actionArrival from '../../../../../../bvScenes/Operation/scenes/ArrivalList/components/ArrivalTable/redux/arrivalTable/actions';
+
+import actionEmployee from '../../../../../../bvScenes/ResourcesManagement/scenes/Employee/redux/employee/actions';
+import actionBooking from '../../../../../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
+import actionArrival from '../../../../../Operation/scenes/ArrivalList/components/ArrivalTable/redux/arrivalTable/actions';
+
+const {renderDataEmployee,editBookingEmployee} = actionEmployee;
+const {editBooking}=actionBooking;
+const {renderData}=actionArrival;
+
 const FormItem = Form.Item;
 const Option = SelectOption;
-const {renderDataEmployee,editBooking,editBookingEmployee} = actions;
-const {renderData}=actionArrival;
+
 const CollectionCreateForm = Form.create()(
   class extends React.Component {
     render() {
@@ -41,8 +47,11 @@ const CollectionCreateForm = Form.create()(
                 initialValue:moment(this.props.dataList[this.props.index].booking_check_out, 'YYYY-MM-DD')
               })(<DatePicker dateFormat="YYYY-MM-DD"/>)}
             </FormItem>
+            <FormItem label="Number of Guests">
+                <InputNumber disabled={true} type="textarea" defaultValue={this.props.dataList[this.props.index].booking_guest_number}/>
+              </FormItem>
             <FormItem label="LOS">
-                <Input disabled={true} type="textarea" defaultValue={this.props.dataList[this.props.index].booking_los}/>
+                <InputNumber disabled={true} type="textarea" defaultValue={this.props.dataList[this.props.index].booking_los}/>
               </FormItem>
             <FormItem label="ETA">
               {getFieldDecorator('eta',{
@@ -86,7 +95,6 @@ const CollectionCreateForm = Form.create()(
                     <Option value={2}>Checked In, Not Meeting Host</Option>
                 </Select>)}
               </FormItem>
-                {console.log(this.props.dataList[this.props.index].booking_comm_channel)}
             <FormItem label="Communication Channel">
                 {getFieldDecorator('comm',{
                   initialValue:this.props.dataList[this.props.index].booking_comm_channel
@@ -98,6 +106,20 @@ const CollectionCreateForm = Form.create()(
                     <Option value="4">Booking.com</Option>
                     <Option value="5">Agoda</Option>
                 </Select>)}
+              </FormItem>
+              <FormItem label="Verifier">
+                  {getFieldDecorator(
+                      'verifier', {
+                          initialValue:this.props.dataList[this.props.index].verifier.employee_id?
+                          this.props.dataList[this.props.index].verifier.employee_id:null,
+                      }
+                  )(      
+                      <Select disabled={this.props.dataList[this.props.index].verifier.employee_id?true:false}>
+                          {this.props.employees.map(employee=>
+                              <Option value={employee.employee_id}>{employee.employee_name}</Option>
+                          )}
+                      </Select>
+                  )}
               </FormItem>
               <FormItem label="Notes">
                 {getFieldDecorator('notes',{
@@ -160,6 +182,12 @@ class EditCell extends Component {
         values["driver"],
         1
       );
+      //verifier
+      this.props.editBookingEmployee(
+        values["booking_id"],
+        values["verifier"],
+        2
+      );
       form.resetFields();
       this.setState({ visible: false });
     });
@@ -189,7 +217,7 @@ class EditCell extends Component {
           onCreate={this.handleCreate}
           dataList={this.props.dataList}
           index={this.props.index}
-          employees={this.props.EditCell.results}
+          employees={this.props.Employee.results}
         />
       </div>
     );
@@ -198,7 +226,7 @@ class EditCell extends Component {
 
 function mapStateToProps(state) {
   return { 
-    EditCell: state.editCell,
+    Employee:state.employee,
     Table:state.arrivalTable,
     Searchbar:state.searchbar,
     DateRange:state.daterange
@@ -206,5 +234,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee ,editBooking,editBookingEmployee,renderData}
+  { editBooking,editBookingEmployee,renderDataEmployee,renderData}
 )(EditCell);

@@ -9,7 +9,7 @@ export default class MyTable extends Component {
     super(props);
     this.state = {
       size: 'default',
-      columns: clone(this.props.columns)
+      columns: clone(this.props.columns),
     };
   }
   componentDidMount(){
@@ -36,20 +36,26 @@ export default class MyTable extends Component {
     return columns;
   };
 
-
   render() {
     const classes = `isoCustomizedTableWrapper`;
-      
+    console.log(this.props.onPageChange);
+    const paging={
+      total:this.props.total,
+      currentPage:this.props.page,
+      page:this.props.page,
+      onChange(page){
+        page=>this.props.onPageChange(0,0,0,0,page)
+      }
+    }
     return (
+      <div>
         <TableWrapper
           {...this.state}
-          pagination={{
-            total:this.props.total,
-            onChange:(page)=>{this.props.onPageChange(0,0,0,0,this.props.page)}
-          }}
           className={classes}
+          pagination={paging}
           dataSource={this.props.dataList}
         />
+      </div>
     );
   }
 }

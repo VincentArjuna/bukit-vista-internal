@@ -20,11 +20,12 @@ class Current extends Component {
               <LayoutContent>
               <MyTable 
                 columns={columns}
-                mode={Current}
                 dataList={this.props.Current.results}
                 total={this.props.Current.total}
+                mode={Current}
                 page={this.props.Current.page}
-                onPageChange={onPageChange}
+                onPageChange={this.props.onPageChange}
+                
               />
                 </LayoutContent>
             </LayoutContentWrapper>

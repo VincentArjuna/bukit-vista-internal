@@ -34,6 +34,7 @@ export default function reducer(state = initState,action){
                         filterer:action.payload.filterer,
                         date_type:action.payload.date_type,
                         loading:true,
+                        page:1,
                         results:[]
                     }
                 }

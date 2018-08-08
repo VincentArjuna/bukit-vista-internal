@@ -47,13 +47,35 @@ const onAddBookingRequest=async(param)=>
             'data[booking_currency]':param[9],
             'data[booking_source]':param[10],
             'data[booking_conversation_url]':param[11],
-            'data[booking_received_timestamp]':moment().format('YYYY-MM-DD').toString(),
+            'data[booking_received_timestamp]':moment().format('YYYY-MM-DD HH:mm:ss').toString(),
             'data[listing_id]':param[12],
         })
     }).then(res=>res.json())
     .then(res=>res)
     .catch(error => error);
 
+const onEditRequestBooking = async(param)=>
+    await fetch(`${URL_BOOKING}/update`, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        },
+        body:stringify( 
+        { 'data[update_type]': param[0],
+        'data[booking_id]': param[1],
+        'data[booking_check_out]': param[2],
+        'data[booking_guest_eta]':param[3],
+        'data[booking_guest_status]': param[4],
+        'data[booking_guest_phone]':param[5],
+        'data[booking_comm_channel]':param[6],
+        'data[booking_notes]':param[7]
+     })
+    }).then(res=>res.json())
+    .then(res=>res)
+    .catch(error => error);
+                
 const onDownloadRequest=async(param)=>
     axios({
         url:`${URL_BOOKING}/${param}/download`,
@@ -63,7 +85,7 @@ const onDownloadRequest=async(param)=>
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download',`ARRIVAL_LIST.csv`);
+        link.setAttribute('download',`CHECKIN_${param}.csv`);
         document.body.appendChild(link);
         link.click();
     });
@@ -102,6 +124,7 @@ function* renderRequest({payload}){
 
 function* addBooking({payload}){
     try{
+       
         const param=[
             payload.booking_id,
             payload.name,
@@ -117,6 +140,7 @@ function* addBooking({payload}){
             payload.conversation,
             payload.listing_id,
         ];
+        console.log(param);
         const renderResults =yield call(onAddBookingRequest,param);
         console.log(renderResults);
         
@@ -124,8 +148,26 @@ function* addBooking({payload}){
         console.log("saga error : "+error);
     }
 }
-
+function* editRequestBooking({payload}){
+    try{
+        const param=[
+            payload.updateType,
+            payload.booking_id,
+            payload.booking_check_out,
+            payload.booking_guest_eta,
+            payload.booking_guest_status,
+            payload.booking_guest_phone,
+            payload.booking_comm_channel,
+            payload.booking_notes
+        ];
+        console.log(param);
+        yield call(onEditRequestBooking,param);
+    }catch(error){
+        console.log("saga error");
+    }
+}
 export default function* rootSaga() {
+    yield all([takeEvery(actions.EDIT_BOOKING,editRequestBooking)]);
     yield all([takeEvery(actions.RENDER_DATA_BC,renderRequest)]);
     yield all([takeEvery(actions.ADD_BOOKING,addBooking)]);
     yield all([takeEvery(actions.DOWNLOAD_CSV,downloadCsv)]);

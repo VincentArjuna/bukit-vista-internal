@@ -5,6 +5,20 @@ const actions={
     ADD_BOOKING:'ADD_BOOKING',
     ADD_BOOKING_RESPONSE:'ADD_BOOKING_RESPONSE',
     DOWNLOAD_CSV:'DOWNLOAD_CSV',
+    UPDATE_ARRIVAL_LIST:'UPDATE_ARRIVAL_LIST',
+    EDIT_BOOKING: 'EDIT_BOOKING',
+    EDIT_BOOKING_RESPONSE:'EDIT_BOOKING_RESPONSE',
+    editBooking :(booking_id,booking_check_out,booking_guest_eta,booking_guest_status,booking_guest_phone,booking_comm_channel,booking_notes)=>({
+        type:actions.EDIT_BOOKING,
+        payload:{updateType:1,booking_id,booking_check_out,booking_guest_eta,booking_guest_status,booking_guest_phone,booking_comm_channel,booking_notes}
+    }),
+    updateData:()=>({
+        type:actions.UPDATE_ARRIVAL_LIST,
+    }),
+    editBookingResponse:(response)=>({
+        type:actions.EDIT_BOOKING_RESPONSE,
+        response
+    }),
     renderDataBc : (date,filterer,date_type,filter_type)=>({
         type: actions.RENDER_DATA_BC,
         payload:{date,filterer,date_type,filter_type,page:1}

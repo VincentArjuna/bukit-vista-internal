@@ -4,15 +4,18 @@ import moment from 'moment';
 import {Modal, Form, Input,InputNumber, Radio ,TimePicker,DatePicker} from 'antd';
 import Button from '../../../../../../../bvComponents/Uielements/button';
 import Select,{SelectOption}from '../../../../../../../bvComponents/Uielements/select';
-import actions from '../../../../../../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/redux/editCell/actions';
+import Spin from '../../../../../../../bvComponents/Uielements/spin';
 import aBooking from '../../../../../../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 import aListing from '../../../../../../../bvScenes/MarketBuilding/scenes/Listing/redux/listing/actions';
+import aUnit from '../../../../../../../bvScenes/MarketBuilding/scenes/Unit/redux/unit/actions';
+import aEmployee from '../../../../../../ResourcesManagement/scenes/Employee/redux/employee/actions';
 
 const FormItem = Form.Item;
 const Option = SelectOption;
 
-const {renderDataEmployee,editBooking,editBookingEmployee} = actions;
+const {renderDataEmployee,editBookingEmployee} = aEmployee;
 const {renderDataBc,addBooking}=aBooking;
+const {renderDataUnit}=aUnit;
 const{renderDataListing}=aListing;
 const CollectionCreateForm = Form.create()(
 class extends React.Component {
@@ -103,6 +106,28 @@ class extends React.Component {
                      </Select>
                 )}
             </FormItem>
+            <FormItem label="Unit">
+            {getFieldDecorator(
+                'unit_id', {
+                    rules: [{ required: true, message: 'This is required' }]
+                }
+            )(
+                <Select
+                mode="multiple"
+                labelInValue
+                value={this.props.Unit.value}
+                placeholder="Select unit"
+                notFoundContent={this.props.Unit.fetching ? <Spin size="small" /> : null}
+                filterOption={false}
+                onSearch={this.props.renderDataUnit(0,null)}
+                onChange={this.handleChange}
+                style={{ width: '100%' }}
+                >
+                {this.props.Unit.results.map(d => <Option key={d.id}>{d.name}</Option>)}
+                </Select>
+        
+            )}
+            </FormItem>
             <FormItem label="Listing">
                 {getFieldDecorator(
                     'listing_id', {
@@ -110,12 +135,24 @@ class extends React.Component {
                     }
                 )(
                     <Select>
-                        {this.props.listings.map(listing=>
-                            <Option value={listing.listing_id}>{listing.listing_name}</Option>
-                        )}
                     </Select>
+                //     <Select
+                //     mode="multiple"
+                //     labelInValue
+                //     value={value}
+                //     placeholder="Select listings"
+                //     notFoundContent={fetching ? <Spin size="small" /> : null}
+                //     filterOption={false}
+                //     onSearch={this.fetchUser}
+                //     onChange={this.handleChange}
+                //     style={{ width: '100%' }}
+                //   >
+                //     {data.map(d => <Option key={d.value}>{d.text}</Option>)}
+                //   </Select>
+            
                 )}
             </FormItem>
+
             <FormItem label="Source">
                 {getFieldDecorator(
                     'source', {
@@ -125,6 +162,9 @@ class extends React.Component {
                     <Select>
                         <Option value={1}>Airbnb</Option>
                         <Option value={2}>Traveloka</Option>
+                        <Option value={3}>Booking.com</Option>
+                        <Option value={4}>Agoda</Option>
+                        <Option value={5}>Direct</Option>
                      </Select>
                 )}
             </FormItem>
@@ -132,6 +172,19 @@ class extends React.Component {
                 {getFieldDecorator(
                     'conversation'
                 )(<Input/>)}
+            </FormItem>
+            <FormItem label="Verifier">
+                {getFieldDecorator(
+                    'verifier', {
+                        rules: [{ required: true, message: 'This is required' }]
+                    }
+                )(
+                    <Select>
+                        {this.props.employees.map(employee=>
+                            <Option value={employee.employee_id}>{employee.employee_name}</Option>
+                        )}
+                    </Select>
+                )}
             </FormItem>
             </Form>
         </Modal>
@@ -176,6 +229,7 @@ class AddBooking extends Component {
           values["source"],
           (values["conversation"]!==undefined?values["conversation"]:"")
         );
+      this.props.editBookingEmployee(values["booking_id"],values["verifier"],2);
       form.resetFields();
       this.setState({ visible: false });;
     });
@@ -186,13 +240,14 @@ class AddBooking extends Component {
   }
   componentDidMount(){
     this.props.renderDataBc(0,0,0,0);
-    this.props.renderDataListing();
+    this.props.renderDataListing(0,null);
+    this.props.renderDataEmployee();
 
   }
   render() {
     return (
       <div>
-        <Button  onClick={this.showModal}>Add Booking</Button>
+        <Button class="primary"  onClick={this.showModal}>Add Booking</Button>
         <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
@@ -200,7 +255,10 @@ class AddBooking extends Component {
           onCreate={this.handleCreate}
           dataList={this.props.Current.results}
           index={this.props.index}
-          listings={this.props.Listing.results}
+          //listings={this.props.Listing.results}
+          employees={this.props.Employee.results}
+          //addBooking={this.props.AddBooking}
+          editBookingEmployee={this.props.editBookingEmployee}
         />
       </div>
     );
@@ -209,14 +267,15 @@ class AddBooking extends Component {
 
 function mapStateToProps(state) {
   return { 
-    EditCell: state.editCell,
     Current:state.bookingCurrent,
     Searchbar:state.searchbar,
     DateRange:state.daterange,
     Listing:state.listing,
+    Unit:state.unit,
+    Employee:state.employee
   };
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee ,editBooking,editBookingEmployee,renderDataBc,renderDataListing,addBooking}
+  { renderDataEmployee ,editBookingEmployee,renderDataBc,renderDataListing,addBooking,renderDataUnit}
 )(AddBooking);
