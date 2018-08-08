@@ -38,101 +38,140 @@ class ArrivalListsController extends Controller
         $filter_type = $request->input('data.filter_type');
         $filterer = $request->input('data.filterer');
         $area = $request->input('data.area');
-        $properties = Properties::select('property_id')->where('area_id', $area)->get();
-        foreach($properties as $property){
-            $units = Unit::select('unit_id', 'unit_name')->where('property_id', $property->property_id)->get();
-            if ($filter_type == 2)
-            {
-                $matcher_unit = ['property_id' => $property->property_id];
-                $units = Unit::select('unit_id', 'unit_name')->where($matcher_unit)
-                        ->where('unit_name', 'like', '%'.$filterer.'%')->get();
-            }
-            foreach($units as $unit){
-                $listings = Listing::where('unit_id', $unit->unit_id)->get();
-                if($filter_type == 3){
-                    $profile_id = Profiles::select('profile_id')
-                                ->where('profile_name', 'like', '%'.$filterer.'%')->first()->profile_id;
-                    $matcher_profile = ['unit_id'=>$unit->unit_id,
-                                        'profile_id'=>$profile_id];
-                    $listings = Listing::select('listing_id')->where($matcher_profile)->get(); 
-                }
-                foreach ($listings as $listing){
-                    $matcher_booking =[];
-                    $searcher = ['booking_id','booking_guest_name','booking_check_in', 'booking_check_out',
+        $searcher = ['booking_id','booking_guest_name','booking_check_in', 'booking_check_out',
                                  'booking_guest_phone', 'booking_comm_channel', 'booking_guest_eta',
-                                 'booking_guest_status','booking_conversation_url'];
-                    $bookings = Bookings::select($searcher)->where('listing_id',$listing->listing_id)->get();
-                    if($filter_type == 1){
-                        if($date_type == 0){
-                            $matcher_booking = ['listing_id'=>$listing->listing_id,
-                                                'booking_check_in'=>$date];
-                        }else if ($date_type == 1)
-                        {
-                            $matcher_booking = ['listing_id'=>$listing->listing_id,
-                                                'booking_check_out'=>$date];
-                        }
-                        $bookings = Bookings::select($searcher)->where($matcher_booking)
-                        ->where('booking_guest_name','like','%'.$filterer.'%')->get();
-                    }else
+                                 'booking_guest_status','booking_conversation_url','listing_id','booking_notes'];
+        $bookings = Bookings::select($searcher)->get();        
+        if ($filter_type == 1)
+        {
+            if($date_type == 0){
+                $bookings = Bookings::select($searcher)->where('booking_check_in', $date)
+                ->where('booking_guest_name','like', '%'.$filterer.'%')->get();
+            }else if ($date_type == 1)
+            {
+                $bookings = Bookings::select($searcher)->where('booking_check_out', $date)
+                ->where('booking_guest_name','like', '%'.$filterer.'%')->get();
+            }else if($date_type == 2)
+            {
+                $bookings = Bookings::select($searcher)->where('booking_guest_name', 'like', '$'.$filterer.'%')->get();
+                $collect = [];
+                foreach ($bookings as $booking)
+                {
+                    if($this->check_in_range($booking->booking_check_in, $booking->booking_check_out, $date))
                     {
-                        if($date_type == 0){
-                            $matcher_booking = ['listing_id'=>$listing->listing_id,
-                                                'booking_check_in'=>$date];
-                        }else if ($date_type == 1)
-                        {
-                            $matcher_booking = ['listing_id'=>$listing->listing_id,
-                                                'booking_check_out'=>$date];
-                        } 
-                        $bookings = Bookings::select($searcher)->where($matcher_booking)->get();
+                        array_push($collect, $booking);
                     }
-                    foreach ($bookings as $booking){
-                        //$checker = true;
-                        //if($date_type == 2 )
+                }
+                $bookings = $collect;
+            }
+        }else
+        {
+            if($date_type == 0){
+                $bookings = Bookings::select($searcher)->where('booking_check_in', $date)->get();
+            }else if ($date_type == 1)
+            {
+                $bookings = Bookings::select($searcher)->where('booking_check_out', $date)->get();
+            }else if ($date_type ==2)
+            {
+                $collect = [];
+                foreach ($bookings as $booking)
+                {
+                    if($this->check_in_range($booking->booking_check_in, $booking->booking_check_out, $date))
+                    {
+                        array_push($collect, $booking);
+                    }
+                }
+                $bookings = $collect;
+            }
+        }
+        foreach ($bookings as $booking) {
+            $listing = Listing::select('listing_id','unit_id','profile_id')
+            ->where('listing_id', $booking->listing_id)->first();
+            if($filter_type == 2)
+            {
+                $units = Unit::select('unit_id', 'unit_name','property_id')->where('unit_id', $listing->unit_id)->first();
+                //var_dump(stripos($units->unit_name, $filterer));
+                if(stripos($units->unit_name, $filterer)===false){}else 
+                {
+                    $profiles = Profiles::select('profile_name')->where('profile_id', $listing->profile_id)->first();
+                    $properties = Properties::select('property_id','area_id')->where('property_id', $units->property_id)->first();
+                    if($properties->area_id == $area)
+                    {
+                        $bes = BookingEmployee::select('employee_id','be_role')
+                        ->where('booking_id', $booking->booking_id)->get();
+                        $omps['host']=[];
+                        $omps['driver']=[];
+                        $omps['verifier']=[];
+                        foreach($bes as $be)
                         {
-                            //$check_in = $booking->booking_check_in;
-                            //$check_out = $booking->booking_check_out;
-                            //$checker = $this->check_in_range($check_in, $check_out, $date);
-                        }
-                        //if($checker){
+                            $emps = collect();
+                            $employees = employee::select('employee_name')->where('employee_id', $be->employee_id)->first();
+                            $emps = $emps->merge($be);
+                            $emps = $emps->merge($employees);
+                            if($be->be_role == 0)
                             {
-                            $profiles = Profiles::select('profile_name')->where('profile_id', $listing->profile_id)->get();
-                            $profile = $profiles[0];
-                            $bes = BookingEmployee::select('employee_id','be_role')->where('booking_id', $booking->booking_id)->get();
-                            $merged = collect();
-                            $merged = $merged->merge($booking);
-                            $merged = $merged->merge($unit);
-                            $merged = $merged->merge($profile);
-                            $data['booking_los'] = $this->LoS($booking->booking_id);
-                            $merged = $merged->merge($data);
-                            $omps['host']=[];
-                            $omps['driver']=[];
-                            $omps['verifier']=[];
-                            foreach($bes as $be)
+                                $omps['host'] = $emps;
+                            }else if ($be->be_role == 1)
                             {
-                                $emps = collect();
-                                $employees = employee::select('employee_name')->where('employee_id', $be->employee_id)->first();
-                                $emps = $emps->merge($be);
-                                $emps = $emps->merge($employees);
-                                if($be->be_role == 0)
-                                {
-                                    $omps['host'] = $emps;
-                                }else if ($be->be_role == 1)
-                                {
-                                    $omps['driver'] = $emps;
-                                }else if($be->be_role == 2)
-                                {
-                                    $omps['verifier'] = $emps;
-                                }
+                                $omps['driver'] = $emps;
+                            }else if($be->be_role == 2)
+                            {
+                                $omps['verifier'] = $emps;
                             }
-                            $merged = $merged->merge($omps);
-                            array_push($ar,$merged);
+                        }
+                        $merged = collect();
+                        $merged = $merged->merge($booking);
+                        $merged = $merged->merge($units);
+                        $merged = $merged->merge($profiles);
+                        $data['booking_los'] = $this->LoS($booking->booking_id);
+                        $merged = $merged->merge($data);
+                        $merged = $merged->merge($omps);
+                        array_push($ar,$merged);
+                    }
+                }
+            }else
+            {
+                $units = Unit::select('unit_id', 'unit_name','property_id')->where('unit_id', $listing->unit_id)->first();
+                $profiles = Profiles::select('profile_name')->where('profile_id', $listing->profile_id)->first();
+                $properties = Properties::select('property_id','area_id')->where('property_id', $units->property_id)->first();
+                if($properties->area_id == $area)
+                {
+                    $bes = BookingEmployee::select('employee_id','be_role')
+                    ->where('booking_id', $booking->booking_id)->get();
+                    $omps['host']=[];
+                    $omps['driver']=[];
+                    $omps['verifier']=[];
+                    foreach($bes as $be)
+                    {
+                        $emps = collect();
+                        $employees = employee::select('employee_name')->where('employee_id', $be->employee_id)->first();
+                        $emps = $emps->merge($be);
+                        $emps = $emps->merge($employees);
+                        if($be->be_role == 0)
+                        {
+                            $omps['host'] = $emps;
+                        }else if ($be->be_role == 1)
+                        {
+                            $omps['driver'] = $emps;
+                        }else if($be->be_role == 2)
+                        {
+                            $omps['verifier'] = $emps;
                         }
                     }
-                }                
+                    $merged = collect();
+                    $merged = $merged->merge($booking);
+                    $merged = $merged->merge($units);
+                    $merged = $merged->merge($profiles);
+                    $data['booking_los'] = $this->LoS($booking->booking_id);
+                    $merged = $merged->merge($data);
+                    $merged = $merged->merge($omps);
+                    array_push($ar,$merged);
+                }
             }
         }
         $paginated = fnpaginate::pager($ar, $request);
         return $paginated;
+        
     }
     public function LoS($id)
     {

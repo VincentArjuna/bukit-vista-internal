@@ -34,25 +34,31 @@ class BookingsController extends Controller
     public function create(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $bookings = new Bookings;
-        $bookings->booking_id = $request->input('data.booking_id');
-        $bookings->booking_guest_name = $request->input('data.booking_guest_name');
-        $bookings->booking_status = $request->input('data.booking_status');
-        $bookings->booking_check_in = $request->input('data.booking_check_in');
-        $bookings->booking_check_out = $request->input('data.booking_check_in');
-        $bookings->booking_guest_number = $request->input('data.booking_guest_number');
-        $bookings->booking_guest_phone = $request->input('data.booking_guest_phone');
-        $bookings->booking_guest_eta = $request->input('data.booking_guest_eta');
-        $bookings->booking_guest_status = $request->input('data.booking_guest_status');
-        $bookings->booking_comm_channel = $request->input('data.booking_comm_channel');
-        $bookings->booking_earned = $request->input('data.booking_earned');
-        $bookings->booking_currency = $request->input('data.booking_currency');
-        $bookings->booking_source = $request->input('data.booking_source');
-        $bookings->booking_conversation_url = $request->input('data.booking_conversation_url');
-        $bookings->booking_received_timestamp = $request->input('data.booking_received_timestamp');
-        $bookings->listing_id = $request->input('data.listing_id');
-        $bookings->save();
-        return 'New Data Added';
+        $bookings = Bookings::where('booking_id', $request->input('data.booking_id'))->first();
+        if(!$bookings){
+            $bookings = new Bookings;
+            $bookings->booking_id = $request->input('data.booking_id');
+            $bookings->booking_guest_name = $request->input('data.booking_guest_name');
+            $bookings->booking_status = $request->input('data.booking_status');
+            $bookings->booking_check_in = $request->input('data.booking_check_in');
+            $bookings->booking_check_out = $request->input('data.booking_check_out');
+            $bookings->booking_guest_number = $request->input('data.booking_guest_number');
+            $bookings->booking_guest_phone = $request->input('data.booking_guest_phone');
+            $bookings->booking_guest_eta = $request->input('data.booking_guest_eta');
+            $bookings->booking_guest_status = $request->input('data.booking_guest_status');
+            $bookings->booking_comm_channel = $request->input('data.booking_comm_channel');
+            $bookings->booking_earned = $request->input('data.booking_earned');
+            $bookings->booking_currency = $request->input('data.booking_currency');
+            $bookings->booking_source = $request->input('data.booking_source');
+            $bookings->booking_conversation_url = $request->input('data.booking_conversation_url');
+            $bookings->booking_received_timestamp = $request->input('data.booking_received_timestamp');
+            $bookings->listing_id = $request->input('data.listing_id');
+            $bookings->save();
+            return 'TRUE';
+        }else
+        {
+            return 'FALSE';
+        }
     }
 
     /**
@@ -65,7 +71,16 @@ class BookingsController extends Controller
     {
         //
     }
-    
+    function check_in_range($start_date, $end_date, $date_from_user)
+    {
+        // Convert to timestamp
+        $start_ts = strtotime($start_date);
+        $end_ts = strtotime($end_date);
+        $user_ts = strtotime($date_from_user);
+
+        // Check that user date is between start & end
+        return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
+    }
     /**
      * Display the specified resource.
      *
@@ -125,7 +140,7 @@ class BookingsController extends Controller
             }else if ($filter_type == 2)
             {
                 $matcher = ['booking_check_in'=> $date];
-                $bookings = Bookings::where($matcher)->where('booking_guest_name', 'like', $filterer)->paginate(10);
+                $bookings = Bookings::where($matcher)->where('booking_guest_name', 'like', '%'.$filterer.'%')->paginate(10);
                 return $bookings;
             }else if ($filter_type == 3)
             {
@@ -220,6 +235,47 @@ class BookingsController extends Controller
                 $paginated = fnPaginate::pager($ar, $request);
                 return $paginated;
             }
+        }else if ($date_type == 4)
+        {
+            $bookings = [];
+            if($filter_type == 0)
+            {
+                $bookings = Bookings::get();
+            }else if ($filter_type == 1)
+            {
+                $bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->get();
+            }else if ($filter_type == 2)
+            {
+                $bookings = Bookings::where('booking_guest_name', 'like', '%'.$filterer.'%')->get();
+            }else if ($filter_type == 3)
+            {
+                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->first();
+                $bookings = Bookings::where('listing_id', $listings->listing_id)->get();
+            }else if ($filter_type == 4)
+            {
+                $profiles = Profiles::where('profile_name','like', '%'.$filterer.'%')->first();
+                $listings = Listing::where('profile_id', $profiles->profile_id)->get();
+                $bookings = Bookings::get();
+                $ar = [];
+                foreach($listings as $listing)
+                {
+                    $bookings = Bookings::where('listing_id', $listing->listing_id)->get();
+                    foreach($bookings as $booking)
+                    {
+                        array_push($ar,$booking);
+                    }
+                }
+            }
+            $collect = [];
+            foreach ($bookings as $booking)
+            {
+                if($this->check_in_range($booking->booking_check_in, $booking->booking_check_out, $date))
+                {
+                    array_push($collect, $booking);
+                }
+            }
+            $paginated = fnPaginate::pager($collect, $request);
+            return $paginated;
         }
     }
     
@@ -274,8 +330,11 @@ class BookingsController extends Controller
         }else
         {
             $bookings->booking_check_out = $request->input('data.booking_check_out');
+            $bookings->booking_guest_phone = $request->input('data.booking_guest_phone');
             $bookings->booking_guest_eta = $request->input('data.booking_guest_eta');
             $bookings->booking_guest_status = $request->input('data.booking_guest_status');
+            $bookings->booking_notes = $request->input('data.booking_notes');
+            $bookings->booking_guest_number = $request->input('data.booking_guest_number');
         }
         $bookings->save();
         return 'Data Updated';

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Unit;
+use App\Properties;
+use App\fnPaginate;
 use DateTime;
 
 class UnitController extends Controller
@@ -27,12 +29,10 @@ class UnitController extends Controller
     public function create(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $rawonboard = date_create($request->input('data.unit_onboard_date'));
-        $onboard_date = date_format($rawonboard,"Y-m-d");
         $units = new Listing;
         $units->unit_id = $request->input('data.unit_id');
         $units->unit_name = $request->input('data.unit_name');
-        $units->unit_onboard_date = $onboard_date;
+        $units->unit_onboard_date = $request->input('data.unit_onboard_date');
         $units->unit_base_price = $request->input('data.unit_base_price');
         $units->unit_currency = $request->input('data.unit_currency');
         $units->unit_capacity = $request->input('data.unit_capacity');
@@ -62,14 +62,42 @@ class UnitController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showId($id)
+    public function unitList(Request $request)
     {
-        $units = Unit::where('unit_id',$id)->get();
-        return $units;
-    }
-    public function showProperty($id){
-        $units = Unit::where('property_id',$id)->paginate(20);
-        return $units;
+        $filter_type = $request->input('data.filter_type');
+        $filterer = $request->input('data.filterer');
+        if($filter_type == 0)
+        {
+            $units = Unit::paginate(10);
+            return $units;
+        }else if ($filter_type == 1)
+        {
+            $units = Unit::where('unit_id', 'like', '%'.$filterer.'%')->paginate(10);
+            return $units;
+        }else if ($filter_type == 2)
+        {
+            $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->paginate(10);
+            return $units;
+        }else if ($filter_type == 3)
+        {
+            $units = Unit::where('property_id', 'like', '%'.$filterer.'%')->paginate(10);
+            return $units;
+        }else if ($filter_type == 4)
+        {
+            $properties = Properties::where('property_name', 'like', '%'.$filterer.'%')->get();
+            $collect = collect();
+            foreach ($properties as $property)
+            {
+                $units = Unit::where('property_id', $property->property_id)->get();
+                $collect = $collect->merge($units);
+            }
+            $paginated = fnPaginate::pager($collect, $request);
+            return $paginated;
+        }else if ($filter_type == 5)
+        {
+            $units = Unit::where('unit_onboard_date', 'like', '%'.$filterer.'%')->paginate(10);
+            return $units;
+        }
     }
     public function showDeleted()
     {

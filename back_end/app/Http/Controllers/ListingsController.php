@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Listing;
+use App\Unit;
+use App\Profiles;
+use App\fnPaginate;
+use App\employee;
 use DateTime;
 
 class ListingsController extends Controller
@@ -15,10 +19,19 @@ class ListingsController extends Controller
      */
     public function index()
     {
-        $listings = Listing::Latest()->paginate(20);
+        $listings = Listing::paginate(10);
         return $listings;
     }
-
+    public function integromat($id)
+    {
+        $listings = Listing::where('listing_id',$id)->first();
+        $profiles = Profiles::where('profile_id', $listings->profile_id)->first();
+        $units = Unit::where('unit_id', $listings->unit_id)->first();
+        $merged = collect();
+        $merged = $merged->merge($profiles);
+        $merged = $merged->merge($units);
+        return $merged;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -27,12 +40,10 @@ class ListingsController extends Controller
     public function create(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $rawonboard = date_create($request->input('data.listing_onboard_date'));
-        $onboard_date = date_format($rawonboard,"Y-m-d");
         $listings = new Listing;
         $listings->listing_id = $request->input('data.listing_id');
         $listings->listing_name = $request->input('data.listing_name');
-        $listings->listing_onboard_date = $onboard_date;
+        $listings->listing_onboard_date = $request->input('data.listing_onboard_date');
         $listings->listing_status = $request->input('data.listing_status');
         $listings->listing_instant_book = $request->input('data.listing_instant_book');
         $listings->listing_account_owner = $request->input('data.listing_account_owner');
@@ -62,18 +73,60 @@ class ListingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showId($id)
+    public function listingList(Request $request)
     {
-        $listings = Listing::where('listing_id',$id)->first();
-        return $listings;
-    }
-    public function showUnit($id){
-        $listings = Listing::where('unit_id',$id)->paginate(20);
-        return $listings;
-    }
-    public function showProfile($id){
-        $listings = Listing::where('profile_id',$id)->paginate(20);
-        return $listings;
+        $filter_type = $request->input('data.filter_type');
+        $filterer = $request->input('data.filterer');
+        if($filter_type == 0)
+        {
+            $listings = Listing::Latest()->paginate(10);
+            return $listings;
+        }else if($filter_type == 1)
+        {
+            $listings = Listing::where('listing_id', 'like', '%'.$filterer.'%')->paginate(10);
+            return $listings;
+        }else if($filter_type == 2)
+        {
+            $listings = Listing::where('listing_name', 'like', '%'.$filterer.'%')->paginate(10);
+            return $listings;
+        }else if($filter_type == 3)
+        {
+            $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->get();
+            $collect = collect();
+            foreach($units as $unit)
+            {
+                $listings = Listing::where('unit_id', $unit->unit_id)->get();
+                $collect = $collect->merge($listings);
+            }
+            $paginated = fnPaginate::pager($collect, $request);
+            return $paginated;
+        }else if($filter_type == 4)
+        {
+            $profiles = Profiles::where('profile_name', 'like', '%'.$filterer.'%')->get();
+            $collect = collect();
+            foreach($profiles as $profile)
+            {
+                $listings = Listing::where('profile_id', $profile->profile_id)->get();
+                $collect = $collect->merge($listings);
+            }
+            $paginated = fnPaginate::pager($collect, $request);
+            return $paginated;
+        }else if($filter_type == 5)
+        {
+            $employees = employee::where('employee_name', 'like', '%'.$filterer.'%')->get();
+            $collect = collect();
+            foreach($employees as $employee)
+            {
+                $listings = Listing::where('employee_id', $employee->employee_id)->get();
+                $collect = $collect->merge($listings);
+            }
+            $paginated = fnPaginate::pager($collect, $request);
+            return $paginated;
+        }else if($filter_type == 6)
+        {
+            $listings = Listing::where('listing_onboard_date', 'like', '%'.$filterer.'%')->paginate(10);
+            return $listings;
+        }
     }
     public function showDeleted()
     {

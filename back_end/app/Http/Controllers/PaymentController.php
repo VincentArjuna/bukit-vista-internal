@@ -44,6 +44,35 @@ class PaymentController extends Controller
             return 4;
         }
     }
+    public function uplisting(Request $request)
+    {
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+        $name = $request->input('data.name');
+        $reader = Reader::createFromPath(storage_path('Csv/'.$name), 'r');
+        $reader->setHeaderOffset(0);
+        $payment_id = '';
+        foreach($reader as $offset => $record)
+        {
+            $listings = new Listing;
+            $listings->listing_id = $record['listing_id'];
+            $listings->listing_name = $record['listing_name'];
+            if($record['listing_onboard_date'] == 'NULL'){}else{
+                $listings->listing_onboard_date = $record['listing_onboard_date'];
+            }
+            $listings->listing_status = $record['listing_status'];
+            $listings->listing_instant_book = $record['listing_instant_book'];
+            $listings->listing_account_owner = $record['listing_account_owner'];
+            $listings->listing_account_bv = $record['listing_account_bv'];
+            if($record['listing_remark'] == 'NULL'){}else{
+                $listings->listing_remark = $record['listing_remark'];
+            }
+            $listings->unit_id = $record['unit_id'];
+            $listings->profile_id = $record['profile_id'];
+            $listings->employee_id = $record['employee_id'];
+            $listings->save();
+        }
+        return 'Success';
+    }
     public function upload(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Properties;
+use App\Areas;
+use App\employee;
+use App\fnPaginate;
 use DateTime;
 
 class PropertiesController extends Controller
@@ -61,60 +64,47 @@ class PropertiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showId($id)
+    public function propertyList(Request $request)
     {
-        $properties = Properties::where('property_id',$id)->get();
-        return $properties;
-    }
-    public function showName($id)
-    {
-        $properties = Properties::where('property_name',$id)->paginate(20);
-        return $properties;
-    }
-    public function showType($id)
-    {
-        $properties = Properties::where('property_type',$id)->paginate(20);
-        return $properties;
-    }
-    public function showStatus($id)
-    {
-        $properties = Properties::where('property_status',$id)->paginate(20);
-        return $properties;
-    }
-    public function showPackage($id)
-    {
-        $properties = Properties::where('property_package',$id)->paginate(20);
-        return $properties;
-    }
-    public function showDesign($id)
-    {
-        $properties = Properties::where('property_design',$id)->paginate(20);
-        return $properties;
-    }
-    public function showProximity($id)
-    {
-        $properties = Properties::where('property_proximity',$id)->paginate(20);
-        return $properties;
-    }
-    public function showLS($id)
-    {
-        $properties = Properties::where('property_life_support',$id)->paginate(20);
-        return $properties;
-    }
-    public function showService($id)
-    {
-        $properties = Properties::where('property_service',$id)->paginate(20);
-        return $properties;
-    }
-    public function showArea($id)
-    {
-        $properties = Properties::where('area_id',$id)->paginate(20);
-        return $properties;
-    }
-    public function showEmployee($id)
-    {
-        $properties = Properties::where('employee_id',$id)->paginate(20);
-        return $properties;
+        $filter_type = $request->input('data.filter_type');
+        $filterer = $request->input('data.filterer');
+        if ($filter_type == 0)
+        {
+            $properties = Properties::paginate(10);
+            return $properties;
+        }else if ($filter_type == 1)
+        {
+            $properties = Properties::where('property_id', 'like', '%'.$filterer.'%')->paginate(10);
+            return $properties;
+        }else if ($filter_type == 2)
+        {
+            $properties = Properties::where('property_name', 'like', '%'.$filterer.'%')->paginate(10);
+            return $properties;
+        }else if ($filter_type == 3)
+        {
+            $areas = Areas::where('area_name', 'like', '%'.$filterer.'%')->get();
+            $collect = collect();
+            foreach ($areas as $area)
+            {
+                $properties = Properties::where('area_id', $area->area_id)->get();
+                $collect = $collect->merge($properties);
+            }
+            $paginated = fnPaginate::pager($collect, $request);
+            return $paginated;
+        }else if ($filter_type == 4){
+            
+        }else if ($filter_type == 5)
+        {
+            $employees = employee::where('employee_name', 'like', '%'.$filterer.'%')->get();
+            $collect = collect();
+            foreach($employees as $employee)
+            {
+                $properties = Properties::where('employee_id', $employee->employee_id)->get();
+                $collect = $collect->merge($properties);
+            }
+            $paginated = fnPaginate::pager($collect, $request);
+            return $paginated;
+        }
     }
     public function showDeleted()
     {

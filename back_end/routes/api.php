@@ -18,10 +18,13 @@ use Illuminate\Support\Facades\Cache;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+//api
+//test tokeet
+Route::post('bookingcom', 'BookingComController@newBookingCom');
 
 //Listing
 //Display all 'listing'
-Route::get('listing', 'ListingsController@index');
+Route::post('listing', 'ListingsController@index');
 //Display all softdeleted listing
 Route::get('listing/show_del', 'ListingsController@showDeleted');
 //Display specified 'listing' by 'listing_id'
@@ -41,13 +44,9 @@ Route::get('listing/restore/{id}', 'ListingsController@restore');
 
 //Unit
 //Display all 'Unit'
-Route::get('unit','UnitController@index');
+Route::post('unit','UnitController@unitList');
 //Display softdeleted unit
 Route::get('unit/show_del', 'UnitController@showDeleted');
-//Display specified 'unit' by 'unit_id'
-Route::get('unit/{id}','UnitController@showId');
-//Display specified 'unit' by 'property_id'
-Route::get('unit/property/{id}','UnitController@showProperty');
 //Add new 'Unit'
 Route::post('unit/add','UnitController@create');
 //Update a 'Unit'
@@ -78,6 +77,8 @@ Route::get('employee/restore/{id}', 'EmployeeController@restore');
 //Booking
 //Display all 'booking'
 Route::post('booking','BookingsController@bookingList');
+//Display all soft-deleted
+Route::get('booking/show_del', 'EmployeeControlelr@showDeleted');
 //Add 'booking'
 Route::post('booking/add','BookingsController@create');
 //Update 'booking'
@@ -89,31 +90,9 @@ Route::get('booking/restore/{id}', 'BookingsController@restore');
 
 //Properties
 //Display all 'Properties'
-Route::get('property', 'PropertiesController@index');
+Route::post('property', 'PropertiesController@propertyList');
 //Display all sofdeleted properties
 Route::get('property/show_del', 'PropertiesController@showDeleted');
-//Display 'Properties' specified by 'property_id'
-Route::get('property/{id}', 'PropertiesController@showId');
-//Display 'Properties' specified by 'property_name'
-Route::get('property/name/{id}', 'PropertiesController@showName');
-//Display 'Properties' specified by 'property_type'
-Route::get('property/type/{id}', 'PropertiesController@showType');
-//Display 'Properties' specified by 'property_Status'
-Route::get('property/status/{id}', 'PropertiesController@showStatus');
-//Display 'Properties' specified by 'property_package'
-Route::get('property/package/{id}', 'PropertiesController@showPackage');
-//Display 'Properties' specified by 'property_design'
-Route::get('property/design/{id}', 'PropertiesController@showDesign');
-//Display 'Properties' specified by 'property_proximity'
-Route::get('property/proximity/{id}', 'PropertiesController@showProximity');
-//Display 'Properties' specified by 'property_life_support'
-Route::get('property/LS/{id}', 'PropertiesController@showLS');
-//Display 'Properties' specified by 'property_service'
-Route::get('property/service/{id}', 'PropertiesController@showService');
-//Display 'Properties' specified by 'property_area'
-Route::get('property/area/{id}', 'PropertiesController@showArea');
-//Display 'Properties' specified by 'property_employee'
-Route::get('property/employee/{id}', 'PropertiesController@showEmployee');
 //Add new 'Property'
 Route::post('property/add','PropertiesController@create');
 //Update/Edit 'Property'
@@ -181,6 +160,7 @@ Route::post('users/validate', 'UserController@validate');
 //Payment
 //Upload csv
 Route::post('payment/upload/new', 'PaymentController@upload');
+Route::post('payment/listings/new', 'PaymentController@uplisting');
 //Show all payment
 Route::get('payment', 'PaymentController@index');
 
@@ -214,3 +194,6 @@ Route::post('be_store', 'BEController@store');
 //Login
 //Checker
 Route::post('login', 'LoginController@validate');
+
+//integromat
+Route::get('integromat/{id}', 'ListingsController@integromat');
