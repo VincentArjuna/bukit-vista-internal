@@ -7,6 +7,7 @@ use App\Properties;
 use App\Areas;
 use App\employee;
 use App\fnPaginate;
+use App\Prop_Type;
 use DateTime;
 
 class PropertiesController extends Controller
@@ -92,7 +93,15 @@ class PropertiesController extends Controller
             $paginated = fnPaginate::pager($collect, $request);
             return $paginated;
         }else if ($filter_type == 4){
-            
+            $prop_types = Prop_Type::where('type_desc', 'like', '%'.$filtere.'%')->get();
+            $collect = collect();
+            foreach ($prop_types as $prop_type)
+            {
+                $properties = Properties::where('property_type', $prop_type->property_type)->get();
+                $collect = $collect->merge($properties);
+            }
+            $paginated = fnPaginate::pager($collect, $request);
+            return $paginated;
         }else if ($filter_type == 5)
         {
             $employees = employee::where('employee_name', 'like', '%'.$filterer.'%')->get();

@@ -19,8 +19,7 @@ class ListingsController extends Controller
      */
     public function index()
     {
-        $listings = Listing::paginate(10);
-        return $listings;
+
     }
     public function integromat($id)
     {
@@ -77,17 +76,18 @@ class ListingsController extends Controller
     {
         $filter_type = $request->input('data.filter_type');
         $filterer = $request->input('data.filterer');
+        $per_page = $request->input('data.per_page');
         if($filter_type == 0)
         {
-            $listings = Listing::Latest()->paginate(10);
+            $listings = Listing::Latest()->paginate($per_page);
             return $listings;
         }else if($filter_type == 1)
         {
-            $listings = Listing::where('listing_id', 'like', '%'.$filterer.'%')->paginate(10);
+            $listings = Listing::where('listing_id', 'like', '%'.$filterer.'%')->paginate($per_page);
             return $listings;
         }else if($filter_type == 2)
         {
-            $listings = Listing::where('listing_name', 'like', '%'.$filterer.'%')->paginate(10);
+            $listings = Listing::where('listing_name', 'like', '%'.$filterer.'%')->paginate($per_page);
             return $listings;
         }else if($filter_type == 3)
         {
@@ -124,7 +124,7 @@ class ListingsController extends Controller
             return $paginated;
         }else if($filter_type == 6)
         {
-            $listings = Listing::where('listing_onboard_date', 'like', '%'.$filterer.'%')->paginate(10);
+            $listings = Listing::where('listing_onboard_date', 'like', '%'.$filterer.'%')->paginate($per_page);
             return $listings;
         }
     }

@@ -17,8 +17,7 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $units = Unit::latest()->paginate(20);
-        return $units;
+
     }
 
     /**
@@ -66,21 +65,22 @@ class UnitController extends Controller
     {
         $filter_type = $request->input('data.filter_type');
         $filterer = $request->input('data.filterer');
+        $per_page = $request->input('data.per_page');
         if($filter_type == 0)
         {
-            $units = Unit::paginate(10);
+            $units = Unit::paginate($per_page);
             return $units;
         }else if ($filter_type == 1)
         {
-            $units = Unit::where('unit_id', 'like', '%'.$filterer.'%')->paginate(10);
+            $units = Unit::where('unit_id', 'like', '%'.$filterer.'%')->paginate($per_page);
             return $units;
         }else if ($filter_type == 2)
         {
-            $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->paginate(10);
+            $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->paginate($per_page);
             return $units;
         }else if ($filter_type == 3)
         {
-            $units = Unit::where('property_id', 'like', '%'.$filterer.'%')->paginate(10);
+            $units = Unit::where('property_id', 'like', '%'.$filterer.'%')->paginate($per_page);
             return $units;
         }else if ($filter_type == 4)
         {
@@ -95,7 +95,7 @@ class UnitController extends Controller
             return $paginated;
         }else if ($filter_type == 5)
         {
-            $units = Unit::where('unit_onboard_date', 'like', '%'.$filterer.'%')->paginate(10);
+            $units = Unit::where('unit_onboard_date', 'like', '%'.$filterer.'%')->paginate($per_page);
             return $units;
         }
     }

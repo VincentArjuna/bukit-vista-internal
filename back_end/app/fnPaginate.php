@@ -32,7 +32,14 @@ class fnPaginate
         $collection->sortBy('created_at');
 
         //Define how many items we want to be visible in each page
-        $per_page = 10;
+        $pp = $request->input('data.per_page');
+        if ($pp>0)
+        {
+            $per_page = $request->input('data.per_page');
+        }else 
+        {
+            $per_page = 10;
+        }
 
         //Slice the collection to get the items to display in current page
         $currentPageResults = $collection->slice(($currentPage-1) * $per_page, $per_page)->all();

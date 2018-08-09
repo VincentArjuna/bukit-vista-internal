@@ -154,8 +154,12 @@ Route::post('log/add', 'LogsController@create');
 Route::get('users', 'UserController@index');
 //add user
 Route::post('users/add', 'UserController@create');
-//validation
-Route::post('users/validate', 'UserController@validate');
+//login
+Route::post('login', 'UserController@login');
+//details
+Route::post('users/details', 'UserControlelr@details');
+//logout
+Route::post('logout', 'UserController@logout');
 
 //Payment
 //Upload csv
@@ -190,10 +194,6 @@ Route::get('notes/softdelete/{id}', 'NotesController@softDelete');
 //Booking_Employee
 //Store
 Route::post('be_store', 'BEController@store');
-
-//Login
-//Checker
-Route::post('login', 'LoginController@validate');
 
 //integromat
 Route::get('integromat/{id}', 'ListingsController@integromat');
