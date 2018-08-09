@@ -91,6 +91,10 @@ class ListingsController extends Controller
             return $listings;
         }else if($filter_type == 3)
         {
+            $listings = Listing::where('unit_id', 'like', '%'.$filterer.'%')->paginate($per_page);
+            return $listings;
+        }else if($filter_type == 4)
+        {
             $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->get();
             $collect = collect();
             foreach($units as $unit)
@@ -100,7 +104,7 @@ class ListingsController extends Controller
             }
             $paginated = fnPaginate::pager($collect, $request);
             return $paginated;
-        }else if($filter_type == 4)
+        }else if($filter_type == 5)
         {
             $profiles = Profiles::where('profile_name', 'like', '%'.$filterer.'%')->get();
             $collect = collect();
@@ -111,7 +115,7 @@ class ListingsController extends Controller
             }
             $paginated = fnPaginate::pager($collect, $request);
             return $paginated;
-        }else if($filter_type == 5)
+        }else if($filter_type == 6)
         {
             $employees = employee::where('employee_name', 'like', '%'.$filterer.'%')->get();
             $collect = collect();
@@ -122,7 +126,7 @@ class ListingsController extends Controller
             }
             $paginated = fnPaginate::pager($collect, $request);
             return $paginated;
-        }else if($filter_type == 6)
+        }else if($filter_type == 7)
         {
             $listings = Listing::where('listing_onboard_date', 'like', '%'.$filterer.'%')->paginate($per_page);
             return $listings;

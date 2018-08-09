@@ -24,7 +24,7 @@ Route::post('bookingcom', 'BookingComController@newBookingCom');
 
 //Listing
 //Display all 'listing'
-Route::post('listing', 'ListingsController@index');
+Route::post('listing', 'ListingsController@listingList');
 //Display all softdeleted listing
 Route::get('listing/show_del', 'ListingsController@showDeleted');
 //Display specified 'listing' by 'listing_id'
