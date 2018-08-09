@@ -14,7 +14,9 @@ await fetch(`${URL_AREA}`, {
     body:stringify( 
     {
       'data[filter_type]': param[0],
-      'data[filterer]':param[1] })
+      'data[filterer]':param[1],
+      'data[per_page]':param[2]
+     })
 }).then(res=>res.json())
 .then(res=>res)
 .catch(error => error);
@@ -23,7 +25,8 @@ function* renderRequestUnit({payload}){
     try{
         const param=[
             payload.filter_type,
-            payload.filterer
+            payload.filterer,
+            payload.per_page
         ];
         const renderResult = yield call(onRenderRequestUnit,param);
         if(renderResult.data){

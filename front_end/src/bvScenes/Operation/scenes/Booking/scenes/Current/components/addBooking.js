@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import debounce from 'lodash/debounce';
 import {Modal, Form, Input,InputNumber, Radio ,TimePicker,DatePicker} from 'antd';
 import Button from '../../../../../../../bvComponents/Uielements/button';
 import Select,{SelectOption}from '../../../../../../../bvComponents/Uielements/select';
@@ -19,9 +20,32 @@ const {renderDataUnit}=aUnit;
 const{renderDataListing}=aListing;
 const CollectionCreateForm = Form.create()(
 class extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleSearchUnit=debounce(this.handleSearchUnit,800);
+        this.state={
+            dataUnit:[],
+            dataListing:[],
+            valueUnit:null,
+            valueListing:null,
+        }
+    }
+
+    handleChangeUnit=(value)=>{
+        this.setState({
+            valueUnit:value,
+            dataUnit:[]
+        })
+        this.props.renderDataListing(3,value,30);
+    }
+    handleSearchUnit=(value)=>{
+        this.props.renderDataUnit(2,value,30)
+
+    }
     render() {
       const { visible, onCancel, onCreate, form } = this.props;
       const { getFieldDecorator } = form;
+      const {valueUnit,valueListing,data}=this.state;
       return (
         <Modal
           visible={visible}
@@ -82,8 +106,11 @@ class extends React.Component {
                     'comm'
                 )(
                     <Select>
-                        <Option value={0}>Whatsapp</Option>
-                        <Option value={1}>Booking.com</Option>
+                        <Option value={1}>Whatsapp</Option>
+                        <Option value={2}>Booking.com</Option>
+                        <Option value={3}>WeChat</Option>
+                        <Option value={4}>Booking.com</Option>
+                        <Option value={5}>Agoda</Option>
                     </Select>
                 )}
             </FormItem>
@@ -108,22 +135,20 @@ class extends React.Component {
             </FormItem>
             <FormItem label="Unit">
             {getFieldDecorator(
-                'unit_id', {
-                    rules: [{ required: true, message: 'This is required' }]
-                }
+                'unit_id'
             )(
+        
                 <Select
-                mode="multiple"
-                labelInValue
-                value={this.props.Unit.value}
-                placeholder="Select unit"
-                notFoundContent={this.props.Unit.fetching ? <Spin size="small" /> : null}
-                filterOption={false}
-                onSearch={this.props.renderDataUnit(0,null)}
-                onChange={this.handleChange}
-                style={{ width: '100%' }}
+                    showSearch
+                    placeholder="Select unit"
+                    defaultActiveFirstOption={false}
+                    showArrow={false}
+                    filterOption={false}
+                    onSearch={this.handleSearchUnit}
+                    onChange={this.handleChangeUnit}
+                    notFoundContent={this.props.Unit.fetching ? <Spin size="small" /> : null}
                 >
-                {this.props.Unit.results.map(d => <Option key={d.id}>{d.name}</Option>)}
+                    {this.props.Unit.results.map(d => <Option value={d.unit_id}>{d.unit_name}</Option>)}
                 </Select>
         
             )}
@@ -134,22 +159,11 @@ class extends React.Component {
                         rules: [{ required: true, message: 'This is required' }]
                     }
                 )(
-                    <Select>
-                    </Select>
-                //     <Select
-                //     mode="multiple"
-                //     labelInValue
-                //     value={value}
-                //     placeholder="Select listings"
-                //     notFoundContent={fetching ? <Spin size="small" /> : null}
-                //     filterOption={false}
-                //     onSearch={this.fetchUser}
-                //     onChange={this.handleChange}
-                //     style={{ width: '100%' }}
-                //   >
-                //     {data.map(d => <Option key={d.value}>{d.text}</Option>)}
-                //   </Select>
-            
+                <Select 
+                    notFoundContent={this.props.Listing.fetching ? <Spin size="small" /> : null}
+                >
+                    {this.props.Listing.results.map(d => <Option value={d.listing_id}>{d.listing_id+'-'+d.listing_name}</Option>)}
+                </Select>
                 )}
             </FormItem>
 
@@ -196,7 +210,6 @@ class extends React.Component {
 class AddBooking extends Component {
   state = {
     visible: false,
-    listing:{}
   };
 
   showModal = () => {
@@ -242,6 +255,7 @@ class AddBooking extends Component {
     this.props.renderDataBc(0,0,0,0);
     this.props.renderDataListing(0,null);
     this.props.renderDataEmployee();
+    
 
   }
   render() {
@@ -255,9 +269,12 @@ class AddBooking extends Component {
           onCreate={this.handleCreate}
           dataList={this.props.Current.results}
           index={this.props.index}
-          //listings={this.props.Listing.results}
           employees={this.props.Employee.results}
-          //addBooking={this.props.AddBooking}
+          Unit={this.props.Unit}
+          renderDataUnit={this.props.renderDataUnit}
+          Listing={this.props.Listing}
+          renderDataListing={this.props.renderDataListing}
+          addBooking={this.props.AddBooking}
           editBookingEmployee={this.props.editBookingEmployee}
         />
       </div>
