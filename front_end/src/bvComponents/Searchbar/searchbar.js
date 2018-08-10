@@ -54,29 +54,12 @@ class Searchbar extends Component{
       }
       render() {
         const { searchFilter } = this.state;
-        let selectAfter;
-        if(this.props.title==="Arrival List"){
-          selectAfter = 
-          (
-              <Select defaultValue={this.props.Searchbar.filterType.toString()} style={{ width: 80 }}
-                onChange={this.handleChangeFilterMode}>
-                <Option value="1">Guest Name</Option>
-                <Option value="2">Unit Name</Option>
-                <Option value="3">Profile</Option>
-              </Select>
-          );
-        }else{
-          selectAfter = 
-          (
-              <Select defaultValue={this.props.Searchbar.filterType.toString()} style={{ width: 80 }}
-                onChange={this.handleChangeFilterMode}>
-                <Option value="1">Booking Code</Option>
-                <Option value="2">Guest Name</Option>
-                <Option value="3">Listing Name</Option>
-                <Option value="4">Profile</Option>
-              </Select>
-          );
-        }
+        let selectAfter=(
+            <Select defaultValue={this.props.Searchbar.filterType} style={{ width: 80 }}
+            onChange={this.handleChangeFilterMode}>
+              {this.props.filters.map(d => <Option value={d.key}>{d.name}</Option>)}
+            </Select>
+        );
         return (
           <div>
             <Input

@@ -52,8 +52,10 @@ export default class MyTable extends Component {
       onChange(page){
         if(that.props.mode==='arrivalList'){
           that.props.onPageChange(that.props.index,that.props.area,moment().format('YYYY-MM-DD').toString(),0,null,0,page);
-        }else{
+        }else if(that.props.mode==='bookingCurrent'){
           that.props.onPageChange(0,0,0,0,page);
+        }else if(that.props.mode==='listing'){
+          that.props.onPageChange(0,0,10,page);
         }
       }
     }
@@ -65,7 +67,6 @@ export default class MyTable extends Component {
           pagination={paging}
           dataSource={this.props.dataList}
         />
-        <Button onClick={this.onClick}>Coba</Button>
       </div>
     );
   }

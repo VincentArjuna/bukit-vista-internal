@@ -64,13 +64,12 @@ function* renderRequestSingle({payload}){
         console.log("single :"+param);
         const renderResult = yield call(onRenderRequest,param);
         if(renderResult.data){
-            console.log(renderResult.data);  
-            // yield put(
-            //     actions.renderDataSingleSuccess(
-            //         param[6],
-            //         renderResult.data,
-            //         renderResult.current_page)
-            // );
+            yield put(
+                actions.renderDataSingleSuccess(
+                    param[6],
+                    renderResult.data,
+                    renderResult.current_page)
+            );
         }else{
            
         }

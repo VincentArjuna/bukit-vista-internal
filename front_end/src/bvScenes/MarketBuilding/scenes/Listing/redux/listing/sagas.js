@@ -4,7 +4,7 @@ import {stringify} from 'querystring';
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/listing';
 
 const onRenderRequestListing = async (param) =>
-await fetch(`${URL_AREA}`, {
+await fetch(`${URL_AREA}?page=${param[3]}`, {
     method: 'POST',
     headers: {
         'Cache-Control': 'no-cache',
@@ -26,13 +26,14 @@ function* renderRequestListing({payload}){
         const param=[
             payload.filter_type,
             payload.filterer,
-            payload.per_page
+            payload.per_page,
+            payload.page
         ];
         console.log(param);
         const renderResult = yield call(onRenderRequestListing,param);
         if(renderResult.data){
             yield put(
-                actions.renderDataListingSuccess(renderResult.data)
+                actions.renderDataListingSuccess(renderResult.data,renderResult.total,renderResult.page)
             );
         }else{
             console.log("sad");

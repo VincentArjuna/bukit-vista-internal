@@ -17,7 +17,9 @@ export default function reducer(state = initState,action){
             return{
                 ...state,
                 results:action.results,
-                fetching:false
+                fetching:false,
+                page:action.page,
+                total:action.total,
             };
         default:
             return state;

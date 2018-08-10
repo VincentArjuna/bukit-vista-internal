@@ -34,7 +34,7 @@ class Header extends Component {
                         <DateRange title={this.props.title}/>
                     </Col>
                     <Col md={17} sm={12} xs={24} style={colStyle}>
-                        <Searchbar title={this.props.title}/>
+                        <Searchbar title={this.props.title} filters={this.props.filters}/>
                     </Col>
                 </Row>
                 <Row style={rowStyle} gutter={gutter} justify="start">
