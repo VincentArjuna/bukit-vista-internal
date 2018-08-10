@@ -15,7 +15,6 @@ export default function reducer(state = initState,action){
                 filterer:action.payload.filterer,
                 date_type:action.payload.date_type,
                 filter_type:action.payload.filter_type,
-                page:action.payload.page
             };
         case actions.RENDER_DATA_SUCCESS_BC:
             return{

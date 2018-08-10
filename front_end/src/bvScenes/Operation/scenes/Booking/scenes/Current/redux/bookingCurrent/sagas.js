@@ -109,6 +109,7 @@ function* renderRequest({payload}){
         ];
         const renderResults =yield call(onRenderRequest,param);
         if(renderResults.data){
+            console.log(renderResults);
             yield put(
                 actions.renderDataSuccessBc(
                     renderResults.data,

@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import TableWrapper, { CustomizedTableWrapper } from './antTable.style';
 import clone from 'clone';
+import {Button} from 'antd';
 import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/editCell';
 import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/notesCell';
+import actions from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
+import moment from 'moment';
 
 export default class MyTable extends Component {
   constructor(props) {
@@ -36,15 +40,21 @@ export default class MyTable extends Component {
     return columns;
   };
 
+
+
   render() {
     const classes = `isoCustomizedTableWrapper`;
-    console.log(this.props.onPageChange);
+    const that=this;
     const paging={
       total:this.props.total,
       currentPage:this.props.page,
       page:this.props.page,
       onChange(page){
-        page=>this.props.onPageChange(0,0,0,0,page)
+        if(that.props.mode==='arrivalList'){
+          that.props.onPageChange(that.props.index,moment().format('YYYY-MM-DD').toString(),0,null,0,page);
+        }else{
+          that.props.onPageChange(0,0,0,0,page);
+        }
       }
     }
     return (
@@ -55,6 +65,7 @@ export default class MyTable extends Component {
           pagination={paging}
           dataSource={this.props.dataList}
         />
+        <Button onClick={this.onClick}>Coba</Button>
       </div>
     );
   }

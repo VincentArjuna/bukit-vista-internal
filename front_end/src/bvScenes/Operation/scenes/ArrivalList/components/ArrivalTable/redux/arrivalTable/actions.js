@@ -6,13 +6,18 @@ const actions={
     CHECK_LOADED:'CHECK_LOADED',
     renderData:(index,area,date,filter_type,filterer,date_type)=>({
         type:actions.RENDER_DATA,
-        payload:{index,area,date,filter_type,filterer,date_type}
+        payload:{index,area,date,filter_type,filterer,date_type,page:1}
     }),
-    renderDataSuccess:(index,results,total)=>({
+    renderDataSuccess:(index,results,total,page)=>({
         type:actions.RENDER_DATA_SUCCESS,
         index,
         results,
-        total
+        total,
+        page
+    }),
+    onPageChange:(index,area,date,filter_type,filterer,date_type,page)=>({
+        type:actions.RENDER_DATA,
+        payload:{index,area,date,filter_type,filterer,date_type,page}
     }),
     initializeState:(index)=>({
         type:actions.INITIALIZE_STATE,  

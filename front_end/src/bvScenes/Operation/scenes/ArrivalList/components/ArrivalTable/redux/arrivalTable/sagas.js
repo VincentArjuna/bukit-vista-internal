@@ -5,7 +5,7 @@ import { stringify } from 'querystring';
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/arrival';
 
 const onRenderRequest = async (param) =>
-    await fetch(`${URL_AREA}`, {
+    await fetch(`${URL_AREA}?page=${param[5]}`, {
         method: 'POST',
         headers: {
             'Cache-Control': 'no-cache',
@@ -29,12 +29,17 @@ function* renderRequest({payload}){
             payload.date,
             payload.filter_type,
             payload.filterer,
-            payload.date_type
+            payload.date_type,
+            payload.page
         ];
         const renderResult = yield call(onRenderRequest,param);
         if(renderResult.data){  
             yield put(
-                actions.renderDataSuccess(payload.index,renderResult.data,renderResult.total)
+                actions.renderDataSuccess(
+                    payload.index,
+                    renderResult.data,
+                    renderResult.total,
+                    renderResult.current_page)
             );
         }else{
             console.log('error'+renderResult);

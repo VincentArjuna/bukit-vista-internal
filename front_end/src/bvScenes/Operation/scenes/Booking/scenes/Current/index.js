@@ -22,10 +22,10 @@ class Current extends Component {
                 columns={columns}
                 dataList={this.props.Current.results}
                 total={this.props.Current.total}
-                mode={Current}
-                page={this.props.Current.page}
+                mode="bookingCurrent"
                 onPageChange={this.props.onPageChange}
-                
+                CustomObject={Current}
+                page={this.props.Current.page}
               />
                 </LayoutContent>
             </LayoutContentWrapper>

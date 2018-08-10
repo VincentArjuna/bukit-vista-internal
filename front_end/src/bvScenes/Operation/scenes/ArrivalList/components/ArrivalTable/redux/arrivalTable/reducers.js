@@ -34,7 +34,7 @@ export default function reducer(state = initState,action){
                         filterer:action.payload.filterer,
                         date_type:action.payload.date_type,
                         loading:true,
-                        page:1,
+                        page:action.payload.page,
                         results:[]
                     }
                 }
@@ -48,7 +48,8 @@ export default function reducer(state = initState,action){
                         ...state.tableData[action.index],
                         results:action.results,
                         loading:false,
-                        total:action.total
+                        total:action.total,
+                        page:action.page
                     }
                 },
                 checkCount:state.checkCount+1,
