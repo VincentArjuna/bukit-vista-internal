@@ -34,6 +34,7 @@ function* renderRequest({payload}){
         ];
         const renderResult = yield call(onRenderRequest,param);
         if(renderResult.data){  
+            console.log(renderResult.data);
             yield put(
                 actions.renderDataSuccess(
                     payload.index,
@@ -49,7 +50,37 @@ function* renderRequest({payload}){
     }
 }
 
+function* renderRequestSingle({payload}){
+    try{
+        const param=[
+            payload.area,
+            payload.date,
+            payload.filter_type,
+            payload.filterer,
+            payload.date_type,
+            payload.page,
+            payload.index
+        ];
+        console.log("single :"+param);
+        const renderResult = yield call(onRenderRequest,param);
+        if(renderResult.data){
+            console.log(renderResult.data);  
+            // yield put(
+            //     actions.renderDataSingleSuccess(
+            //         param[6],
+            //         renderResult.data,
+            //         renderResult.current_page)
+            // );
+        }else{
+           
+        }
+    }catch(error){
+        console.log("error message : "+ error);
+    }
+}
+
 
 export default function* rootSaga() {
     yield all([takeEvery(actions.RENDER_DATA,renderRequest)]);
+    yield all([takeEvery(actions.RENDER_DATA_SINGLE,renderRequestSingle)]);
 }

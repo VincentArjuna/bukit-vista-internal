@@ -51,7 +51,7 @@ export default class MyTable extends Component {
       page:this.props.page,
       onChange(page){
         if(that.props.mode==='arrivalList'){
-          that.props.onPageChange(that.props.index,moment().format('YYYY-MM-DD').toString(),0,null,0,page);
+          that.props.onPageChange(that.props.index,that.props.area,moment().format('YYYY-MM-DD').toString(),0,null,0,page);
         }else{
           that.props.onPageChange(0,0,0,0,page);
         }

@@ -1,6 +1,8 @@
 const actions={
     RENDER_DATA:'RENDER_DATA',
     RENDER_DATA_SUCCESS:'RENDER_DATA_SUCCESS',
+    RENDER_DATA_SINGLE:'RENDER_DATA_SINGLE',
+    RENDER_DATA_SINGLE_SUCCESS:'RENDER_DATA_SINGLE_SUCCESS',
     INITIALIZE_STATE :'INITIALIZE_STATE',
     RESET_STATE:'RESET_STATE',
     CHECK_LOADED:'CHECK_LOADED',
@@ -16,8 +18,14 @@ const actions={
         page
     }),
     onPageChange:(index,area,date,filter_type,filterer,date_type,page)=>({
-        type:actions.RENDER_DATA,
+        type:actions.RENDER_DATA_SINGLE,
         payload:{index,area,date,filter_type,filterer,date_type,page}
+    }),
+    renderDataSingleSuccess:(index,results,page)=>({
+        type:actions.RENDER_DATA_SINGLE_SUCCESS,
+        index,
+        results,
+        page
     }),
     initializeState:(index)=>({
         type:actions.INITIALIZE_STATE,  

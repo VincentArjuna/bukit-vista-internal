@@ -5,6 +5,7 @@ const initState={
     checkCount:0,
     totalData:0,
     singleRender:false,
+    filledTables:[]
 }
 
 export default function reducer(state = initState,action){
@@ -15,8 +16,12 @@ export default function reducer(state = initState,action){
                 tableData:{
                     ...state.tableData,
                     [action.payload.index]:{
+                        results:[],
+                        loading:false,
+                        isFilled:false,
                     }
-                }
+                },
+                checkCount:state.checkCount+1,
             };
         case actions.RESET_STATE:
             return{
@@ -37,9 +42,29 @@ export default function reducer(state = initState,action){
                         page:action.payload.page,
                         results:[]
                     }
-                }
+                },
+                totalData:0,
+                filledTables:[]
             };
         case actions.RENDER_DATA_SUCCESS:
+            if(action.total>0){
+            return{
+                ...state,
+                tableData:{
+                    ...state.tableData,
+                    [action.index]:{
+                        ...state.tableData[action.index],
+                        results:action.results,
+                        loading:false,
+                        isFilled:true,
+                        total:action.total,
+                        page:action.page
+                    }
+                },
+                totalData:state.totalData+action.total,
+                filledTables:[...state.filledTables,action.index]
+            };
+        }else{
             return{
                 ...state,
                 tableData:{
@@ -52,9 +77,33 @@ export default function reducer(state = initState,action){
                         page:action.page
                     }
                 },
-                checkCount:state.checkCount+1,
                 totalData:state.totalData+action.total
             };
+        }
+        case actions.RENDER_DATA_SINGLE:
+            return{
+                ...state,
+                tableData:{
+                    ...state.tableData,
+                    [action.index]:{
+                        ...state.tableData[action.index],
+                        loading:true,
+                    }
+                }
+            };
+        case actions.RENDER_DATA_SINGLE_SUCCESS:
+            return{
+                ...state,
+                tableData:{
+                    ...state.tableData,
+                    [action.index]:{
+                        ...state.tableData[action.index],
+                        loading:false,
+                        results:action.results,
+                        page:action.page
+                    }
+                }
+            }
         default:
             return state;
     }
