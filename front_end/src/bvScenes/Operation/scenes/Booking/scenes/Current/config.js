@@ -63,6 +63,10 @@ const renderCell = (object, type, key) => {
 ];
 const filterTypes=[
     {
+        key:'0',
+        name:'Default'
+    },
+    {
       key:'1',
       name:'Booking Code'
     },

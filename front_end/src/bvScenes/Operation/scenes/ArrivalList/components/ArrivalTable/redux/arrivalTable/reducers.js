@@ -21,7 +21,7 @@ export default function reducer(state = initState,action){
                         isFilled:false,
                     }
                 },
-                checkCount:state.checkCount+1,
+                //checkCount:state.checkCount+1,
             };
         case actions.RESET_STATE:
             return{
@@ -62,7 +62,8 @@ export default function reducer(state = initState,action){
                     }
                 },
                 totalData:state.totalData+action.total,
-                filledTables:[...state.filledTables,action.index]
+                filledTables:[...state.filledTables,action.index],
+                checkCount:state.checkCount+1,
             };
         }else{
             return{
@@ -77,7 +78,8 @@ export default function reducer(state = initState,action){
                         page:action.page
                     }
                 },
-                totalData:state.totalData+action.total
+                totalData:state.totalData+action.total,
+                checkCount:state.checkCount+1,
             };
         }
         case actions.RENDER_DATA_SINGLE:

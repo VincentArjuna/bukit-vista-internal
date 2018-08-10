@@ -24,21 +24,23 @@ class DateRange extends Component {
     this.renderChange();
   }
   renderChange=()=>{
-    if(this.props.title==='Arrival List'){
-      alert("al");
-      this.props.Table.checkCount=0;
-      this.props.Table.totalData=0;
-      const areasLen = areas.length;
-      areas.map((area,i)=>{
-        areasLen === i ? this.props.renderData(i,area.code,this.props.DateRange.date,0,null,this.props.DateRange.dateType):this.props.renderData(area.key,area.code,this.props.DateRange.date,0,null,this.props.DateRange.dateType);
-      });
-    }else if(this.props.title ==='Booking / Current'){
-        this.props.renderDataBc(this.props.DateRange.date,null,this.props.DateRange.dateType+1,0);
+    switch(this.props.mode){
+      case "arrivalList":
+        this.props.Table.checkCount=0;
+        this.props.Table.totalData=0;
+        const areasLen = areas.length;
+        areas.map((area,i)=>{
+          areasLen === i ? 
+          this.props.renderData(i,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType)
+          :this.props.renderData(area.key,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType);
+        });
+      default:
+        return;
     }
   }
 
   render() {
-    if(this.props.title==='Arrival List'){
+    if(this.props.mode==='arrivalList'){
       return (
         <div>
           <Group compact>
@@ -70,7 +72,10 @@ class DateRange extends Component {
               value={moment(this.props.DateRange.date,'YYYY-MM-DD')}
               onChange={this.onChange}
             />
-            <Select defaultValue={this.props.DateRange.dateType.toString()} onChange={this.handleChangeDateMode}>
+            <Select defaultValue={this.props.DateRange.dateType.toString()}  onChange={this.handleChangeDateMode}>
+              <Option value="0">
+                Default
+              </Option>
               <Option value="1">
                 Check In
               </Option>
@@ -98,6 +103,7 @@ function mapStateToProps(state){
     DateRange:state.daterange,
     Table:state.arrivalTable,
     Current:state.current,
+    Searchbar:state.searchbar
   };
 }
 export default connect(mapStateToProps,{renderData,renderDataBc})(DateRange);

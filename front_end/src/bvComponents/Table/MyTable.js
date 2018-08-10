@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import TableWrapper, { CustomizedTableWrapper } from './antTable.style';
+import TableWrapper from './antTable.style';
 import clone from 'clone';
-import {Button} from 'antd';
 import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/editCell';
 import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/notesCell';
-import actions from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 import moment from 'moment';
 
-export default class MyTable extends Component {
+class MyTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,7 +49,12 @@ export default class MyTable extends Component {
       page:this.props.page,
       onChange(page){
         if(that.props.mode==='arrivalList'){
-          that.props.onPageChange(that.props.index,that.props.area,moment().format('YYYY-MM-DD').toString(),0,null,0,page);
+          that.props.onPageChange(
+            that.props.index,that.props.area,
+            that.props.DateRange.date,that.props.Searchbar.filterType,
+            that.props.Searchbar.filterer,
+            that.props.DateRange.dateType,
+            page);
         }else if(that.props.mode==='bookingCurrent'){
           that.props.onPageChange(0,0,0,0,page);
         }else if(that.props.mode==='listing'){
@@ -71,3 +74,10 @@ export default class MyTable extends Component {
     );
   }
 }
+function mapStateToProps(state){
+  return{
+    DateRange:state.daterange,
+    Searchbar:state.searchbar,
+  };
+}
+export default connect(mapStateToProps,null)(MyTable);

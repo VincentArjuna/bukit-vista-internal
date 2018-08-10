@@ -15,14 +15,14 @@ class Current extends Component {
   render() {
     return (    
         <div>
-          <Header title={title} columns={columns} filters={filterTypes}/>
+          <Header title={title} mode={mode} columns={columns} filters={filterTypes}/>
             <LayoutContentWrapper>
               <LayoutContent>
               <MyTable 
                 columns={columns}
                 dataList={this.props.Current.results}
                 total={this.props.Current.total}
-                mode={this.props.mode}
+                mode={mode}
                 onPageChange={this.props.onPageChange}
                 page={this.props.Current.page}
               />

@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import LayoutContentWrapper from "../../../../bvComponents/Utility/layoutWrapper.js";
 import LayoutContent from "../../../../bvComponents/Utility/layoutContent";
-import {columns,title,filterTypes} from './config.js';
+import {columns,title,filterTypes,mode} from './config.js';
 import MyTable from '../../../../bvComponents/Table/MyTable';
 import Header from '../../../../bvComponents/Header/index.js';
 import actions from './redux/listing/actions';
@@ -15,7 +15,7 @@ class Listing extends Component {
     render() {
       return (    
           <div>
-            <Header title={title} columns={columns} filters={filterTypes}/>
+            <Header title={title} mode={mode} columns={columns} filters={filterTypes}/>
               <LayoutContentWrapper>
                 <LayoutContent>
                 <MyTable 

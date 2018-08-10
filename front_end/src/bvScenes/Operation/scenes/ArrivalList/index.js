@@ -5,7 +5,7 @@ import Box from  '../../../../bvComponents/Utility/box';
 import moment from 'moment';
 import LayoutContentWrapper from "../../../../bvComponents/Utility/layoutWrapper.js";
 import basicStyle from '../../../../settings/basicStyle.js';
-import {columns,title,areas,filterTypes} from './config.js';
+import {columns,title,areas,filterTypes,mode} from './config.js';
 import { Collapse } from 'antd';
 import CollapseWrapper from '../../../../bvComponents/Collapse/collapse.style';
 import ContentHolder from '../../../../bvComponents/Utility/contentHolder';
@@ -35,17 +35,19 @@ class ArrivalList extends Component {
     this.props.Table.totalData=0;
     const areasLen = areas.length;
     areas.map((area,i)=>{areasLen === i ? this.props.initializeState(i):this.props.initializeState(area.key);});
-    //this.props.renderData(areas,moment().format('YYYY-MM-DD').toString(),0,null,0);
     areas.map((area,i)=>{
-      areasLen === i ? this.props.renderData(i,area.code,moment().format('YYYY-MM-DD').toString(),0,null,0):this.props.renderData(area.key,area.code,moment().format('YYYY-MM-DD'),0,null,0);
+      areasLen === i ? 
+      this.props.renderData(i,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType)
+      :this.props.renderData(area.key,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType);
     });
   }
   render() {
+   
     const { rowStyle, colStyle } = basicStyle;
-    if(this.props.Table.checkCount === areas.length){
+    if(this.props.Table.checkCount>0){
       return (
         <div>
-          <Header totalData={this.props.Table.totalData} title={title} filters={filterTypes} date={moment().format('YYYY-MM-DD').toString()}/>  
+          <Header totalData={this.props.Table.totalData} mode={mode}title={title} filters={filterTypes}/>  
           <LayoutContentWrapper>
             <Box>    
               <Row style={rowStyle} justify="start" align="middle">
@@ -180,7 +182,9 @@ class ArrivalList extends Component {
 }
 function mapStateToProps(state){
   return{
-    Table: state.arrivalTable
+    Table: state.arrivalTable,
+    DateRange:state.daterange,
+    Searchbar:state.searchbar
   };
 }
 

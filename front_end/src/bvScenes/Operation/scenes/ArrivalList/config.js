@@ -176,6 +176,10 @@ const areas = [
 ];
 const filterTypes=[
   {
+    key:'0',
+    name:'Default'
+  },
+  {
     key:'1',
     name:'Guest name'
   },
@@ -190,4 +194,5 @@ const filterTypes=[
 ];
 
 const title = "Arrival List";
-export { columns,title,areas,filterTypes };
+const mode="arrivalList";
+export { columns,title,areas,filterTypes,mode};

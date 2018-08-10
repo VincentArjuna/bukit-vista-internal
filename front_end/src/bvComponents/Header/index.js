@@ -9,12 +9,10 @@ import PageHeader from "../Utility/pageHeader";
 import { Select } from 'antd';
 import Button from '../../bvComponents/Uielements/button';
 import basicStyle from '../../settings/basicStyle';
-import {Input} from 'antd';
 import AddBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/components/addBooking';
 
 import actions from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 
-const Option= Select.Option;
 const {downloadCsv} = actions;
 class Header extends Component {
     handleBooking=event=>{
@@ -23,28 +21,75 @@ class Header extends Component {
     handleDownloadCsv=event=>{
         this.props.downloadCsv(moment().format('YYYY-MM-DD').toString());
     }
+    renderComponents(){
+        const { rowStyle, colStyle, gutter } = basicStyle;
+        if(this.props.mode==='arrivalList'||this.props.mode==='bookingCurrent'){
+            return(
+                <Row style={rowStyle} gutter={gutter} justify="start">
+                    <Col md={9} sm={12} xs={24} style={colStyle}>
+                        <DateRange mode={this.props.mode}/>
+                    </Col>
+                    <Col md={15} sm={12} xs={24} style={colStyle}>
+                        <Searchbar mode={this.props.mode} title={this.props.title} filters={this.props.filters}/>
+                    </Col>
+                </Row>
+            );
+        }else{
+            return(
+                <Row style={rowStyle} gutter={gutter} justify="start">
+                    <Col md={24} sm={12} xs={24} style={colStyle}>
+                        <Searchbar mode={this.props.mode} title={this.props.title} filters={this.props.filters}/>
+                    </Col>
+                </Row>
+            );
+        }
+    }
+    renderButtons(){
+        switch(this.props.mode){
+            case "arrivalList":
+                return(
+                    <Button type="primary" onClick={this.handleDownloadCsv}>Download CSV</Button>
+                );
+            case "bookingCurrent":
+                return(
+                    <AddBooking/>
+                );
+            default:
+                return;
+
+        }
+    }
+    renderInfo(){
+        switch(this.props.mode){
+            case "arrivalList":
+                return(
+                    <h3 className="isoComponentTitle">Total Booking(s) Today : {this.props.totalData}</h3>
+                );
+            case "bookingCurrent":
+                return(
+                    <h3 className="isoComponentTitle">Total Booking(s) : {this.props.total}</h3>
+                );
+            case "listing":
+                return(
+                    <h3 className="isoComponentTitle">Total Listing(s) : {this.props.total}</h3>
+                );
+            default:
+                return;
+        }
+    }
     render() {
         const { rowStyle, colStyle, gutter } = basicStyle;
         return(
             <div>
                 <LayoutContent>
                 <PageHeader>{this.props.title}</PageHeader>
-                <Row style={rowStyle} gutter={gutter} justify="start">
-                    <Col md={7} sm={12} xs={24} style={colStyle}>
-                        <DateRange title={this.props.title}/>
-                    </Col>
-                    <Col md={17} sm={12} xs={24} style={colStyle}>
-                        <Searchbar title={this.props.title} filters={this.props.filters}/>
-                    </Col>
-                </Row>
+                    {this.renderComponents()}
                 <Row style={rowStyle} gutter={gutter} justify="start">
                     <Col md={6} sm={12} xs={24} style={colStyle}>
-                        <h3>Total Booking : {this.props.totalData}</h3>
+                        {this.renderInfo()}
                     </Col>
                     <Col push={15} md={3} sm={12} xs={24} style={colStyle}>
-                        {this.props.title==='Booking / Current'?
-                            <AddBooking/>:
-                            <Button type="primary" onClick={this.handleDownloadCsv}>Download CSV</Button>}
+                        {this.renderButtons()}
                     </Col>
                 </Row>
                 </LayoutContent>

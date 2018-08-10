@@ -70,35 +70,35 @@ const renderCell = (object, type, key) => {
 
 const filterTypes=[
     {
-      key:0,
+      key:'0',
       name:'Default'
     },
     {
-      key:1,
+      key:'1',
       name:'Listing ID'
     },
     {
-      key:2,
+      key:'2',
       name:'Listing Name'
     },
     {
-        key:3,
+        key:'3',
         name:'Unit ID'
     },
     {
-        key:4,
+        key:'4',
         name:'Unit Name'
     },
     {
-        key:5,
+        key:'5',
         name:'Profile Name'
     },
     {
-        key:6,
+        key:'6',
         name:'Employee Name'
     },
     {
-        key:7,
+        key:'7',
         name:'Onboard Date'
     },
   ];

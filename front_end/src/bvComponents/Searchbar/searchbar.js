@@ -25,27 +25,29 @@ class Searchbar extends Component{
         });
         this.props.Searchbar.filterer=e.target.value;
         if(this.props.Searchbar.filterer===""){
+          this.props.Searchbar.filterType=0;
           this.renderChange();
         }
       };
 
       renderChange=()=>{
-        if(this.props.title==='Arrival List'){
-        this.props.Table.checkCount=0;
-        this.props.Table.totalData=0;
-        const areasLen = areas.length;
-        areas.map((area,i)=>{
-          areasLen === i ? this.props.renderData(i,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType)
-          :this.props.renderData(area.key,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType);
-        });}
-        else if(this.props.title ==='Booking / Current'){
-            this.props.renderDataBc(this.props.DateRange.date,this.props.Searchbar.filterer,this.props.DateRange.dateType,this.props.Searchbar.filterType);
+        switch(this.props.mode){
+          case "arrivalList":
+            this.props.Table.checkCount=0;
+            this.props.Table.totalData=0;
+            const areasLen = areas.length;
+            areas.map((area,i)=>{
+              areasLen === i ? 
+              this.props.renderData(i,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType)
+              :this.props.renderData(area.key,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType);
+            });
+          default:
+            return;
         }
       }
       
       handleChangeFilterMode=(value)=>{
         this.props.Searchbar.filterType = value;
-        this.renderChange();
       }
       handleSearch=e=>{
         if(e.key==="Enter" && (this.props.Searchbar.filterer!== null || this.props.Searchbar.filterer!== "")){
@@ -55,7 +57,7 @@ class Searchbar extends Component{
       render() {
         const { searchFilter } = this.state;
         let selectAfter=(
-            <Select defaultValue={this.props.Searchbar.filterType} style={{ width: 80 }}
+            <Select defaultValue={this.props.Searchbar.filterType.toString()} style={{ width: 150}}
             onChange={this.handleChangeFilterMode}>
               {this.props.filters.map(d => <Option value={d.key}>{d.name}</Option>)}
             </Select>
@@ -65,7 +67,7 @@ class Searchbar extends Component{
             <Input
               placeholder="Search..."
               suffix={<Icon type="search" style={{ color: "rgba(0,0,0,.25)" }} />}
-              value={searchFilter}
+              value={this.props.Searchbar.filterer}
               onChange={this.onChangeSearch}
               onBlurCapture={this.handleBlur}
               addonAfter={selectAfter}

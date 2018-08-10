@@ -261,7 +261,7 @@ class AddBooking extends Component {
   render() {
     return (
       <div>
-        <Button class="primary"  onClick={this.showModal}>Add Booking</Button>
+        <Button type="primary"  onClick={this.showModal}>Add Booking</Button>
         <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
