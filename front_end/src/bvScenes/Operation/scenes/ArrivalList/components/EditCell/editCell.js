@@ -138,8 +138,9 @@ const CollectionCreateForm = Form.create()(
     }
   }
 );
-
+const that=this;
 class EditCell extends Component {
+
   state = {
     visible: false,
     employees:{}
@@ -151,7 +152,6 @@ class EditCell extends Component {
 
   handleCancel = () => {
     this.setState({ visible: false });
-    this.props.Table.singleSearch=false;
   }
 
   handleCreate = () => {
@@ -188,23 +188,21 @@ class EditCell extends Component {
         values["verifier"],
         2
       );
+      this.props.onPageChange(
+        this.props.indexTable,this.props.area,
+        this.props.DateRange.date,this.props.Searchbar.filterType,
+        this.props.Searchbar.filterer,
+        this.props.DateRange.dateType,
+        this.props.page);
       form.resetFields();
       this.setState({ visible: false });
     });
-  }
-  renderChange=()=>{
-    this.props.Table.checkCount=0;
-    this.props.Table.totalData=0;
-    this.props.renderData(this.props.key,this.props.area,
-      this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType)
-    
   }
   saveFormRef = (formRef) => {
     this.formRef = formRef;
   }
   componentDidMount(){
     this.props.renderDataEmployee();
-    this.props.Table.singleSearch=true;
   }
   render() {
     return (

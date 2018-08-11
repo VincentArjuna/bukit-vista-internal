@@ -12,6 +12,7 @@ class MyTable extends Component {
     this.state = {
       size: 'default',
       columns: clone(this.props.columns),
+      page: 1,
     };
   }
   componentDidMount(){
@@ -19,11 +20,19 @@ class MyTable extends Component {
   }
 
   createColumns=(columns)=> {
+    const that=this;
     const editColumn={
       title:'Details',
       dataIndex:'details',
       render: (text, record, index) => (
-        <EditCell key={this.props.key} index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList}/>
+        <EditCell key={this.props.key} index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList} 
+          onPageChange={this.props.onPageChange}
+          Searchbar={this.props.Searchbar}
+          DateRange={this.props.DateRange}
+          page={this.state.page}
+          indexTable={that.props.index}
+          area={this.props.area}
+          />
       )
     }
     const notesColumn={
@@ -49,9 +58,12 @@ class MyTable extends Component {
       page:this.props.page,
       onChange(page){
         if(that.props.mode==='arrivalList'){
+          that.setState({page:page});
           that.props.onPageChange(
-            that.props.index,that.props.area,
-            that.props.DateRange.date,that.props.Searchbar.filterType,
+            that.props.index,
+            that.props.area,
+            that.props.DateRange.date,
+            that.props.Searchbar.filterType,
             that.props.Searchbar.filterer,
             that.props.DateRange.dateType,
             page);

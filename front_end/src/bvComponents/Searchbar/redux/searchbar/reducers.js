@@ -1,6 +1,6 @@
 import moment from 'moment';
 const initState={
-    filterType:1,
+    filterType:0,
     filterer:null,
     mode:null
 }

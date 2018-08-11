@@ -39,19 +39,25 @@ const columns = [
   {
     title: 'Check In',
     key: 'booking_check_in',
-    width: '50',
+    width: '20',
     render: object => renderCell(object, 'TextCell', 'booking_check_in')
   },
   {
     title: 'Check Out',
     key: 'booking_check_out',
-    width: '50',
+    width: '20',
     render: object => renderCell(object, 'TextCell', 'booking_check_out')
+  },
+  {
+    title: 'Profile',
+    key: 'profile_name',
+    width: '50',
+    render: object => renderCell(object, 'TextCell', 'profile_name')
   },
   {
     title: 'ETA',
     key: 'booking_guest_eta',
-    width: '50',
+    width: '20',
     render: object => renderCell(object, 'TextCell', 'booking_guest_eta')
   },
   {
