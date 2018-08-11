@@ -23,7 +23,7 @@ class Listing extends Component {
                   columns={columns}
                   dataList={this.props.Listing.results}
                   total={this.props.Listing.total}
-                  mode="listing"
+                  mode={mode}
                   onPageChange={this.props.onPageChange}
                   page={this.props.Listing.page}
                 />

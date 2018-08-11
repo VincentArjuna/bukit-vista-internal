@@ -2,7 +2,6 @@ import actions from './actions';
 
 const initState={
     results:[],
-    value:null,
     fetching:false,
 }
 

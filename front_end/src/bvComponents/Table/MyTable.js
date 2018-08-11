@@ -50,6 +50,7 @@ class MyTable extends Component {
 
 
   render() {
+    console.log(this.props.mode);
     const classes = `isoCustomizedTableWrapper`;
     const that=this;
     const paging={
@@ -57,8 +58,8 @@ class MyTable extends Component {
       currentPage:this.props.page,
       page:this.props.page,
       onChange(page){
+        let pg = page;
         if(that.props.mode==='arrivalList'){
-          that.setState({page:page});
           that.props.onPageChange(
             that.props.index,
             that.props.area,
@@ -66,16 +67,16 @@ class MyTable extends Component {
             that.props.Searchbar.filterType,
             that.props.Searchbar.filterer,
             that.props.DateRange.dateType,
-            page);
+            pg);
         }else if(that.props.mode==='bookingCurrent'){
           that.props.onPageChange(
             that.props.DateRange.date,
             that.props.Searchbar.filterer,
             that.props.DateRange.dateType,
             that.props.Searchbar.filterType,
-            page);
-        }else if(that.props.mode==='listing'){
-          that.props.onPageChange(that.props.Searchbar.filterType,that.props.Searchbar.filterer,10,page);
+            pg);
+        }else if(that.props.mode==='listing' || that.props.mode==='unit' ||that.props.mode==='property' ){
+          that.props.onPageChange(that.props.Searchbar.filterType,that.props.Searchbar.filterer,10,pg);
         }
       }
     }

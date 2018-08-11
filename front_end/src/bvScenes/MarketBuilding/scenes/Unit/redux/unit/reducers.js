@@ -2,7 +2,6 @@ import actions from './actions';
 
 const initState={
     results:[],
-    value:null,
     fetching:false,
 }
 
@@ -17,7 +16,14 @@ export default function reducer(state = initState,action){
             return{
                 ...state,
                 results:action.results,
-                fetching:false
+                fetching:false,
+                page:action.page,
+                total:action.total,
+            };
+        case actions.ADD_UNIT:
+            return{
+                ...state,
+                payload:action.payload
             };
         default:
             return state;

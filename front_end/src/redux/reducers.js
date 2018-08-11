@@ -7,6 +7,8 @@ import DateRange from '../bvComponents/DateRange/redux/reducers';
 import Searchbar from '../bvComponents/Searchbar/redux/reducers';
 import Listing from '../bvScenes/MarketBuilding/scenes/Listing/redux/reducers';
 import Unit from '../bvScenes/MarketBuilding/scenes/Unit/redux/reducers';
+import Property from '../bvScenes/MarketBuilding/scenes/Property/redux/reducers';
+
 export default {
   Auth,
   App,
@@ -18,4 +20,5 @@ export default {
   ...Listing,
   ...Employee,
   ...Unit,
+  ...Property,
 };
