@@ -21,6 +21,31 @@ await fetch(`${URL_AREA}?page=${param[3]}`, {
 .then(res=>res)
 .catch(error => error);
 
+const onAddListingRequest=async(param)=>
+await fetch(`${URL_AREA}/add`, {
+    method: 'POST',
+    headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+    },
+    body:stringify( 
+    {
+        'data[listing_id]':param[0],
+        'data[listing_name]':param[1],
+        'data[listing_onboard_date]':param[2],
+        'data[listing_status]':param[3],
+        'data[listing_instant_book]':param[4],
+        'data[listing_account_owner]':param[5],
+        'data[listing_account_bv]':param[6],
+        'data[listing_remark]':param[7],
+        'data[unit_id]':param[8],
+        'data[profile_id]':param[9],
+        'data[employee_id]':param[10],
+     })
+}).then(res=>res.json())
+.then(res=>res)
+.catch(error => error);
 function* renderRequestListing({payload}){
     try{
         const param=[
@@ -42,7 +67,30 @@ function* renderRequestListing({payload}){
         console.log("saga error listing : "+error);
     }
 }
+function* addListing({payload}){
+    try{
+        const param=[
+            payload.id,
+            payload.name,
+            payload.date,
+            payload.status,
+            payload.instant_book,
+            payload.accO,
+            payload.accB,
+            payload.remark,
+            payload.unit,
+            payload.profile,
+            payload.employee
+        ];
+        console.log(param);
+        const renderResults=yield call(onAddListingRequest,param);
+        console.log(renderResults);
 
+    }catch(error){
+        console.log("saga error add listing: "+error)
+    }
+}
 export default function* rootSaga() {
     yield all([takeEvery(actions.RENDER_DATA_LISTING,renderRequestListing)]);
+    yield all([takeEvery(actions.ADD_LISTING,addListing)]);
 }

@@ -10,7 +10,8 @@ import actions from './redux/listing/actions';
 const {renderDataListing,onPageChange}=actions;
 class Listing extends Component {
     componentDidMount(){
-      this.props.renderDataListing(0,0,10);
+      this.props.Searchbar.filterType=0;
+      this.props.renderDataListing(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10);
     }
     render() {
       return (    
@@ -22,7 +23,7 @@ class Listing extends Component {
                   columns={columns}
                   dataList={this.props.Listing.results}
                   total={this.props.Listing.total}
-                  mode="bookingCurrent"
+                  mode="listing"
                   onPageChange={this.props.onPageChange}
                   page={this.props.Listing.page}
                 />
@@ -37,6 +38,7 @@ class Listing extends Component {
   function mapStateToProps(state){
     return {
       Listing :state.listing,
+      Searchbar:state.searchbar
     };
   }
   export default connect(

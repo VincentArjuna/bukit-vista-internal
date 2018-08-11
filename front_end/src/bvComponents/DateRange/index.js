@@ -34,6 +34,13 @@ class DateRange extends Component {
           this.props.renderData(i,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType)
           :this.props.renderData(area.key,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType);
         });
+      case "bookingCurrent":
+        this.props.renderDataBc(
+          this.props.DateRange.date,
+          this.props.Searchbar.filterer,
+          this.props.DateRange.dateType,
+          this.props.Searchbar.filterType
+        );
       default:
         return;
     }

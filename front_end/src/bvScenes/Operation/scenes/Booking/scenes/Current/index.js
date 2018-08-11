@@ -10,7 +10,14 @@ import actions from './redux/bookingCurrent/actions';
 const {renderDataBc,onPageChange}=actions;
 class Current extends Component {
   componentDidMount(){
-    this.props.renderDataBc(0,0,0,0);
+    this.props.Searchbar.filterType=0;
+    this.props.Searchbar.filterer=null;
+    this.props.renderDataBc(
+      this.props.DateRange.date,
+      this.props.Searchbar.filterer,
+      this.props.DateRange.dateType,
+      this.props.Searchbar.filterType
+    );
   }
   render() {
     return (    
@@ -37,6 +44,8 @@ class Current extends Component {
 function mapStateToProps(state){
   return {
     Current :state.bookingCurrent,
+    DateRange: state.daterange,
+    Searchbar:state.searchbar,
   };
 }
 export default connect(

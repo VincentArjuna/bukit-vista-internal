@@ -4,10 +4,12 @@ import { Select,Input,Icon} from 'antd';
 
 import actions from '../../bvScenes/Operation/scenes/ArrivalList/components/ArrivalTable/redux/arrivalTable/actions';
 import aBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
+import aListing from '../../bvScenes/MarketBuilding/scenes/Listing/redux/listing/actions';
 import {areas} from '../../bvScenes/Operation/scenes/ArrivalList/config';
 const Option= Select.Option;
 const {renderData} = actions;
 const {renderDataBc}=aBooking;
+const {renderDataListing}=aListing;
 class Searchbar extends Component{
 
     constructor(props) {
@@ -25,8 +27,10 @@ class Searchbar extends Component{
         });
         this.props.Searchbar.filterer=e.target.value;
         if(this.props.Searchbar.filterer===""){
+          let temp = this.props.Searchbar.filterType;
           this.props.Searchbar.filterType=0;
           this.renderChange();
+          this.props.Searchbar.filterType=temp;
         }
       };
 
@@ -41,6 +45,20 @@ class Searchbar extends Component{
               this.props.renderData(i,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType)
               :this.props.renderData(area.key,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType);
             });
+          case "bookingCurrent":
+            this.props.renderDataBc(
+            this.props.DateRange.date,
+            this.props.Searchbar.filterer,
+            this.props.DateRange.dateType,
+            this.props.Searchbar.filterType
+            );
+          case "listing":
+            this.props.renderDataListing(
+              this.props.Searchbar.filterType,
+              this.props.Searchbar.filterer,
+              10
+            );
+            
           default:
             return;
         }
@@ -55,7 +73,6 @@ class Searchbar extends Component{
         }
       }
       render() {
-        const { searchFilter } = this.state;
         let selectAfter=(
             <Select defaultValue={this.props.Searchbar.filterType.toString()} style={{ width: 150}}
             onChange={this.handleChangeFilterMode}>
@@ -84,4 +101,4 @@ function mapStateToProps(state){
     Table:state.arrivalTable
   };
 }
-export default connect(mapStateToProps,{renderData,renderDataBc})(Searchbar);
+export default connect(mapStateToProps,{renderData,renderDataBc,renderDataListing})(Searchbar);

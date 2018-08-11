@@ -21,6 +21,11 @@ export default function reducer(state = initState,action){
                 page:action.page,
                 total:action.total,
             };
+        case actions.ADD_LISTING:
+            return{
+                ...state,
+                payload:action.payload
+            }
         default:
             return state;
     }

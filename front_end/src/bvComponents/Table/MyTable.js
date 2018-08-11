@@ -68,9 +68,14 @@ class MyTable extends Component {
             that.props.DateRange.dateType,
             page);
         }else if(that.props.mode==='bookingCurrent'){
-          that.props.onPageChange(0,0,0,0,page);
+          that.props.onPageChange(
+            that.props.DateRange.date,
+            that.props.Searchbar.filterer,
+            that.props.DateRange.dateType,
+            that.props.Searchbar.filterType,
+            page);
         }else if(that.props.mode==='listing'){
-          that.props.onPageChange(0,0,10,page);
+          that.props.onPageChange(that.props.Searchbar.filterType,that.props.Searchbar.filterer,10,page);
         }
       }
     }

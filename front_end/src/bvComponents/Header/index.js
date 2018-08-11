@@ -10,6 +10,7 @@ import { Select } from 'antd';
 import Button from '../../bvComponents/Uielements/button';
 import basicStyle from '../../settings/basicStyle';
 import AddBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/components/addBooking';
+import AddListing from '../../bvScenes/MarketBuilding/scenes/Listing/components/addListing';
 
 import actions from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 
@@ -53,6 +54,10 @@ class Header extends Component {
             case "bookingCurrent":
                 return(
                     <AddBooking/>
+                );
+            case "listing":
+                return(
+                    <AddListing/>
                 );
             default:
                 return;
