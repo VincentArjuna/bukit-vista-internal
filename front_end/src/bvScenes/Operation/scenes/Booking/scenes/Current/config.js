@@ -1,6 +1,7 @@
 import {
   LinkCell,
-  TextCell
+  TextCell,
+  CopyCell
 } from '../../../../../../bvComponents/Table/helper/helperCells';
 
 const renderCell = (object, type, key,choice) => {
@@ -13,6 +14,12 @@ const renderCell = (object, type, key,choice) => {
         return LinkCell(value);
       case 'TextCell':
         return TextCell(value);
+      case 'CopyCell':
+        let desc="Copy";
+        if(value==null){
+            desc="No URL";
+        }
+        return CopyCell(value,desc);
       default:
         return TextCell(value);
     }
@@ -51,7 +58,7 @@ const renderCell = (object, type, key,choice) => {
     {
         title:'Conversation URL',
         key:'booking_conversation_url',
-        render: object => renderCell(object, 'TextCell', 'booking_conversation_url',null)
+        render: object => renderCell(object, 'CopyCell', 'booking_conversation_url',null)
     },
     {
         title:'Received Timestamp',

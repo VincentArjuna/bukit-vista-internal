@@ -4,6 +4,9 @@ import TableWrapper from './antTable.style';
 import clone from 'clone';
 import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/editCell';
 import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/notesCell';
+import EditListing from '../../bvScenes/MarketBuilding/scenes/Listing/components/editListing';
+import EditProperty from '../../bvScenes/MarketBuilding/scenes/Property/components/editProperty';
+import EditUnit from '../../bvScenes/MarketBuilding/scenes/Unit/components/editUnit';
 
 class MyTable extends Component {
   constructor(props) {
@@ -14,34 +17,64 @@ class MyTable extends Component {
     };
   }
   componentDidMount(){
-    (this.props.mode === 'arrivalList' ? this.setState({ columns:this.createColumns(clone(this.props.columns)),}):null);
+    (this.props.mode === 'arrivalList' || this.props.mode==='listing' || this.props.mode==='unit' || this.props.mode==='property'
+      ? this.setState({ columns:this.createColumns(clone(this.props.columns)),}):null);
   }
 
   createColumns=(columns)=> {
-    const that=this;
-    const editColumn={
-      title:'Details',
-      dataIndex:'details',
-      render: (text, record, index) => (
-        <EditCell key={this.props.key} index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList} 
-          onPageChange={this.props.onPageChange}
-          Searchbar={this.props.Searchbar}
-          DateRange={this.props.DateRange}
-          page={this.state.page}
-          indexTable={that.props.index}
-          area={this.props.area}
-          />
-      )
-    }
-    const notesColumn={
-      title:'Add Notes',
-      dataIndex:'notes',
-      render: (text, record, index) => (
-        <NotesCell index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList} />
-      )
-    }
-    columns.push(notesColumn);
-    columns.push(editColumn);
+    if(this.props.mode === "arrivalList"){
+        const editColumn={
+          title:'Details',
+          dataIndex:'details',
+          render: (text, record, index) => (
+            <EditCell key={this.props.key} index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList} 
+              onPageChange={this.props.onPageChange}
+              Searchbar={this.props.Searchbar}
+              DateRange={this.props.DateRange}
+              page={this.state.page}
+              indexTable={this.props.index}
+              area={this.props.area}
+              />
+          )
+        }
+        const notesColumn={
+          title:'Add Notes',
+          dataIndex:'notes',
+          render: (text, record, index) => (
+            <NotesCell index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList} />
+          )
+        }
+        columns.push(notesColumn);
+        columns.push(editColumn);
+      }else
+      if(this.props.mode === "listing"){
+        const editListing={
+          title:'Edit Listing',
+          dataIndex:'edit',
+          render: (text, record, index) => (
+            <EditListing index={index} dataList={this.props.dataList} />
+          )
+        }
+        columns.push(editListing);
+      }else if(this.props.mode === "property"){
+        const editProperty={
+          title:'Edit Property',
+          dataIndex:'edit',
+          render: (text, record, index) => (
+            <EditProperty index={index} dataList={this.props.dataList} />
+          )
+        }
+        columns.push(editProperty);
+      }else if(this.props.mode === "unit"){
+        const editUnit={
+          title:'Edit Unit',
+          dataIndex:'edit',
+          render: (text, record, index) => (
+            <EditUnit index={index} dataList={this.props.dataList} />
+          )
+        }
+        columns.push(editUnit);
+      }
     return columns;
   };
 
@@ -110,16 +143,6 @@ class MyTable extends Component {
           onChange={this.onChange}
           onRow={(record,index)=>{
             switch(this.props.mode){
-              case "arrivalList":
-              return{
-                onMouseEnter:()=>{
-                  if(this.props.dataList[index].booking_guest_status!==0){
-                    console.log(index);
-                  }else{
-                   console.log(index);
-                  }
-                }
-              }
               case "bookingCurrent":
                 return{
                   onClick: () => {
@@ -132,7 +155,7 @@ class MyTable extends Component {
               case "listing":
                 return{
                   onClick: () => {
-                    console.log(record["listing_id"]);
+
                   }
                 }
               case "unit":

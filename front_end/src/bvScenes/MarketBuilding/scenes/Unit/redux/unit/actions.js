@@ -2,6 +2,7 @@ const actions={
     RENDER_DATA_UNIT:'RENDER_DATA_UNIT',
     RENDER_DATA_UNIT_SUCCESS:'RENDER_DATA_UNIT_SUCCESS',
     ADD_UNIT:'ADD_UNIT',
+    EDIT_UNIT:'EDIT_UNIT',
     renderDataUnit : (filter_type,filterer,per_page)=>({
         type: actions.RENDER_DATA_UNIT,
         payload:{filter_type,filterer,per_page,page:1}
@@ -19,6 +20,10 @@ const actions={
     addUnit:(name,onboard_date,base_price,currency,capacity,number_room,swimming_pool,pOwner,pBv,property_id)=>({
         type:actions.ADD_UNIT,
         payload:{name,onboard_date,base_price,currency,capacity,number_room,swimming_pool,pOwner,pBv,property_id}
+    }),
+    editUnit:(name,onboard_date,base_price,currency,capacity,number_room,swimming_pool,pOwner,pBv,property_id,unit_id)=>({
+        type:actions.EDIT_UNIT,
+        payload:{name,onboard_date,base_price,currency,capacity,number_room,swimming_pool,pOwner,pBv,property_id,unit_id}
     })
 }
 

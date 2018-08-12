@@ -36,6 +36,7 @@
     "react-big-calendar": "^0.17.0",
     "react-chartjs-2": "^2.5.7",
     "react-codemirror": "^1.0.0",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-count-down": "^1.1.0",
     "react-dates": "12.2.4",
     "react-dnd": "^2.3.0",

@@ -1,6 +1,6 @@
 import {
   LinkCell,
-  TextCell
+  TextCell,
 } from '../../../../bvComponents/Table/helper/helperCells';
 
 const renderCell = (object, type, key,choice) => {
@@ -28,6 +28,11 @@ const renderCell = (object, type, key,choice) => {
         title:'Name',
         key:'listing_name',
         render: object => renderCell(object, 'TextCell', 'listing_name',null)
+    },
+    {
+        title:'Onboard Date',
+        key:'listing_onboard_date',
+        render: object => renderCell(object, 'TextCell', 'listing_onboard_date',null)
     },
     {
         title:'Status',

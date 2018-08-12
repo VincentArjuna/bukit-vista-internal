@@ -55,7 +55,7 @@ const CollectionCreateForm = Form.create()(
               </FormItem>
             <FormItem label="ETA">
               {getFieldDecorator('eta',{
-                initialValue:this.props.dataList[this.props.index].booking_guest_eta ? moment(this.props.dataList[this.props.index].booking_guest_eta,'HH:mm'):moment('12:00','HH:mm')
+                initialValue:this.props.dataList[this.props.index].booking_guest_eta ? moment(this.props.dataList[this.props.index].booking_guest_eta,'HH:mm'):null
               })(<TimePicker format={'HH:mm'} />)}
             </FormItem>
             <FormItem label="Guest Phone">
@@ -217,8 +217,10 @@ class EditCell extends Component {
         );
       }
       this.props.onPageChange(
-        this.props.indexTable,this.props.area,
-        this.props.DateRange.date,this.props.Searchbar.filterType,
+        this.props.indexTable,
+        this.props.area,
+        this.props.DateRange.date,
+        this.props.Searchbar.filterType,
         this.props.Searchbar.filterer,
         this.props.DateRange.dateType,
         this.props.page);

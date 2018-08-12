@@ -21,7 +21,11 @@ class Header extends Component {
         alert('booking');
     }
     handleDownloadCsv=event=>{
-        this.props.downloadCsv(moment().format('YYYY-MM-DD').toString());
+        if(this.props.DateRange.dateType==="0" || this.props.DateRange.dateType===0){
+            this.props.downloadCsv(this.props.DateRange.date);
+        }else{
+            alert("Sorry, check in only");
+        }
     }
     renderComponents(){
         const { rowStyle, colStyle, gutter } = basicStyle;
@@ -111,7 +115,13 @@ class Header extends Component {
         );
     }
 }
-export default connect(null,{downloadCsv})(Header);
+
+function mapStateToProps(state){
+    return{
+        DateRange:state.daterange
+    }
+}
+export default connect(mapStateToProps,{downloadCsv})(Header);
 
 
 

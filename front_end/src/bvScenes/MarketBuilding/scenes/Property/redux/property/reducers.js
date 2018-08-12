@@ -4,6 +4,7 @@ const initState={
     results:[],
     value:null,
     fetching:false,
+    page:1
 }
 
 export default function reducer(state = initState,action){
@@ -22,6 +23,11 @@ export default function reducer(state = initState,action){
                 total:action.total,
             };
         case actions.ADD_PROPERTY:
+            return{
+                ...state,
+                payload:action.payload
+            }
+        case actions.EDIT_PROPERTY:
             return{
                 ...state,
                 payload:action.payload

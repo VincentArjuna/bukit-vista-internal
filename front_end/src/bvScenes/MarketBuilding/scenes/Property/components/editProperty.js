@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 const Option = SelectOption;
 
 const {renderDataEmployee} = aEmployee;
-const {addProperty}=aProperty;
+const {editProperty,onPageChange}=aProperty;
 
 const CollectionCreateForm = Form.create()(
 class extends React.Component {
@@ -22,8 +22,8 @@ class extends React.Component {
       return (
         <Modal
           visible={visible}
-          title="New Property"
-          okText="Add"
+          title="Edit Property"
+          okText="Edit"
           cancelText="Back"
           onCancel={onCancel}
           onOk={onCreate}
@@ -32,14 +32,15 @@ class extends React.Component {
                 <FormItem label="Name">
                     {getFieldDecorator(
                         'name', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            rules: [{ required: true, message: 'This is required' }],
+                            initialValue:this.props.dataList[this.props.index].property_name
                         }
                     )(<Input/>)}
                 </FormItem>
                 <FormItem label="Type">
                     {getFieldDecorator(
                         'type', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            initialValue:this.props.dataList[this.props.index].property_type
                         }
                     )(
                         <Select>
@@ -54,7 +55,7 @@ class extends React.Component {
                 <FormItem label="Status">
                     {getFieldDecorator(
                         'status', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            initialValue:this.props.dataList[this.props.index].property_status
                         }
                     )(
                         <Select>
@@ -66,7 +67,7 @@ class extends React.Component {
                 <FormItem label="Package">
                     {getFieldDecorator(
                         'package', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            initialValue:this.props.dataList[this.props.index].property_package
                         }
                     )(
                         <Select>
@@ -82,7 +83,7 @@ class extends React.Component {
                 <FormItem label="Design">
                     {getFieldDecorator(
                         'design', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            initialValue:this.props.dataList[this.props.index].property_design
                         }
                     )(
                         <Select>
@@ -97,7 +98,7 @@ class extends React.Component {
                 <FormItem label="Proximity">
                     {getFieldDecorator(
                         'proximity', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            initialValue:this.props.dataList[this.props.index].property_proximity
                         }
                     )(
                         <Select>
@@ -111,7 +112,7 @@ class extends React.Component {
                 <FormItem label="Life Support">
                     {getFieldDecorator(
                         'life_support', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            initialValue:this.props.dataList[this.props.index].property_life_support
                         }
                     )(
                         <Select>
@@ -124,7 +125,7 @@ class extends React.Component {
                 <FormItem label="Service">
                     {getFieldDecorator(
                         'service', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            initialValue:this.props.dataList[this.props.index].property_service
                         }
                     )(
                        <Select>
@@ -135,7 +136,9 @@ class extends React.Component {
                 </FormItem>
                 <FormItem label="Owner Group Link">
                     {getFieldDecorator(
-                        'owner_group_link'
+                        'owner_group_link',{
+                            initialValue:this.props.dataList[this.props.index].property_owner_group_link
+                        }
                     )(
                         <Input/>
                     )}
@@ -143,7 +146,8 @@ class extends React.Component {
                 <FormItem label="Area">
                     {getFieldDecorator(
                         'area', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            rules: [{ required: true, message: 'This is required' }],
+                            initialValue:this.props.dataList[this.props.index].area_id
                         }
                     )(
                         <Select
@@ -180,7 +184,8 @@ class extends React.Component {
                 <FormItem label="Added By">
                     {getFieldDecorator(
                         'employee', {
-                            rules: [{ required: true, message: 'This is required' }]
+                            rules: [{ required: true, message: 'This is required' }],
+                            initialValue:this.props.dataList[this.props.index].employee_id
                         }
                     )(
                         <Select
@@ -196,6 +201,16 @@ class extends React.Component {
                         </Select>
                     )}
                 </FormItem>
+                <FormItem>
+                    {getFieldDecorator(
+                        'property_id', {
+                            initialValue:this.props.dataList[this.props.index].property_id
+                        }
+                    )(
+                        <Input hidden={true}/>
+                    )}
+                </FormItem>
+            
             </Form>
         </Modal>
       );
@@ -203,7 +218,7 @@ class extends React.Component {
   }
 );
 
-class AddProperty extends Component {
+class EditProperty extends Component {
   state = {
     visible: false,
   };
@@ -223,7 +238,7 @@ class AddProperty extends Component {
         return;
       }
       console.log(values);
-      this.props.addProperty(
+      this.props.editProperty(
           values["name"],
           values["type"],
           values["status"],
@@ -234,8 +249,15 @@ class AddProperty extends Component {
           values["service"],
           values["owner_group_link"],
           values["area"],
-          values["employee"]
-      )
+          values["employee"],
+          values["property_id"]
+      );
+      this.props.onPageChange(
+        this.props.Searchbar.filterType,
+        this.props.Searchbar.filterer,
+        10,
+        this.props.Property.page
+      );
       form.resetFields();
       this.setState({ visible: false });;
     });
@@ -251,13 +273,14 @@ class AddProperty extends Component {
   render() {
     return (
       <div>
-        <Button type="primary"  onClick={this.showModal}>Add Property</Button>
+        <Button type="primary"  onClick={this.showModal}>Edit Property</Button>
         <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
           index={this.props.index}
+          dataList={this.props.dataList}
           employees={this.props.Employee.results}
         />
       </div>
@@ -267,10 +290,12 @@ class AddProperty extends Component {
 
 function mapStateToProps(state) {
   return { 
-    Employee:state.employee
+    Employee:state.employee,
+    Property:state.property,
+    Searchbar:state.searchbar
   };
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee,addProperty}
-)(AddProperty);
+  { renderDataEmployee,editProperty,onPageChange}
+)(EditProperty);
