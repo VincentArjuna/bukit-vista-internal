@@ -3,6 +3,7 @@ import actions from './actions';
 import { stringify } from 'querystring';
 
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/arrival';
+const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
 const onRenderRequest = async (param) =>
     await fetch(`${URL_AREA}?page=${param[5]}`, {
@@ -34,7 +35,6 @@ function* renderRequest({payload}){
         ];
         const renderResult = yield call(onRenderRequest,param);
         if(renderResult.data){  
-            console.log(renderResult.data);
             yield put(
                 actions.renderDataSuccess(
                     payload.index,

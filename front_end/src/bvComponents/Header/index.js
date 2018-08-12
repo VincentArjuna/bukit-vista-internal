@@ -11,7 +11,8 @@ import Button from '../../bvComponents/Uielements/button';
 import basicStyle from '../../settings/basicStyle';
 import AddBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/components/addBooking';
 import AddListing from '../../bvScenes/MarketBuilding/scenes/Listing/components/addListing';
-
+import AddProperty from '../../bvScenes/MarketBuilding/scenes/Property/components/addProperty';
+import AddUnit from '../../bvScenes/MarketBuilding/scenes/Unit/components/addUnit';
 import actions from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 
 const {downloadCsv} = actions;
@@ -58,6 +59,14 @@ class Header extends Component {
             case "listing":
                 return(
                     <AddListing/>
+                );
+            case "property":
+                return(
+                    <AddProperty/>
+                );
+            case "unit":
+                return(
+                    <AddUnit/>
                 );
             default:
                 return;

@@ -1,4 +1,4 @@
-import{all,takeEvery,put,call} from 'redux-saga/effects';
+import{all,takeEvery,put,call, takeLatest} from 'redux-saga/effects';
 import actions from './actions';
 import {stringify} from 'querystring';
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/listing';
@@ -91,6 +91,6 @@ function* addListing({payload}){
     }
 }
 export default function* rootSaga() {
-    yield all([takeEvery(actions.RENDER_DATA_LISTING,renderRequestListing)]);
-    yield all([takeEvery(actions.ADD_LISTING,addListing)]);
+    yield all([takeLatest(actions.RENDER_DATA_LISTING,renderRequestListing)]);
+    yield all([takeLatest(actions.ADD_LISTING,addListing)]);
 }

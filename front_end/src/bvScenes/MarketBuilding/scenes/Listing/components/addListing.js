@@ -47,35 +47,35 @@ class extends React.Component {
       return (
         <Modal
           visible={visible}
-          title="Add Button"
+          title="New Listing"
           okText="Add"
           cancelText="Back"
           onCancel={onCancel}
           onOk={onCreate}
         >
         <Form layout="vertical">
-            <FormItem label="Listing ID">
+            <FormItem label="ID">
                 {getFieldDecorator(
                     'listing_id', {
                         rules: [{ required: true, message: 'This is required' }]
                     }
                 )(<Input/>)}
             </FormItem>
-            <FormItem label="Listing Name">
+            <FormItem label="Name">
                 {getFieldDecorator(
                     'listing_name', {
                         rules: [{ required: true, message: 'This is required' }]
                     }
                 )(<Input/>)}
             </FormItem>
-            <FormItem label="Listing Onboard Date">
+            <FormItem label="Onboard Date">
                 {getFieldDecorator(
                     'onboard_date', {
                         rules: [{ required: true, message: 'This is required' }]
                     }
                 )(<DatePicker/>)}
             </FormItem>   
-            <FormItem label="Listing Status">
+            <FormItem label="Status">
                 {getFieldDecorator(
                     'status', {
                         rules: [{ required: true, message: 'This is required' }]
@@ -87,7 +87,7 @@ class extends React.Component {
                     </Select>
                 )}
             </FormItem>   
-            <FormItem label="Listing Instant Book">
+            <FormItem label="Instant Book">
                 {getFieldDecorator(
                     'instant_book', {
                         rules: [{ required: true, message: 'This is required' }]
@@ -99,17 +99,17 @@ class extends React.Component {
                     </Select>
                 )}
             </FormItem>  
-            <FormItem label="Listing Account Owner">
+            <FormItem label="Account Owner">
                 {getFieldDecorator(
                     'acc_owner'
                 )(<Input/>)}
             </FormItem>
-            <FormItem label="Listing Account BV">
+            <FormItem label="Account BukitVista">
                 {getFieldDecorator(
                     'acc_bv'
                 )(<Input/>)}
             </FormItem> 
-            <FormItem label="Listing Remark">
+            <FormItem label="Remark">
                 {getFieldDecorator(
                     'remark', {
                         rules: [{ required: true, message: 'This is required' }]
@@ -124,7 +124,7 @@ class extends React.Component {
                     </Select>
                 )}
             </FormItem>      
-            <FormItem label="Unit ID">
+            <FormItem label="Unit">
                 {getFieldDecorator(
                     'unit_id', {
                         rules: [{ required: true, message: 'This is required' }]
@@ -144,7 +144,7 @@ class extends React.Component {
                     </Select>
                 )}
             </FormItem>   
-            <FormItem label="Profile ID">
+            <FormItem label="Profile">
                 {getFieldDecorator(
                     'profile_id', {
                         rules: [{ required: true, message: 'This is required' }]
@@ -175,7 +175,7 @@ class extends React.Component {
                     </Select>
                 )}
             </FormItem>  
-            <FormItem label="Employee ID">
+            <FormItem label="Added By">
                 {getFieldDecorator(
                     'employee_id', {
                         rules: [{ required: true, message: 'This is required' }]
@@ -249,7 +249,6 @@ class AddListing extends Component {
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
-          index={this.props.index}
           employees={this.props.Employee.results}
           renderDataUnit={this.props.renderDataUnit}
           Unit={this.props.Unit}
@@ -261,8 +260,6 @@ class AddListing extends Component {
 
 function mapStateToProps(state) {
   return { 
-    Searchbar:state.searchbar,
-    DateRange:state.daterange,
     Listing:state.listing,
     Unit:state.unit,
     Employee:state.employee

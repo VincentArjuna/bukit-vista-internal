@@ -1,15 +1,18 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import { Select,Input,Icon} from 'antd';
-
 import actions from '../../bvScenes/Operation/scenes/ArrivalList/components/ArrivalTable/redux/arrivalTable/actions';
 import aBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 import aListing from '../../bvScenes/MarketBuilding/scenes/Listing/redux/listing/actions';
+import aProperty from '../../bvScenes/MarketBuilding/scenes/Property/redux/property/actions';
+import aUnit from '../../bvScenes/MarketBuilding/scenes/Unit/redux/unit/actions';
 import {areas} from '../../bvScenes/Operation/scenes/ArrivalList/config';
 const Option= Select.Option;
 const {renderData} = actions;
 const {renderDataBc}=aBooking;
 const {renderDataListing}=aListing;
+const {renderDataUnit}=aUnit;
+const {renderDataProperty}=aProperty;
 class Searchbar extends Component{
 
     constructor(props) {
@@ -58,7 +61,18 @@ class Searchbar extends Component{
               this.props.Searchbar.filterer,
               10
             );
-            
+          case "unit":
+            this.props.renderDataUnit(
+              this.props.Searchbar.filterType,
+              this.props.Searchbar.filterer,
+              10
+            );
+          case "property":
+            this.props.renderDataProperty(
+              this.props.Searchbar.filterType,
+              this.props.Searchbar.filterer,
+              10
+            );
           default:
             return;
         }
@@ -101,4 +115,4 @@ function mapStateToProps(state){
     Table:state.arrivalTable
   };
 }
-export default connect(mapStateToProps,{renderData,renderDataBc,renderDataListing})(Searchbar);
+export default connect(mapStateToProps,{renderData,renderDataBc,renderDataListing,renderDataUnit,renderDataProperty})(Searchbar);

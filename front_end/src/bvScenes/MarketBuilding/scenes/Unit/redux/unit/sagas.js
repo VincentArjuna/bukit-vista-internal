@@ -1,4 +1,4 @@
-import{all,takeEvery,put,call} from 'redux-saga/effects';
+import{all,takeLatest,put,call} from 'redux-saga/effects';
 import actions from './actions';
 import {stringify} from 'querystring';
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/unit';
@@ -92,6 +92,6 @@ function* addUnit({payload}){
     }
 }
 export default function* rootSaga() {
-    yield all([takeEvery(actions.RENDER_DATA_UNIT,renderRequestUnit)]);
-    yield all([takeEvery(actions.ADD_UNIT,addUnit)]);    
+    yield all([takeLatest(actions.RENDER_DATA_UNIT,renderRequestUnit)]);
+    yield all([takeLatest(actions.ADD_UNIT,addUnit)]);    
 }
