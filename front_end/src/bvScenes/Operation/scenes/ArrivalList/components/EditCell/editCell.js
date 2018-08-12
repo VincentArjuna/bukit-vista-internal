@@ -69,7 +69,13 @@ const CollectionCreateForm = Form.create()(
                 {getFieldDecorator('host',{
                   initialValue:this.props.dataList[this.props.index].host.employee_id?this.props.dataList[this.props.index].host.employee_id:null
                 })(
-                <Select>
+                <Select
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Select host"
+                optionFilterProp="children"
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} 
+                >
                   {this.props.employees.map(employee=>
                     <Option value={employee.employee_id}>{employee.employee_name}</Option>
                   )}
@@ -79,7 +85,13 @@ const CollectionCreateForm = Form.create()(
                 {getFieldDecorator('driver',{
                   initialValue:this.props.dataList[this.props.index].driver.employee_id?this.props.dataList[this.props.index].driver.employee_id:null
                 })(
-                <Select>
+                <Select
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Select driver"
+                optionFilterProp="children"
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} 
+                >
                   {this.props.employees.map(employee=>
                     <Option value={employee.employee_id}>{employee.employee_name}</Option>
                   )}
@@ -114,7 +126,13 @@ const CollectionCreateForm = Form.create()(
                           this.props.dataList[this.props.index].verifier.employee_id:null,
                       }
                   )(      
-                      <Select disabled={this.props.dataList[this.props.index].verifier.employee_id?true:false}>
+                      <Select
+                      showSearch
+                      style={{ width: 200 }}
+                      placeholder="Select verifier"
+                      optionFilterProp="children"
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} 
+                      disabled={this.props.dataList[this.props.index].verifier.employee_id?true:false}>
                           {this.props.employees.map(employee=>
                               <Option value={employee.employee_id}>{employee.employee_name}</Option>
                           )}

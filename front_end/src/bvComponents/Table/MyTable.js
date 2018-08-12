@@ -110,9 +110,22 @@ class MyTable extends Component {
           onChange={this.onChange}
           onRow={(record,index)=>{
             switch(this.props.mode){
+              case "arrivalList":
+              return{
+                onMouseEnter:()=>{
+                  if(this.props.dataList[index].booking_guest_status!==0){
+                    console.log(index);
+                  }else{
+                   console.log(index);
+                  }
+                }
+              }
               case "bookingCurrent":
                 return{
                   onClick: () => {
+                    console.log(this.props.dataList[index].booking_id);
+                  },
+                  onMouseEnter:()=>{
                     console.log(this.props.dataList[index].booking_id);
                   }
                 }

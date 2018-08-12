@@ -3,8 +3,11 @@ import {
   TextCell
 } from '../../../../../../bvComponents/Table/helper/helperCells';
 
-const renderCell = (object, type, key) => {
-    const value = object[key];
+const renderCell = (object, type, key,choice) => {
+    let value = object[key];
+    if(choice !== null){
+        value= choice[value];
+    }
     switch (type) {
       case 'LinkCell':
         return LinkCell(value);
@@ -18,47 +21,47 @@ const renderCell = (object, type, key) => {
     {
         title:'ID',
         key:'booking_id',
-        render: object => renderCell(object, 'TextCell', 'booking_id')
+        render: object => renderCell(object, 'TextCell', 'booking_id',null)
     },
     {
         title:'Guest Name',
         key:'booking_guest_name',
-        render: object => renderCell(object, 'TextCell', 'booking_guest_name')
+        render: object => renderCell(object, 'TextCell', 'booking_guest_name',null)
     },
     {
         title:'Check In',
         key:'booking_check_in',
-        render: object => renderCell(object, 'TextCell', 'booking_check_in')
+        render: object => renderCell(object, 'TextCell', 'booking_check_in',null)
     },
     {
         title:'Check Out',
         key:'booking_check_out',
-        render: object => renderCell(object, 'TextCell', 'booking_check_out')
+        render: object => renderCell(object, 'TextCell', 'booking_check_out',null)
     },
     {
         title:'Earned',
         key:'booking_earned',
-        render: object => renderCell(object, 'TextCell', 'booking_earned')
+        render: object => renderCell(object, 'TextCell', 'booking_earned',null)
     },
     {
         title:'Currency',
         key:'booking_currency',
-        render: object => renderCell(object, 'TextCell', 'booking_currency')
+        render: object => renderCell(object, 'TextCell', 'booking_currency',choices[0])
     },
     {
         title:'Conversation URL',
         key:'booking_conversation_url',
-        render: object => renderCell(object, 'TextCell', 'booking_conversation_url')
+        render: object => renderCell(object, 'TextCell', 'booking_conversation_url',null)
     },
     {
         title:'Received Timestamp',
         key:'booking_received_timestamp',
-        render: object => renderCell(object, 'TextCell', 'booking_received_timestamp')
+        render: object => renderCell(object, 'TextCell', 'booking_received_timestamp',null)
     },
     {
         title:'Listing ID',
         key:'listing_id',
-        render: object => renderCell(object, 'TextCell', 'listing_id')
+        render: object => renderCell(object, 'TextCell', 'listing_id',null)
     },
 ];
 const filterTypes=[
@@ -83,6 +86,13 @@ const filterTypes=[
         name:'Profile'
     }
   ];
+const choices=[
+    {
+        '1':'IDR',
+        '2':'USD',
+        '3':'EUR'
+    },
+];
 const title= "Booking / Current";
 const mode="bookingCurrent";
 export {columns,title,filterTypes,mode};

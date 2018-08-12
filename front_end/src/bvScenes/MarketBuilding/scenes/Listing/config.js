@@ -3,8 +3,11 @@ import {
   TextCell
 } from '../../../../bvComponents/Table/helper/helperCells';
 
-const renderCell = (object, type, key) => {
-    const value = object[key];
+const renderCell = (object, type, key,choice) => {
+    let value = object[key];
+    if(choice !== null){
+        value=choice[value];
+    }
     switch (type) {
       case 'LinkCell':
         return LinkCell(value);
@@ -19,52 +22,52 @@ const renderCell = (object, type, key) => {
     {
         title:'ID',
         key:'listing_id',
-        render: object => renderCell(object, 'TextCell', 'listing_id')
+        render: object => renderCell(object, 'TextCell', 'listing_id',null)
     },
     {
         title:'Name',
         key:'listing_name',
-        render: object => renderCell(object, 'TextCell', 'listing_name')
+        render: object => renderCell(object, 'TextCell', 'listing_name',null)
     },
     {
         title:'Status',
         key:'listing_status',
-        render: object => renderCell(object, 'TextCell', 'listing_status')
+        render: object => renderCell(object, 'TextCell', 'listing_status',choices[0])
     },
     {
         title:'Instant Book',
         key:'listing_instant_book',
-        render: object => renderCell(object, 'TextCell', 'listing_instant_book')
+        render: object => renderCell(object, 'TextCell', 'listing_instant_book',choices[1])
     },
     {
         title:'Account Owner',
         key:'listing_account_owner',
-        render: object => renderCell(object, 'TextCell', 'listing_account_owner')
+        render: object => renderCell(object, 'TextCell', 'listing_account_owner',null)
     },
     {
         title:'Account BV',
         key:'listing_account_bv',
-        render: object => renderCell(object, 'TextCell', 'listing_account_bv')
+        render: object => renderCell(object, 'TextCell', 'listing_account_bv',null)
     },
     {
         title:'Remark',
         key:'listing_remark',
-        render: object => renderCell(object, 'TextCell', 'listing_remark')
+        render: object => renderCell(object, 'TextCell', 'listing_remark',choices[2])
     },
     {
         title:'Unit ID',
         key:'unit_id',
-        render: object => renderCell(object, 'TextCell', 'unit_id')
+        render: object => renderCell(object, 'TextCell', 'unit_id',null)
     },
     {
         title:'Profile ID',
         key:'profile_id',
-        render: object => renderCell(object, 'TextCell', 'profile_id')
+        render: object => renderCell(object, 'TextCell', 'profile_id',null)
     },
     {
         title:'Employee ID',
         key:'employee_id',
-        render: object => renderCell(object, 'TextCell', 'employee_id')
+        render: object => renderCell(object, 'TextCell', 'employee_id',null)
     },
 ];
 
@@ -102,6 +105,23 @@ const filterTypes=[
         name:'Onboard Date'
     },
   ];
+const choices=[
+    {
+        '1':'Partner',
+        '0':'Non-Partner'   
+    },
+    {
+        '1':'Yes',
+        '0':'No'
+    },
+    {
+        '1':'New',
+        '2':'VA',
+        '3':'CS',
+        '4':'NP',
+        '5':'Others'
+    }
+];
 const title= "Listing";
 const mode="listing";
 export {columns,title,filterTypes,mode};

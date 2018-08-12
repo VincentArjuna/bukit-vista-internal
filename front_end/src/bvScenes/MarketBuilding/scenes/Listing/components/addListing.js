@@ -150,7 +150,13 @@ class extends React.Component {
                         rules: [{ required: true, message: 'This is required' }]
                     }
                 )(
-                    <Select>
+                    <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Select profile"
+                    optionFilterProp="children"
+                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} 
+                    >
                         <Option value="PA0000">NULL</Option>
                         <Option value="PA0001">W</Option>
                         <Option value="PA0002">BV</Option>
@@ -181,7 +187,13 @@ class extends React.Component {
                         rules: [{ required: true, message: 'This is required' }]
                     }
                 )(
-                    <Select>
+                    <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Select employee"
+                    optionFilterProp="children"
+                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} 
+                    >
                     {this.props.employees.map(employee=>
                         <Option value={employee.employee_id}>{employee.employee_name}</Option>
                     )}

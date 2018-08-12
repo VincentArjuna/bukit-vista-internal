@@ -6,12 +6,15 @@ import {
 } from '../../../../bvComponents/Table/helper/helperCells';
 
 
-const renderCell = (object, type, key) => {
+const renderCell = (object, type, key,choice) => {
   let value;
   if(key==='host.employee_name'){
     value=object['host']['employee_name'];
   }else{
     value=object[key];
+  }
+  if(choice !== null){
+    value= choice[value];
   }
   switch (type) {
     case 'LinkCell':
@@ -29,54 +32,60 @@ const columns = [
     key: 'unit_name',
     width: '50',
     sorter:true,
-    render: object => renderCell(object, 'TextCell', 'unit_name')
+    render: object => renderCell(object, 'TextCell', 'unit_name',null)
   },
   {
     title: 'Guest Name',
     key: 'booking_guest_name',
     width: '50',
     sorter:true,
-    render: object => renderCell(object, 'TextCell', 'booking_guest_name')
+    render: object => renderCell(object, 'TextCell', 'booking_guest_name',null)
   },
   {
     title: 'Check In',
     key: 'booking_check_in',
     width: '20',
-    render: object => renderCell(object, 'TextCell', 'booking_check_in')
+    render: object => renderCell(object, 'TextCell', 'booking_check_in',null)
   },
   {
     title: 'Check Out',
     key: 'booking_check_out',
     width: '20',
-    render: object => renderCell(object, 'TextCell', 'booking_check_out')
+    render: object => renderCell(object, 'TextCell', 'booking_check_out',null)
   },
   {
     title: 'Profile',
     key: 'profile_name',
     width: '50',
-    render: object => renderCell(object, 'TextCell', 'profile_name')
+    render: object => renderCell(object, 'TextCell', 'profile_name',null)
   },
   {
     title: 'ETA',
     key: 'booking_guest_eta',
     width: '20',
     sorter:true,
-    render: object => renderCell(object, 'TextCell', 'booking_guest_eta')
+    render: object => renderCell(object, 'TextCell', 'booking_guest_eta',null)
   },
   {
     title: 'Host',
     key: 'host.employee_name',
     width: '50',
-    render: object => renderCell(object, 'TextCell', 'host.employee_name')
+    render: object => renderCell(object, 'TextCell', 'host.employee_name',null)
   },
   {
     title: 'Status',
     key: 'booking_guest_status',
     width: '50',
-    render: object => renderCell(object, 'TextCell', 'booking_guest_status')
+    render: object => renderCell(object, 'TextCell', 'booking_guest_status',choices[0])
   },
 ];
-
+const choices=[
+  {
+    '0':'Not Checked In',
+    '1':'Checked In',
+    '2':'Checked In, Not Meeting Host'
+  }
+];
 const areas = [
   { 
     key:0,
