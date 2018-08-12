@@ -50,7 +50,6 @@ class PaymentController extends Controller
         $name = $request->input('data.name');
         $reader = Reader::createFromPath(storage_path('Csv/'.$name), 'r');
         $reader->setHeaderOffset(0);
-        $payment_id = '';
         foreach($reader as $offset => $record)
         {
             $listings = new Listing;

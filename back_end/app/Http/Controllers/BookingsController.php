@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Bookings;
 use App\Http\Requests;
-use DateTime;
+use App\Traits\LogTrait;
+use App\Bookings;
 use App\Listing;
 use App\Properties;
 use App\Unit;
 use App\Profiles;
 use App\fnPaginate;
 use App\PaymentBooking;
-use Illuminate\Support\Facades\Cache;
+use DateTime;
 
 class BookingsController extends Controller
 {
+    use LogTrait;
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +26,19 @@ class BookingsController extends Controller
     {
         
     }
-
+    public function integromatcancelation($id)
+    {
+        $bookings = Bookings::withTrashed()->where('booking_id', $id)->first();
+        $listings = Listing::where('listing_id', $bookings->listing_id)->first();
+        $units = Unit::where('unit_id', $listings->unit_id)->first();
+        $profiles = Profiles::where('profile_id', $listings->profile_id)->first();
+        $merged = collect();
+        $merged =  $merged->merge($bookings);
+        $merged =  $merged->merge($listings);
+        $merged =  $merged->merge($units);
+        $merged =  $merged->merge($profiles);
+        return $merged;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -34,6 +47,7 @@ class BookingsController extends Controller
     public function create(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
+        return $request->all();
         $bookings = Bookings::where('booking_id', $request->input('data.booking_id'))->first();
         if(!$bookings){
             $bookings = new Bookings;
@@ -60,7 +74,13 @@ class BookingsController extends Controller
             return 'FALSE';
         }
     }
-
+    public function cancelation(Request $request)
+    {
+        $bookings = Bookings::where('booking_id', $request->input('data.booking_id'))->first();
+        $bookings->booking_status = 2;
+        $bookings->delete();
+        return 'Booking Canceled';
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -169,6 +169,21 @@ class ArrivalListsController extends Controller
                 }
             }
         }
+        $sort_type = $request->input('data.sort_type');
+        $ar = collect($ar);
+        if($sort_type == 1)
+        {
+            $ar->sortBy('booking_guest_eta');
+        }else if($sort_type == 2)
+        {
+            $ar->sortByDesc('booking_guest_eta');
+        }else if ($sort_type == 3)
+        {
+            $ar->sortBy('unit_name');
+        }else if ($sort_type == 4)
+        {
+            $ar->sortByDesc('unit_name');
+        }
         $paginated = fnpaginate::pager($ar, $request);
         return $paginated;
         

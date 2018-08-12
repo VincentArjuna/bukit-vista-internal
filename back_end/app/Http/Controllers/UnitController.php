@@ -19,7 +19,12 @@ class UnitController extends Controller
     {
 
     }
-
+    public function new_unit_id()
+    {
+        $ctr = Unit::latest()->count();
+        $log_id = 'UN'.sprintf("%04s", $ctr);
+        return $log_id;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -28,8 +33,8 @@ class UnitController extends Controller
     public function create(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $units = new Listing;
-        $units->unit_id = $request->input('data.unit_id');
+        $units = new Unit;
+        $units->unit_id = $this->new_unit_id();
         $units->unit_name = $request->input('data.unit_name');
         $units->unit_onboard_date = $request->input('data.unit_onboard_date');
         $units->unit_base_price = $request->input('data.unit_base_price');
@@ -123,12 +128,12 @@ class UnitController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $rawonboard = date_create($request->input('data.unit_onboard_date'));
         $onboard_date = date_format($rawonboard,"Y-m-d");
-        $units = Unit::where('unit_id', $id)->first();
+        $units = Unit::where('unit_id', $request->input('data.unit_id'))->first();
         $units->unit_name = $request->input('data.unit_name');
         $units->unit_onboard_date = $onboard_date;
         $units->unit_base_price = $request->input('data.unit_base_price');

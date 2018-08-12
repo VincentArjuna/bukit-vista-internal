@@ -15,7 +15,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = employee::latest()->paginate(20);
+        $employees = employee::where('employee_status',1)->paginate(40);
         return $employees;
     }
 

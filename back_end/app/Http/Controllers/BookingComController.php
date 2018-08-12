@@ -38,8 +38,8 @@ class BookingComController extends Controller
         $children = $request->input('data.children');
         $price = $request->input('data.price');
         $profile_name = $request->input('data.username');
-        $unit_name = explode(' ',$unit_name);
-        $units = Unit::where('unit_name', 'like', '%'.$unit_name[0].'%')->first();
+        $unit_name = explode('-',$unit_name);
+        $units = Unit::where('unit_name', 'like', $unit_name[0].' BookingCom')->first();
         $rawbookingid = $request->input('data.email');
         $exploded = $this->multiexplode(array("-","@"),$rawbookingid);
         $booking_id = $exploded[1];

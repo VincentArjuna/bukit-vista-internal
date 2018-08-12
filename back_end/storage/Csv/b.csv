@@ -1,0 +1,16 @@
+listing_id,listing_name,listing_onboard_date,listing_status,listing_instant_book,listing_account_owner,listing_account_bv,listing_remark,unit_id,profile_id,employee_id,created_at,updated_at,deleted_at,temp_column
+26818250,Pretty Room Short Drive to Padang-Padang Beach ᐤ2,12-Jul-2018,1,0,6056,744,NULL,UN1653,PA0009,E0017,2018-08-07 17:20:00,NULL,NULL,NULL
+26822124,Indulge in Warm Tropical Mediterranean Hotel,12-Jul-2018,1,1,6056,744,NULL,UN0011,PA0010,E0011,2018-08-07 17:20:00,NULL,NULL,NULL
+26969633,Unwind in Tropical and Tranquil Beachfront Hotel#2,18-Jul-2018,1,1,6056,744,NULL,UN0008,PA0010,E0011,2018-08-07 17:20:00,NULL,NULL,NULL
+26999464,Quiet Spacious Room in Private Villa Near Uluwatu,18-Jul-2018,1,0,NULL,NULL,NULL,UN1585,PA0009,E0017,2018-08-07 17:20:00,NULL,NULL,NULL
+26998009,Indulge in Tropical Beachfront Pink Hotel Design#2,18-Jul-2018,1,1,6056,744,NULL,UN0007,PA0010,E0011,2018-08-07 17:20:00,NULL,NULL,NULL
+27033366,Warm & Charming Guesthouse in Surfer Village *7*,19-Jul-2018,1,1,590,744,NULL,UN1483,PA0009,E0011,2018-08-07 17:30:00,NULL,NULL,NULL
+27069032,Sweet House of Italian Family in Balangan,20-Jul-2018,1,0,6056,744,NULL,UN0498,PA0009,E0017,2018-08-07 17:30:00,NULL,NULL,NULL
+27113913,Stay with a Friendly Italian Family Near Balangan,22-Jul-2018,1,0,6056,744,NULL,UN0492,PA0009,E0017,2018-08-07 17:30:00,NULL,NULL,NULL
+27211363,Pretty Room Short Drive to Padang-Padang Beach ᐤ3,25-Jul-2018,1,0,6056,744,NULL,UN1654,PA0012,E0017,2018-08-07 17:45:00,NULL,NULL,NULL
+27234249,Charming Tropical Villa Next to Bali Landmark,25-Jul-2018,1,0,6211,744,NULL,UN0033,PA0007,E0011,2018-08-07 17:45:00,NULL,NULL,NULL
+27234755,Living in Tropical Villa Next to Bali Landmark,26-Jul-2018,1,0,6211,744,NULL,UN0033,PA0007,E0011,2018-08-07 17:45:00,NULL,NULL,NULL
+27235891,Chic Tranquil Villa in Breezy Lembang ᐤA8,26-Jul-2018,1,0,6056,calgradjing@yahoo.com,NULL,UN0727,PA0014,E0017,2018-08-07 17:45:00,NULL,NULL,NULL
+27269915,Charming Room in Yoga Academy Next to Thomas Beach,27-Jul-2018,1,0,6056,744,NULL,UN1611,PA0009,E0011,2018-08-07 17:45:00,NULL,NULL,NULL
+23956501,Oceanview Hut in Breathtaking Krui Surfing Village,4-Aug-2018,1,0,6056,744,NULL,UN1594,PA0014,E0017,2018-08-15 17:45:00,NULL,NULL,NULL
+24662358,2 Rooms at Heritage House by Royal Palace Area,9 Aug 2018,1,1,NULL,NULL,NULL,UN0667,PA0007,E0011,2018-08-09 12:45:00,NULL,NULL,NULL

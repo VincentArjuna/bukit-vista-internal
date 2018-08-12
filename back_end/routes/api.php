@@ -50,7 +50,7 @@ Route::get('unit/show_del', 'UnitController@showDeleted');
 //Add new 'Unit'
 Route::post('unit/add','UnitController@create');
 //Update a 'Unit'
-Route::post('unit/update/{id}','UnitController@update');
+Route::post('unit/update/','UnitController@update');
 //Delete from 'Unit'
 Route::get('unit/delete/{id}','UnitController@softDelete');
 //Restore deleted Unit
@@ -96,7 +96,6 @@ Route::get('property/show_del', 'PropertiesController@showDeleted');
 //Add new 'Property'
 Route::post('property/add','PropertiesController@create');
 //Update/Edit 'Property'
-Route::post('property/update/{id}', 'PropertiesController@update');
 //SoftDelete 'Property'
 Route::get('property/delete/{id}', 'PropertiesController@softDelete');
 //Restore sofdeleted property
@@ -153,11 +152,11 @@ Route::post('log/add', 'LogsController@create');
 //Users
 Route::get('users', 'UserController@index');
 //add user
-Route::post('users/add', 'UserController@create');
+Route::post('register', 'UserController@create');
 //login
 Route::post('login', 'UserController@login');
 //details
-Route::post('users/details', 'UserControlelr@details');
+Route::post('user/details', 'UserControlelr@details');
 //logout
 Route::post('logout', 'UserController@logout');
 
@@ -197,3 +196,5 @@ Route::post('be_store', 'BEController@store');
 
 //integromat
 Route::get('integromat/{id}', 'ListingsController@integromat');
+//bookingcancelation
+Route::get('integromatcancelation/{id}', 'BookingsController@integromatcancelation');

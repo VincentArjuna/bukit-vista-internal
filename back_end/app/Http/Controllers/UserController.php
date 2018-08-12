@@ -48,7 +48,7 @@ class UserController extends Controller
     }
     public function logout(Request $request)
     {
-        $users = Users::where('user_email', $request->input('data.user_email'))->first();
+        $users = Users::where('remember_token', $request->input('data.remember_token'))->first();
         $users->remember_token = NULL;
         $user->save();
         return 'Succeed';
@@ -72,14 +72,20 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-        $users = new Users;
-        $users->user_id = $this->newUser_ID();
-        $password = Hash::make($request->input('data.user_password'));
-        $users->user_email = $request->input('data.user_email');
-        $users->user_password = $password;
-        $users->employee_id = $request->input('data.employee_id');
-        $users->save();
-        return 'User Created';
+        $users = Users::where('user_email', $request->input('data.user_email'))->first();
+        if($users)
+        {
+            return 'User Registered';
+        }else{
+            $users = new Users;
+            $users->user_id = $this->newUser_ID();
+            $password = Hash::make($request->input('data.user_password'));
+            $users->user_email = $request->input('data.user_email');
+            $users->user_password = $password;
+            $users->employee_id = $request->input('data.employee_id');
+            $users->save();
+            return 'User Created';
+        }
     }
     
 

@@ -22,7 +22,12 @@ class PropertiesController extends Controller
         $properties = Properties::Latest()->paginate(20);
         return $properties;
     }
-
+    public function new_prop_id()
+    {
+        $ctr = Properties::latest()->count();
+        $prop_id = 'PR'.sprintf("%04s", $ctr);
+        return $prop_id;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -32,7 +37,7 @@ class PropertiesController extends Controller
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $properties = new Properties;
-        $properties->property_id = $request->input('data.property_id');
+        $properties->property_id = $this->new_prop_id();
         $properties->property_name = $request->input('data.property_name');
         $properties->property_type = $request->input('data.property_type');
         $properties->property_status = $request->input('data.property_status');
@@ -44,7 +49,7 @@ class PropertiesController extends Controller
         $properties->property_owner_group_link = $request->input('data.property_owner_group_link');
         $properties->area_id = $request->input('data.area_id');
         $properties->employee_id = $request->input('data.employee_id');
-        $properties-save();
+        $properties->save();
         return 'Data added';
     }
 
@@ -140,10 +145,10 @@ class PropertiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $properties = Properties::where('property_id', $id)->first();
+        $properties = Properties::where('property_id', $request->input('data.property_id'))->first();
         $properties->property_name = $request->input('data.property_name');
         $properties->property_type = $request->input('data.property_type');
         $properties->property_status = $request->input('data.property_status');
