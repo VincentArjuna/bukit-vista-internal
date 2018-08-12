@@ -58,8 +58,8 @@ import {
       },
       {
           title:'Service',
-          key:'profile_service',
-          render: object => renderCell(object, 'TextCell', 'profile_service')
+          key:'property_service',
+          render: object => renderCell(object, 'TextCell', 'property_service')
       },
       {
           title:'Owner Group Link',

@@ -1,4 +1,4 @@
-import{all,takeEvery,put,call} from 'redux-saga/effects';
+import{all,takeLatest,put,call} from 'redux-saga/effects';
 import actions from './actions';
 import { stringify } from 'querystring';
 
@@ -57,6 +57,6 @@ function* renderRequestEmployee({}){
 
 
 export default function* rootSaga() {
-    yield all([takeEvery(actions.RENDER_DATA_EMPLOYEE,renderRequestEmployee)]);
-    yield all([takeEvery(actions.EDIT_BOOKING_EMPLOYEE,editRequestBookingEmployee)]);
+    yield all([takeLatest(actions.RENDER_DATA_EMPLOYEE,renderRequestEmployee)]);
+    yield all([takeLatest(actions.EDIT_BOOKING_EMPLOYEE,editRequestBookingEmployee)]);
 }

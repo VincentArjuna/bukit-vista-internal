@@ -87,6 +87,36 @@ class MyTable extends Component {
           className={classes}
           pagination={paging}
           dataSource={this.props.dataList}
+          onRow={(record)=>{
+            switch(this.props.mode){
+              case "bookingCurrent":
+                return{
+                  onClick: () => {
+                    console.log(record["booking_id"]);
+                  }
+                }
+              case "listing":
+                return{
+                  onClick: () => {
+                    console.log(record["listing_id"]);
+                  }
+                }
+              case "unit":
+                return{
+                  onClick: () => {
+                    console.log(record["unit_id"]);
+                  }
+                }
+              case "property":
+                return{
+                  onClick: () => {
+                    console.log(record["property_id"]);
+                  }
+                }
+              default:
+
+            }
+          }}
         />
       </div>
     );

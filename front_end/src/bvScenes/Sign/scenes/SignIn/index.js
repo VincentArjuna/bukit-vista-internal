@@ -7,8 +7,6 @@ import Button from "../../../../bvComponents/Uielements/button";
 import authAction from "../../../../redux/auth/actions";
 import appAction from "../../../../redux/app/actions";
 import Auth0 from "../../../../helpers/auth0";
-//import Firebase from "../../helpers/firebase";
-//import FirebaseLogin from "../../components/firebase";
 import IntlMessages from "../../../../bvComponents/Utility/intlMessages";
 import SignInStyleWrapper from "./signin.style";
 
