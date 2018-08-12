@@ -16,9 +16,9 @@ const actions={
         total,
         page
     }),
-    addUnit:(id,name,onboard_date,base_price,currency,capacity,number_room,swimming_pool,pOwner,pBv,property_id)=>({
+    addUnit:(name,onboard_date,base_price,currency,capacity,number_room,swimming_pool,pOwner,pBv,property_id)=>({
         type:actions.ADD_UNIT,
-        payload:{id,name,onboard_date,base_price,currency,capacity,number_room,swimming_pool,pOwner,pBv,property_id}
+        payload:{name,onboard_date,base_price,currency,capacity,number_room,swimming_pool,pOwner,pBv,property_id}
     })
 }
 

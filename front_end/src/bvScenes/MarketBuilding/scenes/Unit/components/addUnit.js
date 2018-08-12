@@ -49,13 +49,6 @@ class extends React.Component {
           onOk={onCreate}
         >
         <Form layout="vertical">
-            <FormItem label="ID">
-                {getFieldDecorator(
-                    'unit_id', {
-                        rules: [{ required: true, message: 'This is required' }]
-                    }
-                )(<Input/>)}
-            </FormItem>
             <FormItem label="Name">
                 {getFieldDecorator(
                     'unit_name', {
@@ -189,7 +182,6 @@ class AddUnit extends Component {
       }
       console.log(values);
       this.props.addUnit(
-          values["unit_id"],
           values["unit_name"],
           moment(values["onboard_date"]).format('YYYY-MM-DD').toString(),
           values["base_price"],

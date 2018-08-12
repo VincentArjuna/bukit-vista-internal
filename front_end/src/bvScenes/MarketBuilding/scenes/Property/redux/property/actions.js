@@ -16,9 +16,9 @@ const actions={
         total,
         page
     }),
-    addProperty:(id,name,type,status,prop_package,design,proximity,life_support,service,owner_group_link,area_id,employee_id)=>({
+    addProperty:(name,type,status,prop_package,design,proximity,life_support,service,owner_group_link,area_id,employee_id)=>({
         type:actions.ADD_PROPERTY,
-        payload:{id,name,type,status,prop_package,design,proximity,life_support,service,owner_group_link,area_id,employee_id}
+        payload:{name,type,status,prop_package,design,proximity,life_support,service,owner_group_link,area_id,employee_id}
     })
 }
 

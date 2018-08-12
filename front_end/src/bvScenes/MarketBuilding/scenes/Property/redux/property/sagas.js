@@ -31,18 +31,17 @@ await fetch(`${URL_AREA}/add`, {
     },
     body:stringify( 
     {
-        'data[property_id]':param[0],
-        'data[property_name]':param[1],
-        'data[property_type]':param[2],
-        'data[property_status]':param[3],
-        'data[property_package]':param[4],
-        'data[property_design]':param[5],
-        'data[property_proximity]':param[6],
-        'data[property_life_support]':param[7],
-        'data[property_service]':param[8],
-        'data[property_owner_group_link]':param[9],
-        'data[area_id]':param[10],
-        'data[employee_id]':param[11],
+        'data[property_name]':param[0],
+        'data[property_type]':param[1],
+        'data[property_status]':param[2],
+        'data[property_package]':param[3],
+        'data[property_design]':param[4],
+        'data[property_proximity]':param[5],
+        'data[property_life_support]':param[6],
+        'data[property_service]':param[7],
+        'data[property_owner_group_link]':param[8],
+        'data[area_id]':param[9],
+        'data[employee_id]':param[10],
      })
 }).then(res=>res.json())
 .then(res=>res)
@@ -72,7 +71,6 @@ function* renderRequestProperty({payload}){
 function* addProperty({payload}){
     try{
         const param=[
-            payload.id,
             payload.name,
             payload.type,
             payload.status,

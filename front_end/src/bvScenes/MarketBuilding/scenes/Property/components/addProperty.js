@@ -31,13 +31,6 @@ class extends React.Component {
           onOk={onCreate}
         >
             <Form layout="vertical">
-                <FormItem label="ID">
-                    {getFieldDecorator(
-                        'id', {
-                            rules: [{ required: true, message: 'This is required' }]
-                        }
-                    )(<Input/>)}
-                </FormItem>
                 <FormItem label="Name">
                     {getFieldDecorator(
                         'name', {
@@ -233,7 +226,6 @@ class AddProperty extends Component {
       }
       console.log(values);
       this.props.addProperty(
-          values["id"],
           values["name"],
           values["type"],
           values["status"],

@@ -31,17 +31,16 @@ await fetch(`${URL_AREA}/add`, {
     },
     body:stringify( 
     {
-        'data[unit_id]':param[0],
-        'data[unit_name]':param[1],
-        'data[unit_onboard_date]':param[2],
-        'data[unit_base_price]':param[3],
-        'data[unit_currency]':param[4],
-        'data[unit_capacity]':param[5],
-        'data[unit_number_room]':param[6],
-        'data[unit_swimming_pool]':param[7],
-        'data[unit_percentage_owner]':param[8],
-        'data[unit_percentage_bv]':param[9],
-        'data[property_id]':param[10],
+        'data[unit_name]':param[0],
+        'data[unit_onboard_date]':param[1],
+        'data[unit_base_price]':param[2],
+        'data[unit_currency]':param[3],
+        'data[unit_capacity]':param[4],
+        'data[unit_number_room]':param[5],
+        'data[unit_swimming_pool]':param[6],
+        'data[unit_percentage_owner]':param[7],
+        'data[unit_percentage_bv]':param[8],
+        'data[property_id]':param[9],
      })
 }).then(res=>res.json())
 .then(res=>res)
@@ -71,7 +70,6 @@ function* renderRequestUnit({payload}){
 function* addUnit({payload}){
     try{
         const param=[
-            payload.id,
             payload.name,
             payload.onboard_date,
             payload.base_price,
