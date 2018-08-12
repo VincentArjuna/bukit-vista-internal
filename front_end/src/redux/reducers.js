@@ -1,5 +1,5 @@
 import Auth from './auth/reducer';
-import App from './app/reducer';
+import App from '../App/redux/app/reducer';
 import ArrivalTable from '../bvScenes/Operation/scenes/ArrivalList/components/ArrivalTable/redux/reducers';
 import BookingCurrent from '../bvScenes/Operation/scenes/Booking/scenes/Current/redux/reducers';
 import Employee from '../bvScenes/ResourcesManagement/scenes/Employee/redux/reducers';

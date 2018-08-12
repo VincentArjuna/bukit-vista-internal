@@ -1,4 +1,4 @@
-import{all,takeEvery,put,call} from 'redux-saga/effects';
+import{all,takeEvery,put,call,takeLatest} from 'redux-saga/effects';
 import axios from 'axios';
 import actions from './actions';
 import { stringify } from 'querystring';
@@ -168,8 +168,8 @@ function* editRequestBooking({payload}){
     }
 }
 export default function* rootSaga() {
-    yield all([takeEvery(actions.EDIT_BOOKING,editRequestBooking)]);
-    yield all([takeEvery(actions.RENDER_DATA_BC,renderRequest)]);
-    yield all([takeEvery(actions.ADD_BOOKING,addBooking)]);
-    yield all([takeEvery(actions.DOWNLOAD_CSV,downloadCsv)]);
+    yield all([takeLatest(actions.EDIT_BOOKING,editRequestBooking)]);
+    yield all([takeLatest(actions.RENDER_DATA_BC,renderRequest)]);
+    yield all([takeLatest(actions.ADD_BOOKING,addBooking)]);
+    yield all([takeLatest(actions.DOWNLOAD_CSV,downloadCsv)]);
 }

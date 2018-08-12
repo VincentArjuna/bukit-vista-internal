@@ -5,7 +5,7 @@ import Input from "../../../../bvComponents/Uielements/input";
 import Checkbox from "../../../../bvComponents/Uielements/checkbox";
 import Button from "../../../../bvComponents/Uielements/button";
 import authAction from "../../../../redux/auth/actions";
-import appAction from "../../../../redux/app/actions";
+import appAction from "../../../../App/redux/app/actions";
 import Auth0 from "../../../../helpers/auth0";
 import IntlMessages from "../../../../bvComponents/Utility/intlMessages";
 import SignInStyleWrapper from "./signin.style";

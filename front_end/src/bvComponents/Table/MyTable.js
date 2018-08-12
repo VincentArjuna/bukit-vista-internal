@@ -4,7 +4,6 @@ import TableWrapper from './antTable.style';
 import clone from 'clone';
 import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/editCell';
 import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/notesCell';
-import moment from 'moment';
 
 class MyTable extends Component {
   constructor(props) {
@@ -12,7 +11,6 @@ class MyTable extends Component {
     this.state = {
       size: 'default',
       columns: clone(this.props.columns),
-      page: 1,
     };
   }
   componentDidMount(){
@@ -47,38 +45,60 @@ class MyTable extends Component {
     return columns;
   };
 
+  onChange=(pagination,filters,sorter)=>{
+    console.log(pagination.current)
+    console.log(sorter.columnKey);
+    console.log(sorter.order);
+    let sort=0;
+    if(sorter.order === 'ascend'){
+      if(sorter.columnKey==='booking_guest_eta'){
+        sort=1;
+      }else if(sorter.columnKey==='booking_guest_name'){
+        sort=3;
+      }else if(sorter.columnKey==='unit_name'){
+        sort=5;
+      }
+    }else if(sorter.order === 'descend'){
+      if(sorter.columnKey==='booking_guest_eta'){
+        sort=2;
+      }else if(sorter.columnKey==='booking_guest_name'){
+        sort=4;
+      }else if(sorter.columnKey==='unit_name'){
+        sort=6;
+      }
+    }
 
+    console.log("sorting-"+"page :"+this.props.page+"-sort :"+this.props.sort);
+    if(this.props.mode==='arrivalList'){
+      this.props.onPageChange(
+        this.props.index,
+        this.props.area,
+        this.props.DateRange.date,
+        this.props.Searchbar.filterType,
+        this.props.Searchbar.filterer,
+        this.props.DateRange.dateType,
+        pagination.current,
+        sort
+      );
+    }else if(this.props.mode==='bookingCurrent'){
+      this.props.onPageChange(
+        this.props.DateRange.date,
+        this.props.Searchbar.filterer,
+        this.props.DateRange.dateType,
+        this.props.Searchbar.filterType,
+        pagination.current
+      );
+    }else if(this.props.mode==='listing' || this.props.mode==='unit' ||this.props.mode==='property' ){
+      this.props.onPageChange(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10,pagination.current);
+    }
+  }
 
   render() {
-    console.log(this.props.mode);
     const classes = `isoCustomizedTableWrapper`;
-    const that=this;
     const paging={
       total:this.props.total,
       currentPage:this.props.page,
       page:this.props.page,
-      onChange(page){
-        let pg = page;
-        if(that.props.mode==='arrivalList'){
-          that.props.onPageChange(
-            that.props.index,
-            that.props.area,
-            that.props.DateRange.date,
-            that.props.Searchbar.filterType,
-            that.props.Searchbar.filterer,
-            that.props.DateRange.dateType,
-            pg);
-        }else if(that.props.mode==='bookingCurrent'){
-          that.props.onPageChange(
-            that.props.DateRange.date,
-            that.props.Searchbar.filterer,
-            that.props.DateRange.dateType,
-            that.props.Searchbar.filterType,
-            pg);
-        }else if(that.props.mode==='listing' || that.props.mode==='unit' ||that.props.mode==='property' ){
-          that.props.onPageChange(that.props.Searchbar.filterType,that.props.Searchbar.filterer,10,pg);
-        }
-      }
     }
     return (
       <div>
@@ -87,12 +107,13 @@ class MyTable extends Component {
           className={classes}
           pagination={paging}
           dataSource={this.props.dataList}
-          onRow={(record)=>{
+          onChange={this.onChange}
+          onRow={(record,index)=>{
             switch(this.props.mode){
               case "bookingCurrent":
                 return{
                   onClick: () => {
-                    console.log(record["booking_id"]);
+                    console.log(this.props.dataList[index].booking_id);
                   }
                 }
               case "listing":
@@ -117,6 +138,7 @@ class MyTable extends Component {
 
             }
           }}
+          loading={this.props.loading}
         />
       </div>
     );

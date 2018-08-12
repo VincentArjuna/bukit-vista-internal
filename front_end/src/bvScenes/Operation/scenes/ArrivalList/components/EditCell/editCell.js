@@ -160,34 +160,44 @@ class EditCell extends Component {
       if (err) {
         return;
       }
-        console.log(values["comm"])
+      console.log(values);
+      let eta=null;
+      if(values["eta"]!==null){
+        eta=moment(values["eta"]).format("HH:mm").toString();
+      }
       this.props.editBooking(
         values["booking_id"],
         moment(values["check_out"]).format('YYYY-MM-DD').toString(),
-        moment(values["eta"]).format('HH:mm').toString(),
+        eta,
         values["status"],
         values["phone"],
         values["comm"],
         values["notes"]
       );
         //host
-      this.props.editBookingEmployee(
-        values["booking_id"],
-        values["host"],
-        0
-      );
+      if(values["host"]!==null){
+        this.props.editBookingEmployee(
+          values["booking_id"],
+          values["host"],
+          0
+        );
+      }
       //driver
-      this.props.editBookingEmployee(
-        values["booking_id"],
-        values["driver"],
-        1
-      );
+      if(values["driver"]!==null){
+        this.props.editBookingEmployee(
+          values["booking_id"],
+          values["driver"],
+          1
+        );
+      }
       //verifier
-      this.props.editBookingEmployee(
-        values["booking_id"],
-        values["verifier"],
-        2
-      );
+      if(values["verifier"]!==null){
+        this.props.editBookingEmployee(
+          values["booking_id"],
+          values["verifier"],
+          2
+        );
+      }
       this.props.onPageChange(
         this.props.indexTable,this.props.area,
         this.props.DateRange.date,this.props.Searchbar.filterType,

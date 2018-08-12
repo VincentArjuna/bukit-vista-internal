@@ -1,4 +1,4 @@
-import{all,takeEvery,put,call} from 'redux-saga/effects';
+import{all,takeEvery,put,call,takeLatest} from 'redux-saga/effects';
 import actions from './actions';
 import { stringify } from 'querystring';
 
@@ -18,7 +18,9 @@ const onRenderRequest = async (param) =>
           'data[date]': param[1],
           'data[filter_type]': param[2],
           'data[filterer]':param[3],
-          'data[date_type]': param[4] })
+          'data[date_type]': param[4],
+          'data[sort_type]':param[6]
+         })
     }).then(res=>res.json())
     .then(res=>res)
     .catch(error => error);
@@ -31,7 +33,8 @@ function* renderRequest({payload}){
             payload.filter_type,
             payload.filterer,
             payload.date_type,
-            payload.page
+            payload.page,
+            payload.sort
         ];
         const renderResult = yield call(onRenderRequest,param);
         if(renderResult.data){  
@@ -40,7 +43,9 @@ function* renderRequest({payload}){
                     payload.index,
                     renderResult.data,
                     renderResult.total,
-                    renderResult.current_page)
+                    renderResult.current_page,
+                    param[6]
+                )
             );
         }else{
             console.log('error'+renderResult);
@@ -59,16 +64,19 @@ function* renderRequestSingle({payload}){
             payload.filterer,
             payload.date_type,
             payload.page,
-            payload.index
+            payload.sort,
+            payload.index,
         ];
-        console.log("single :"+param);
+        console.log(param);
         const renderResult = yield call(onRenderRequest,param);
         if(renderResult.data){
             yield put(
                 actions.renderDataSingleSuccess(
-                    param[6],
+                    param[7],
                     renderResult.data,
-                    renderResult.current_page)
+                    renderResult.current_page,
+                    param[6]
+                )
             );
         }else{
            
@@ -81,5 +89,5 @@ function* renderRequestSingle({payload}){
 
 export default function* rootSaga() {
     yield all([takeEvery(actions.RENDER_DATA,renderRequest)]);
-    yield all([takeEvery(actions.RENDER_DATA_SINGLE,renderRequestSingle)]);
+    yield all([takeLatest(actions.RENDER_DATA_SINGLE,renderRequestSingle)]);
 }

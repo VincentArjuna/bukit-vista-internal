@@ -8,7 +8,7 @@ import Scrollbars from "../../bvComponents/Utility/customScrollBar.js";
 import Menu from "../../bvComponents/Uielements/menu";
 import IntlMessages from "../../bvComponents/Utility/intlMessages";
 import SidebarWrapper from "./sidebar.style";
-import appActions from "../../redux/app/actions";
+import appActions from "../../App/redux/app/actions";
 import Logo from "../../bvComponents/Utility/logo";
 
 const SubMenu = Menu.SubMenu;

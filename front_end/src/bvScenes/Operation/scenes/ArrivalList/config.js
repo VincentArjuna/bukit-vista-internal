@@ -28,12 +28,14 @@ const columns = [
     title: 'Unit Name',
     key: 'unit_name',
     width: '50',
+    sorter:true,
     render: object => renderCell(object, 'TextCell', 'unit_name')
   },
   {
     title: 'Guest Name',
     key: 'booking_guest_name',
     width: '50',
+    sorter:true,
     render: object => renderCell(object, 'TextCell', 'booking_guest_name')
   },
   {
@@ -58,6 +60,7 @@ const columns = [
     title: 'ETA',
     key: 'booking_guest_eta',
     width: '20',
+    sorter:true,
     render: object => renderCell(object, 'TextCell', 'booking_guest_eta')
   },
   {
