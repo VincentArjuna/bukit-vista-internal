@@ -8,102 +8,124 @@ import Select,{SelectOption}from '../../../../../../../bvComponents/Uielements/s
 import Spin from '../../../../../../../bvComponents/Uielements/spin';
 import aBooking from '../../../../../../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 import aListing from '../../../../../../../bvScenes/MarketBuilding/scenes/Listing/redux/listing/actions';
-import aUnit from '../../../../../../../bvScenes/MarketBuilding/scenes/Unit/redux/unit/actions';
-import aEmployee from '../../../../../../ResourcesManagement/scenes/Employee/redux/employee/actions';
 
 const FormItem = Form.Item;
 const Option = SelectOption;
 
-const {renderDataEmployee,editBookingEmployee} = aEmployee;
-const {renderDataBc,addBooking}=aBooking;
-const {renderDataUnit}=aUnit;
+const {editAllBooking,onPageChange}=aBooking;
 const{renderDataListing}=aListing;
 const CollectionCreateForm = Form.create()(
 class extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSearchUnit=debounce(this.handleSearchUnit,800);
+        this.handleSearchUnit=debounce(this.handleSearchListing,800);
         this.state={
-            dataUnit:[],
             dataListing:[],
-            valueUnit:null,
             valueListing:null,
         }
     }
 
-    handleChangeUnit=(value)=>{
+    handleChangeListing=(value)=>{
         this.setState({
-            valueUnit:value,
-            dataUnit:[]
+            valueListing:value,
+            dataListing:[]
         })
-        this.props.renderDataListing(3,value,30);
     }
-    handleSearchUnit=(value)=>{
-        this.props.renderDataUnit(2,value,30)
+    handleSearchListing=(value)=>{
+        this.props.renderDataListing(2,value,30)
 
     }
     render() {
       const { visible, onCancel, onCreate, form } = this.props;
       const { getFieldDecorator } = form;
-      const {valueUnit,valueListing,data}=this.state;
       return (
         <Modal
           visible={visible}
-          title="New Booking"
-          okText="Add"
+          title="Edit Booking"
+          okText="Edit"
           cancelText="Back"
           onCancel={onCancel}
           onOk={onCreate}
         >
         <Form layout="vertical">
-            <FormItem label="Booking ID">
+            <FormItem label="ID">
                 {getFieldDecorator(
                     'booking_id', {
-                        rules: [{ required: true, message: 'This is required' }]
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:this.props.dataList[this.props.index].booking_id
                     }
                 )(<Input/>)}
             </FormItem>
+            <FormItem label="Status">
+                {getFieldDecorator(
+                    'status', {
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:this.props.dataList[this.props.index].booking_status
+                    }
+                )(
+                    <Select>
+                        <Option value={1}>Confirmed Booking</Option> 
+                        <Option value={2}>Cancellation</Option>
+                        <Option value={3}>Hold</Option>
+                        <Option value={4}>Overbooking</Option>
+                        <Option value={5}>Amendment</Option>
+                        <Option value={6}>Alteration</Option>
+                        <Option value={7}>Decline</Option>
+                        <Option value={8}>Awaiting Payment</Option>
+                    </Select>
+                )}
+            </FormItem>
             <FormItem label="Guest Name">
                 {getFieldDecorator(
-                    'guest_name', {
-                        rules: [{ required: true, message: 'This is required' }]
+                    'name', {
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:this.props.dataList[this.props.index].booking_guest_name
                     }
                 )(<Input/>)}
             </FormItem>
             <FormItem label="Check In">
                 {getFieldDecorator(
                     'check_in', {
-                        rules: [{ required: true, message: 'This is required' }]
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:moment(this.props.dataList[this.props.index].booking_check_in,'YYYY-MM-DD')
                     }
                 )(<DatePicker/>)}
             </FormItem>
             <FormItem label="Check Out">
                 {getFieldDecorator(
                     'check_out', {
-                        rules: [{ required: true, message: 'This is required' }]
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:moment(this.props.dataList[this.props.index].booking_check_out,'YYYY-MM-DD')
                     }
                 )(<DatePicker/>)}
             </FormItem>
             <FormItem label="Guest Number">
                 {getFieldDecorator(
                     'number', {
-                        rules: [{ required: true, message: 'This is required' }]
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:this.props.dataList[this.props.index].booking_guest_number?this.props.dataList[this.props.index].booking_guest_number:null
                     }
                 )(<InputNumber/>)}
             </FormItem>
             <FormItem label="Guest Phone">
                 {getFieldDecorator(
-                    'phone'
+                    'phone', {
+                        initialValue:this.props.dataList[this.props.index].booking_guest_phone?this.props.dataList[this.props.index].booking_guest_phone:null
+                    }
                 )(<Input/>)}
             </FormItem>
             <FormItem label="Guest ETA">
                 {getFieldDecorator(
-                    'eta'
+                    'eta', {
+                        initialValue:this.props.dataList[this.props.index].booking_guest_eta !== "Invalid date"?moment(this.props.dataList[this.props.index].booking_guest_eta,'HH:mm'):null
+                    }
                 )(<TimePicker format="HH:mm"/>)}
             </FormItem>
             <FormItem label="Communication Channel">
                 {getFieldDecorator(
-                    'comm'
+                    'comm', {
+                        initialValue:this.props.dataList[this.props.index].booking_comm_channel?this.props.dataList[this.props.index].booking_comm_channel:null
+                    }
                 )(
                     <Select>
                         <Option value={1}>Whatsapp</Option>
@@ -117,14 +139,16 @@ class extends React.Component {
             <FormItem label="Earned">
                 {getFieldDecorator(
                     'earned', {
-                        rules: [{ required: true, message: 'This is required' }]
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:this.props.dataList[this.props.index].booking_earned
                     }
                 )(<InputNumber />)}
             </FormItem>
             <FormItem label="Currency">
                 {getFieldDecorator(
                     'currency', {
-                        rules: [{ required: true, message: 'This is required' }]
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:this.props.dataList[this.props.index].booking_currency
                     }
                 )(
                     <Select>
@@ -133,33 +157,21 @@ class extends React.Component {
                      </Select>
                 )}
             </FormItem>
-            <FormItem label="Unit">
-            {getFieldDecorator(
-                'unit_id'
-            )(
-        
-                <Select
-                    showSearch
-                    placeholder="Select unit"
-                    defaultActiveFirstOption={false}
-                    showArrow={false}
-                    filterOption={false}
-                    onSearch={this.handleSearchUnit}
-                    onChange={this.handleChangeUnit}
-                    notFoundContent={this.props.Unit.fetching ? <Spin size="small" /> : null}
-                >
-                    {this.props.Unit.results.map(d => <Option value={d.unit_id}>{d.unit_name}</Option>)}
-                </Select>
-        
-            )}
-            </FormItem>
             <FormItem label="Listing">
                 {getFieldDecorator(
                     'listing_id', {
-                        rules: [{ required: true, message: 'This is required' }]
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:this.props.dataList[this.props.index].listing_id                       
                     }
                 )(
-                <Select 
+                <Select
+                    showSearch
+                    placeholder="Select listing"
+                    defaultActiveFirstOption={false}
+                    showArrow={false}
+                    filterOption={false}
+                    onSearch={this.handleSearchListing}
+                    onChange={this.handleChangeListing}
                     notFoundContent={this.props.Listing.fetching ? <Spin size="small" /> : null}
                 >
                     {this.props.Listing.results.map(d => <Option value={d.listing_id}>{d.listing_id+'-'+d.listing_name}</Option>)}
@@ -170,7 +182,8 @@ class extends React.Component {
             <FormItem label="Source">
                 {getFieldDecorator(
                     'source', {
-                        rules: [{ required: true, message: 'This is required' }]
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:this.props.dataList[this.props.index].booking_source
                     }
                 )(
                     <Select>
@@ -184,21 +197,10 @@ class extends React.Component {
             </FormItem>
             <FormItem label="Conversation URL">
                 {getFieldDecorator(
-                    'conversation'
-                )(<Input/>)}
-            </FormItem>
-            <FormItem label="Verifier">
-                {getFieldDecorator(
-                    'verifier', {
-                        rules: [{ required: true, message: 'This is required' }]
+                    'conversation', {
+                        initialValue:this.props.dataList[this.props.index].booking_conversation_url
                     }
-                )(
-                    <Select>
-                        {this.props.employees.map(employee=>
-                            <Option value={employee.employee_id}>{employee.employee_name}</Option>
-                        )}
-                    </Select>
-                )}
+                )(<Input/>)}
             </FormItem>
             </Form>
         </Modal>
@@ -207,7 +209,7 @@ class extends React.Component {
   }
 );
 
-class AddBooking extends Component {
+class EditBooking extends Component {
   state = {
     visible: false,
   };
@@ -226,23 +228,29 @@ class AddBooking extends Component {
       if (err) {
         return;
       }
-      console.log(values);
-      this.props.addBooking(
+      this.props.editAllBooking(
+          values["booking_id"],
+          values["status"],
+          values["name"],
           moment(values["check_in"]).format('YYYY-MM-DD').toString(),
           moment(values["check_out"]).format('YYYY-MM-DD').toString(),
-          (values["comm"]!==undefined?values["comm"]:""),
-          values["currency"],
+          values["number"]!==null?values["number"]:"",
+          values["phone"]===null?"":values["phone"],
+          values["eta"]!=="Invalid date"||values["eta"]!==null?moment(values["eta"],'HH:mm').toString():"",
+          values["comm"]!==undefined||values["comm"]!==null?values["comm"]:"",
           values["earned"],
-          (values["eta"]!==undefined?moment(values["eta"]).format('HH:mm').toString():""),
-          values["guest_name"],
-          values["number"],
-          (values["phone"]!==undefined?values["phone"]:""),
-          values["booking_id"],
-          values["listing_id"],
+          values["currency"],
           values["source"],
-          (values["conversation"]!==undefined?values["conversation"]:"")
+          values["conversation"]!==null?values["conversation"]:"",
+          values["listing_id"],
         );
-      this.props.editBookingEmployee(values["booking_id"],values["verifier"],2);
+      this.props.onPageChange(
+        this.props.DateRange.date,
+        this.props.Searchbar.filterer,
+        this.props.DateRange.dateType,
+        this.props.Searchbar.filterType,
+        this.props.Current.page
+      );
       form.resetFields();
       this.setState({ visible: false });;
     });
@@ -251,31 +259,20 @@ class AddBooking extends Component {
   saveFormRef = (formRef) => {
     this.formRef = formRef;
   }
-  componentDidMount(){
-    this.props.renderDataBc(0,0,0,0);
-    this.props.renderDataListing(0,null);
-    this.props.renderDataEmployee();
-    
 
-  }
   render() {
     return (
       <div>
-        <Button type="primary"  onClick={this.showModal}>Add Booking</Button>
+        <Button type="primary"  onClick={this.showModal}>Edit Booking</Button>
         <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
-          dataList={this.props.Current.results}
+          dataList={this.props.dataList}
           index={this.props.index}
-          employees={this.props.Employee.results}
-          Unit={this.props.Unit}
-          renderDataUnit={this.props.renderDataUnit}
           Listing={this.props.Listing}
           renderDataListing={this.props.renderDataListing}
-          addBooking={this.props.AddBooking}
-          editBookingEmployee={this.props.editBookingEmployee}
         />
       </div>
     );
@@ -288,11 +285,9 @@ function mapStateToProps(state) {
     Searchbar:state.searchbar,
     DateRange:state.daterange,
     Listing:state.listing,
-    Unit:state.unit,
-    Employee:state.employee
   };
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee ,editBookingEmployee,renderDataBc,renderDataListing,addBooking,renderDataUnit}
-)(AddBooking);
+  { renderDataListing,editAllBooking,onPageChange}
+)(EditBooking);

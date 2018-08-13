@@ -7,10 +7,15 @@ const actions={
     DOWNLOAD_CSV:'DOWNLOAD_CSV',
     UPDATE_ARRIVAL_LIST:'UPDATE_ARRIVAL_LIST',
     EDIT_BOOKING: 'EDIT_BOOKING',
+    EDIT_BOOKING_ALL:'EDIT_BOOKING_ALL',
     EDIT_BOOKING_RESPONSE:'EDIT_BOOKING_RESPONSE',
     editBooking :(booking_id,booking_check_out,booking_guest_eta,booking_guest_status,booking_guest_phone,booking_comm_channel,booking_notes)=>({
         type:actions.EDIT_BOOKING,
         payload:{updateType:1,booking_id,booking_check_out,booking_guest_eta,booking_guest_status,booking_guest_phone,booking_comm_channel,booking_notes}
+    }),
+    editAllBooking :(booking_id,booking_status,name,check_in,check_out,number,phone,eta,comm,earned,currency,source,conversation,listing)=>({
+        type:actions.EDIT_BOOKING_ALL,
+        payload:{updateType:0,booking_id,booking_status,name,check_in,check_out,number,phone,eta,comm,earned,currency,source,conversation,listing}
     }),
     updateData:()=>({
         type:actions.UPDATE_ARRIVAL_LIST,

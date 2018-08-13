@@ -75,6 +75,36 @@ const onEditRequestBooking = async(param)=>
     }).then(res=>res.json())
     .then(res=>res)
     .catch(error => error);
+
+    const onEditAllRequestBooking = async(param)=>
+    await fetch(`${URL_BOOKING}/update`, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        },
+        body:stringify( 
+        {
+        'data[update_type]': param[0],
+        'data[booking_id]': param[1],
+        'data[booking_status]': param[2],
+        'data[booking_guest_name]': param[3],
+        'data[booking_check_in]': param[4],
+        'data[booking_check_out]': param[5],
+        'data[booking_guest_number]':param[6],
+        'data[booking_guest_phone]':param[7],
+        'data[booking_guest_eta]':param[8],
+        'data[booking_comm_channel]':param[9],
+        'data[booking_earned]':param[10],
+        'data[booking_currency]':param[11],
+        'data[booking_source]':param[12],
+        'data[booking_conversation_url]':param[13],
+        'data[listing_id]':param[14],
+     })
+    }).then(res=>res.json())
+    .then(res=>res)
+    .catch(error => error);
                 
 const onDownloadRequest=async(param)=>
     axios({
@@ -167,8 +197,34 @@ function* editRequestBooking({payload}){
         console.log("saga error");
     }
 }
+function* editAllRequestBooking({payload}){
+    try{
+        const param=[
+            payload.updateType,
+            payload.booking_id,
+            payload.booking_status,
+            payload.name,
+            payload.check_in,
+            payload.check_out,
+            payload.number,
+            payload.phone,
+            payload.eta,
+            payload.comm,
+            payload.earned,
+            payload.currency,
+            payload.source,
+            payload.conversation,
+            payload.listing,
+        ];
+        console.log(param);
+        yield call(onEditAllRequestBooking,param);
+    }catch(error){
+        console.log("saga error");
+    }
+}
 export default function* rootSaga() {
     yield all([takeLatest(actions.EDIT_BOOKING,editRequestBooking)]);
+    yield all([takeLatest(actions.EDIT_BOOKING_ALL,editAllRequestBooking)]);
     yield all([takeLatest(actions.RENDER_DATA_BC,renderRequest)]);
     yield all([takeLatest(actions.ADD_BOOKING,addBooking)]);
     yield all([takeLatest(actions.DOWNLOAD_CSV,downloadCsv)]);

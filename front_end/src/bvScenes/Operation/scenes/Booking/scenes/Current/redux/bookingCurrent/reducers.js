@@ -36,15 +36,13 @@ export default function reducer(state = initState,action){
         case actions.EDIT_BOOKING:
             return{
                 ...state,
-                update_type:action.payload.updateType,
-                booking_id:action.payload.booking_id,
-                booking_check_out:action.payload.booking_check_out,
-                booking_guest_eta:action.payload.booking_guest_eta,
-                booking_guest_status:action.payload.booking_guest_status,
-                booking_guest_phone:action.payload.booking_guest_phone,
-                booking_comm_channel:action.payload.booking_comm_channel,
-                booking_notes:action.payload.booking_notes
+                payload:action.payload
             };
+        case actions.EDIT_BOOKING_ALL:
+            return{
+                ...state,
+                payload:action.payload
+            }
         case actions.EDIT_BOOKING_RESPONSE:
             return{
                 ...state,

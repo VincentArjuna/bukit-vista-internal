@@ -7,6 +7,7 @@ import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/No
 import EditListing from '../../bvScenes/MarketBuilding/scenes/Listing/components/editListing';
 import EditProperty from '../../bvScenes/MarketBuilding/scenes/Property/components/editProperty';
 import EditUnit from '../../bvScenes/MarketBuilding/scenes/Unit/components/editUnit';
+import EditBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/components/editBooking';
 
 class MyTable extends Component {
   constructor(props) {
@@ -17,8 +18,9 @@ class MyTable extends Component {
     };
   }
   componentDidMount(){
-    (this.props.mode === 'arrivalList' || this.props.mode==='listing' || this.props.mode==='unit' || this.props.mode==='property'
-      ? this.setState({ columns:this.createColumns(clone(this.props.columns)),}):null);
+    this.setState({ 
+      columns:this.createColumns(clone(this.props.columns))
+    });
   }
 
   createColumns=(columns)=> {
@@ -46,35 +48,44 @@ class MyTable extends Component {
         }
         columns.push(notesColumn);
         columns.push(editColumn);
-      }else
-      if(this.props.mode === "listing"){
-        const editListing={
-          title:'Edit Listing',
-          dataIndex:'edit',
-          render: (text, record, index) => (
-            <EditListing index={index} dataList={this.props.dataList} />
-          )
-        }
-        columns.push(editListing);
-      }else if(this.props.mode === "property"){
-        const editProperty={
-          title:'Edit Property',
-          dataIndex:'edit',
-          render: (text, record, index) => (
-            <EditProperty index={index} dataList={this.props.dataList} />
-          )
-        }
-        columns.push(editProperty);
-      }else if(this.props.mode === "unit"){
-        const editUnit={
-          title:'Edit Unit',
-          dataIndex:'edit',
-          render: (text, record, index) => (
-            <EditUnit index={index} dataList={this.props.dataList} />
-          )
-        }
-        columns.push(editUnit);
+    }else if(this.props.mode === "listing"){
+      const editListing={
+        title:'Edit Listing',
+        dataIndex:'edit',
+        render: (text, record, index) => (
+          <EditListing index={index} dataList={this.props.dataList} />
+        )
       }
+      columns.push(editListing);
+    }else if(this.props.mode === "property"){
+      const editProperty={
+        title:'Edit Property',
+        dataIndex:'edit',
+        render: (text, record, index) => (
+          <EditProperty index={index} dataList={this.props.dataList} />
+        )
+      }
+      columns.push(editProperty);
+    }else if(this.props.mode === "unit"){
+      const editUnit={
+        title:'Edit Unit',
+        dataIndex:'edit',
+        render: (text, record, index) => (
+          <EditUnit index={index} dataList={this.props.dataList} />
+        )
+      }
+      columns.push(editUnit);
+    }else if(this.props.mode==="bookingCurrent"){
+      console.log("oi");
+      const editBooking={
+        title:'Edit Booking',
+        dataIndex:'edit',
+        render: (text, record, index) => (
+          <EditBooking index={index} dataList={this.props.dataList} />
+        )
+      }
+      columns.push(editBooking);
+    }
     return columns;
   };
 
@@ -141,39 +152,6 @@ class MyTable extends Component {
           pagination={paging}
           dataSource={this.props.dataList}
           onChange={this.onChange}
-          onRow={(record,index)=>{
-            switch(this.props.mode){
-              case "bookingCurrent":
-                return{
-                  onClick: () => {
-                    console.log(this.props.dataList[index].booking_id);
-                  },
-                  onMouseEnter:()=>{
-                    console.log(this.props.dataList[index].booking_id);
-                  }
-                }
-              case "listing":
-                return{
-                  onClick: () => {
-
-                  }
-                }
-              case "unit":
-                return{
-                  onClick: () => {
-                    console.log(record["unit_id"]);
-                  }
-                }
-              case "property":
-                return{
-                  onClick: () => {
-                    console.log(record["property_id"]);
-                  }
-                }
-              default:
-
-            }
-          }}
           loading={this.props.loading}
         />
       </div>
