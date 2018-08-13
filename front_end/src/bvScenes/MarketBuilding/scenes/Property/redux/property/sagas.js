@@ -48,7 +48,7 @@ await fetch(`${URL_AREA}/add`, {
 .catch(error => error);
 
 const onEditPropertyRequest=async(param)=>
-await fetch(`${URL_AREA}/update/${param[11]}`, {
+await fetch(`${URL_AREA}/update`, {
     method: 'POST',
     headers: {
         'Cache-Control': 'no-cache',
@@ -68,6 +68,7 @@ await fetch(`${URL_AREA}/update/${param[11]}`, {
         'data[property_owner_group_link]':param[8],
         'data[area_id]':param[9],
         'data[employee_id]':param[10],
+        'data[property_id]':param[11]
      })
 }).then(res=>res.json())
 .then(res=>res)

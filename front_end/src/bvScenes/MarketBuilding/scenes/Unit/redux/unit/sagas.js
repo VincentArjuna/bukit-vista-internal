@@ -47,7 +47,7 @@ await fetch(`${URL_AREA}/add`, {
 .catch(error => error);
 
 const onEditUnitRequest=async(param)=>
-await fetch(`${URL_AREA}/update/${param[10]}`, {
+await fetch(`${URL_AREA}/update`, {
     method: 'POST',
     headers: {
         'Cache-Control': 'no-cache',
@@ -66,6 +66,7 @@ await fetch(`${URL_AREA}/update/${param[10]}`, {
         'data[unit_percentage_owner]':param[7],
         'data[unit_percentage_bv]':param[8],
         'data[property_id]':param[9],
+        'data[unit_id]':param[10]
      })
 }).then(res=>res.json())
 .then(res=>res)

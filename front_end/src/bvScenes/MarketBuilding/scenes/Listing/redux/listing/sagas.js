@@ -48,7 +48,7 @@ await fetch(`${URL_AREA}/add`, {
 .catch(error => error);
 
 const onEditListingRequest=async(param)=>
-await fetch(`${URL_AREA}/update/${param[0]}`, {
+await fetch(`${URL_AREA}/update`, {
     method: 'POST',
     headers: {
         'Cache-Control': 'no-cache',
@@ -67,6 +67,7 @@ await fetch(`${URL_AREA}/update/${param[0]}`, {
         'data[unit_id]':param[8],
         'data[profile_id]':param[9],
         'data[employee_id]':param[10],
+        'data[listing_id]':param[0]
      })
 }).then(res=>res.json())
 .then(res=>res)
