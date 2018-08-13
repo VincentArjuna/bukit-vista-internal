@@ -84,7 +84,7 @@ function* renderRequestListing({payload}){
         const renderResult = yield call(onRenderRequestListing,param);
         if(renderResult.data){
             yield put(
-                actions.renderDataListingSuccess(renderResult.data,renderResult.total,renderResult.page)
+                actions.renderDataListingSuccess(renderResult.data,renderResult.total,renderResult.current_page)
             );
         }else{
             console.log("sad");
@@ -141,7 +141,7 @@ function* editListing({payload}){
     }    
 }
 export default function* rootSaga() {
-    yield all([takeLatest(actions.RENDER_DATA_LISTING,renderRequestListing)]);
+    yield all([takeEvery(actions.RENDER_DATA_LISTING,renderRequestListing)]);
     yield all([takeLatest(actions.ADD_LISTING,addListing)]);
     yield all([takeLatest(actions.EDIT_LISTING,editListing)]);
 }

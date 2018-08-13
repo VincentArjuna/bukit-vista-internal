@@ -1,4 +1,4 @@
-import{all,takeLatest,put,call} from 'redux-saga/effects';
+import{all,takeLatest,put,call,takeEvery} from 'redux-saga/effects';
 import actions from './actions';
 import {stringify} from 'querystring';
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/property';
@@ -85,7 +85,7 @@ function* renderRequestProperty({payload}){
         const renderResult = yield call(onRenderRequestProperty,param);
         if(renderResult.data){
             yield put(
-                actions.renderDataPropertySuccess(renderResult.data,renderResult.total,renderResult.page)
+                actions.renderDataPropertySuccess(renderResult.data,renderResult.total,renderResult.current_page)
             );
         }else{
             console.log("sad");
@@ -142,7 +142,7 @@ function* editProperty({payload}){
     }
 }
 export default function* rootSaga() {
-    yield all([takeLatest(actions.RENDER_DATA_PROPERTY,renderRequestProperty)]);
+    yield all([takeEvery(actions.RENDER_DATA_PROPERTY,renderRequestProperty)]);
     yield all([takeLatest(actions.ADD_PROPERTY,addProperty)]);
     yield all([takeLatest(actions.EDIT_PROPERTY,editProperty)]);
 }
