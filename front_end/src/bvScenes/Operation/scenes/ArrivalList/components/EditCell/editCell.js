@@ -216,6 +216,7 @@ class EditCell extends Component {
           2
         );
       }
+      console.log("page now : "+this.props.page);
       this.props.onPageChange(
         this.props.indexTable,
         this.props.area,
@@ -223,7 +224,8 @@ class EditCell extends Component {
         this.props.Searchbar.filterType,
         this.props.Searchbar.filterer,
         this.props.DateRange.dateType,
-        this.props.page);
+        this.props.page,
+        this.props.sort);
       form.resetFields();
       this.setState({ visible: false });
     });

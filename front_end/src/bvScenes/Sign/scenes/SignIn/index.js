@@ -3,13 +3,13 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import {Form} from 'antd';
 import Input from "../../../../bvComponents/Uielements/input";
-import Checkbox from "../../../../bvComponents/Uielements/checkbox";
 import Button from "../../../../bvComponents/Uielements/button";
 import authAction from "../../../../redux/auth/actions";
 import appAction from "../../../../App/redux/app/actions";
 import IntlMessages from "../../../../bvComponents/Utility/intlMessages";
 import SignInStyleWrapper from "./signin.style";
-import { getToken, clearToken } from '../../../../helpers/utility';
+import notification from '../../../../bvComponents/Notification';
+
 const { login } = authAction;
 const { clearMenu } = appAction;
 
@@ -29,6 +29,8 @@ class LoginForm extends React.Component {
         if(this.props.isLoggedIn){
           clearMenu();
           this.props.history.push("/dashboard");
+        }else{
+          notification("error","Log In Failed","Wrong email or password. Please try again.");
         }
       }
     });
@@ -69,6 +71,7 @@ class SignIn extends Component {
   componentDidMount(){
     console.log("Did Mount,logged in?:"+this.props.isLoggedIn);
     if (this.props.isLoggedIn ) {
+      notification("success","You are now logged in!");
       this.setState({ redirectToReferrer: true });
     }
   }
@@ -79,7 +82,10 @@ class SignIn extends Component {
       this.props.isLoggedIn !== nextProps.isLoggedIn &&
       nextProps.isLoggedIn === true
     ) {
+      notification("success","You are now logged in!");
       this.setState({ redirectToReferrer: true });
+    }else{
+      notification("error","You have to be logged in first");
     }
   }
 

@@ -10,6 +10,7 @@ import { Collapse } from 'antd';
 import CollapseWrapper from '../../../../bvComponents/Collapse/collapse.style';
 import ContentHolder from '../../../../bvComponents/Utility/contentHolder';
 import Spin from '../../../../bvComponents/Spin/spin.style';
+import notification from '../../../../bvComponents/Notification';
 
 import Header from '../../../../bvComponents/Header/index.js';
 import MyTable from '../../../../bvComponents/Table/MyTable';
@@ -164,6 +165,7 @@ class ArrivalList extends Component {
                 </Col>
               </Row>
             </Box>
+            {this.props.Table.checkCount===21 ? notification("success", "All Tables Loaded!"):null}
           </LayoutContentWrapper>
         </div>
       );

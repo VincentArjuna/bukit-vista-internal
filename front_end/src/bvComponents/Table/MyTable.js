@@ -15,6 +15,7 @@ class MyTable extends Component {
     this.state = {
       size: 'default',
       columns: clone(this.props.columns),
+      sort:null,
     };
   }
   componentDidMount(){
@@ -31,11 +32,10 @@ class MyTable extends Component {
           render: (text, record, index) => (
             <EditCell key={this.props.key} index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList} 
               onPageChange={this.props.onPageChange}
-              Searchbar={this.props.Searchbar}
-              DateRange={this.props.DateRange}
-              page={this.state.page}
+              page={this.props.page}
               indexTable={this.props.index}
               area={this.props.area}
+              sort={this.state.sort}
               />
           )
         }
@@ -111,6 +111,7 @@ class MyTable extends Component {
         sort=6;
       }
     }
+    this.setState({sort:sort});
 
     console.log("sorting-"+"page :"+this.props.page+"-sort :"+this.props.sort);
     if(this.props.mode==='arrivalList'){
