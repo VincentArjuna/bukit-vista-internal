@@ -44,6 +44,12 @@ const BvAppHolder = styled.div`
     justify-content: space-between;
     width: 100%;
   }
+  .isoRightComponent {
+    display: flex;
+    align-items: right;
+    justify-content: flex-end;
+    width: 100%;
+  }
 
   .isoCenterComponent {
     display: flex;

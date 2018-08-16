@@ -1,40 +1,82 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import {Form} from 'antd';
 import Input from "../../../../bvComponents/Uielements/input";
 import Checkbox from "../../../../bvComponents/Uielements/checkbox";
 import Button from "../../../../bvComponents/Uielements/button";
 import authAction from "../../../../redux/auth/actions";
 import appAction from "../../../../App/redux/app/actions";
-import Auth0 from "../../../../helpers/auth0";
 import IntlMessages from "../../../../bvComponents/Utility/intlMessages";
 import SignInStyleWrapper from "./signin.style";
-
+import { getToken, clearToken } from '../../../../helpers/utility';
 const { login } = authAction;
 const { clearMenu } = appAction;
 
+const LoginWrapper=Form.create()(
+class LoginForm extends React.Component {
+  handleLogin = (e) => {
+    e.preventDefault();
+    const { login, clearMenu } = this.props;
+    this.props.form.validateFields((err, values) => {
+      if (err) {
+        console.log(this.props.isLoggedIn);
+        console.log(err);
+      }else{
+        console.log('Received values of form: ', values);
+        login(values['username'],values['password']);
+        console.log(this.props.isLoggedIn);
+        if(this.props.isLoggedIn){
+          clearMenu();
+          this.props.history.push("/dashboard");
+        }
+      }
+    });
+  };
+
+  render() {
+    const FormItem = Form.Item;
+    const { getFieldDecorator } = this.props.form;
+    return(
+        <Form onSubmit={this.handleLogin} className="isoSignInForm">
+            <FormItem className="isoInputWrapper">
+              {getFieldDecorator('username', {
+                rules: [{ required: true, message: 'Please input your username!' }],
+              })(
+                <Input size="large" placeholder="Username" />
+              )}
+            </FormItem> 
+            <FormItem className="isoInputWrapper">
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: 'Please input your password!' }],
+            })(
+              <Input size="large" type="password" placeholder="Password" />
+            )}
+            </FormItem> 
+            <FormItem className="isoInputWrapper isoRightComponent">
+              <Button type="primary" htmlType="submit">
+                <IntlMessages id="page.signInButton" />
+              </Button>
+            </FormItem> 
+        </Form>
+    );
+  }
+});
 class SignIn extends Component {
   state = {
     redirectToReferrer: false
   };
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.isLoggedIn !== nextProps.isLoggedIn &&
-      nextProps.isLoggedIn === true
-    ) {
+  componentDidMount(){
+    console.log("Did Mount,logged in?:"+this.props.isLoggedIn);
+    if (this.props.isLoggedIn ) {
       this.setState({ redirectToReferrer: true });
     }
   }
-  handleLogin = () => {
-    const { login, clearMenu } = this.props;
-    login();
-    clearMenu();
-    this.props.history.push("/dashboard");
-  };
+
   render() {
     const from = { pathname: "/dashboard" };
     const { redirectToReferrer } = this.state;
-
+    console.log("redirectToReferrer ?:"+redirectToReferrer);
     if (redirectToReferrer) {
       return <Redirect to={from} />;
     }
@@ -47,25 +89,12 @@ class SignIn extends Component {
                 INTERNAL TOOLS BUKITVISTA
               </Link>
             </div>
-
-            <div className="isoSignInForm">
-              <div className="isoInputWrapper">
-                <Input size="large" placeholder="Username" />
-              </div>
-
-              <div className="isoInputWrapper">
-                <Input size="large" type="password" placeholder="Password" />
-              </div>
-
-              <div className="isoInputWrapper isoLeftRightComponent">
-                <Checkbox>
-                  <IntlMessages id="page.signInRememberMe" />
-                </Checkbox>
-                <Button type="primary" onClick={this.handleLogin}>
-                  <IntlMessages id="page.signInButton" />
-                </Button>
-              </div>
-            </div>
+            <LoginWrapper
+              login={this.props.login}
+              clearMenu={this.props.clearMenu}
+              history={this.props.history}
+              isLoggedIn={this.props.isLoggedIn}
+            />
           </div>
         </div>
       </SignInStyleWrapper>
@@ -75,7 +104,7 @@ class SignIn extends Component {
 
 export default connect(
   state => ({
-    isLoggedIn: state.Auth.idToken !== null ? true : false
+    isLoggedIn: state.Auth.idToken === null || state.Auth.idToken=== undefined ? false:true,
   }),
   { login, clearMenu }
 )(SignIn);

@@ -3,75 +3,75 @@ import actions from './actions';
 import {stringify} from 'querystring';
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/listing';
 
-const onRenderRequestListing = async (param) =>
-await fetch(`${URL_AREA}?page=${param[3]}`, {
-    method: 'POST',
-    headers: {
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
-    },
-    body:stringify( 
-    {
-      'data[filter_type]': param[0],
-      'data[filterer]':param[1],
-      'data[per_page]':param[2]
-     })
-}).then(res=>res.json())
-.then(res=>res)
-.catch(error => error);
+const onRenderRequestListing = async(param) =>
+    await fetch(`${URL_AREA}?page=${param[3]}`, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        },
+        body:stringify( 
+        {
+        'data[filter_type]': param[0],
+        'data[filterer]':param[1],
+        'data[per_page]':param[2]
+        })
+    }).then(res=>res.json())
+    .then(res=>res)
+    .catch(error => error);
 
 const onAddListingRequest=async(param)=>
-await fetch(`${URL_AREA}/add`, {
-    method: 'POST',
-    headers: {
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
-    },
-    body:stringify( 
-    {
-        'data[listing_id]':param[0],
-        'data[listing_name]':param[1],
-        'data[listing_onboard_date]':param[2],
-        'data[listing_status]':param[3],
-        'data[listing_instant_book]':param[4],
-        'data[listing_account_owner]':param[5],
-        'data[listing_account_bv]':param[6],
-        'data[listing_remark]':param[7],
-        'data[unit_id]':param[8],
-        'data[profile_id]':param[9],
-        'data[employee_id]':param[10],
-     })
-}).then(res=>res.json())
-.then(res=>res)
-.catch(error => error);
+    await fetch(`${URL_AREA}/add`, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        },
+        body:stringify( 
+        {
+            'data[listing_id]':param[0],
+            'data[listing_name]':param[1],
+            'data[listing_onboard_date]':param[2],
+            'data[listing_status]':param[3],
+            'data[listing_instant_book]':param[4],
+            'data[listing_account_owner]':param[5],
+            'data[listing_account_bv]':param[6],
+            'data[listing_remark]':param[7],
+            'data[unit_id]':param[8],
+            'data[profile_id]':param[9],
+            'data[employee_id]':param[10],
+        })
+    }).then(res=>res.json())
+    .then(res=>res)
+    .catch(error => error);
 
 const onEditListingRequest=async(param)=>
-await fetch(`${URL_AREA}/update`, {
-    method: 'POST',
-    headers: {
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
-    },
-    body:stringify( 
-    {
-        'data[listing_name]':param[1],
-        'data[listing_onboard_date]':param[2],
-        'data[listing_status]':param[3],
-        'data[listing_instant_book]':param[4],
-        'data[listing_account_owner]':param[5],
-        'data[listing_account_bv]':param[6],
-        'data[listing_remark]':param[7],
-        'data[unit_id]':param[8],
-        'data[profile_id]':param[9],
-        'data[employee_id]':param[10],
-        'data[listing_id]':param[0]
-     })
-}).then(res=>res.json())
-.then(res=>res)
-.catch(error => error);
+    await fetch(`${URL_AREA}/update`, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        },
+        body:stringify( 
+        {
+            'data[listing_name]':param[1],
+            'data[listing_onboard_date]':param[2],
+            'data[listing_status]':param[3],
+            'data[listing_instant_book]':param[4],
+            'data[listing_account_owner]':param[5],
+            'data[listing_account_bv]':param[6],
+            'data[listing_remark]':param[7],
+            'data[unit_id]':param[8],
+            'data[profile_id]':param[9],
+            'data[employee_id]':param[10],
+            'data[listing_id]':param[0]
+        })
+    }).then(res=>res.json())
+    .then(res=>res)
+    .catch(error => error);
 
 function* renderRequestListing({payload}){
     try{
