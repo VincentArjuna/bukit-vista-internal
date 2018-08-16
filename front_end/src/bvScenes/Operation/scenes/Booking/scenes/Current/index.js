@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import moment from 'moment';
 import LayoutContentWrapper from "../../../../../../bvComponents/Utility/layoutWrapper.js";
 import LayoutContent from "../../../../../../bvComponents/Utility/layoutContent";
 import {columns,title,filterTypes,mode} from './config.js';
@@ -18,6 +19,13 @@ class Current extends Component {
       this.props.DateRange.dateType,
       this.props.Searchbar.filterType
     );
+  }
+
+  componentWillMount(){
+    this.props.Searchbar.filterType=0;
+    this.props.Searchbar.filterer=null;
+    this.props.DateRange.dateType=0;
+    this.props.DateRange.date= moment().format('YYYY-MM-DD').toString();
   }
   render() {
     return (    

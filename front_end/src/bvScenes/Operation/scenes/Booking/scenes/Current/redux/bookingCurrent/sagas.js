@@ -193,6 +193,7 @@ function* editRequestBooking({payload}){
         ];
         console.log(param);
         yield call(onEditRequestBooking,param);
+        console.log("ok edit booking");
     }catch(error){
         console.log("saga error");
     }
@@ -223,9 +224,9 @@ function* editAllRequestBooking({payload}){
     }
 }
 export default function* rootSaga() {
-    yield all([takeLatest(actions.EDIT_BOOKING,editRequestBooking)]);
-    yield all([takeLatest(actions.EDIT_BOOKING_ALL,editAllRequestBooking)]);
+    yield all([takeEvery(actions.EDIT_BOOKING,editRequestBooking)]);
+    yield all([takeEvery(actions.EDIT_BOOKING_ALL,editAllRequestBooking)]);
     yield all([takeLatest(actions.RENDER_DATA_BC,renderRequest)]);
-    yield all([takeLatest(actions.ADD_BOOKING,addBooking)]);
+    yield all([takeEvery(actions.ADD_BOOKING,addBooking)]);
     yield all([takeLatest(actions.DOWNLOAD_CSV,downloadCsv)]);
 }

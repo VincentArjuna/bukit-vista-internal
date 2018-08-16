@@ -13,6 +13,11 @@ class Listing extends Component {
       this.props.Searchbar.filterType=0;
       this.props.renderDataListing(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10);
     }
+
+    componentWillMount(){
+      this.props.Searchbar.filterType=0;
+      this.props.Searchbar.filterer=null;
+    }
     render() {
       return (    
           <div>

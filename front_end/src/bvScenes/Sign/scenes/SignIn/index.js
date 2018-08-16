@@ -25,7 +25,6 @@ class LoginForm extends React.Component {
       }else{
         console.log('Received values of form: ', values);
         login(values['username'],values['password']);
-        console.log(this.props.isLoggedIn);
         if(this.props.isLoggedIn){
           clearMenu();
           this.props.history.push("/dashboard");
@@ -74,6 +73,9 @@ class SignIn extends Component {
       notification("success","You are now logged in!");
       this.setState({ redirectToReferrer: true });
     }
+    if(this.props.loggedOut){
+      notification("success","You have successfully logged out.");
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -121,6 +123,7 @@ class SignIn extends Component {
 export default connect(
   state => ({
     isLoggedIn: state.Auth.idToken === null || state.Auth.idToken=== undefined ? false:true,
+    loggedOut:state.Auth.loggedOut
   }),
   { login, clearMenu }
 )(SignIn);

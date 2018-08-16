@@ -5,7 +5,8 @@ const initState={
     checkCount:0,
     totalData:0,
     singleRender:false,
-    filledTables:[]
+    filledTables:[],
+    mode:'multi'
 }
 
 export default function reducer(state = initState,action){
@@ -45,7 +46,8 @@ export default function reducer(state = initState,action){
                     }
                 },
                 totalData:0,
-                filledTables:[]
+                filledTables:[],
+                mode:'multi'
             };
         case actions.RENDER_DATA_SUCCESS:
             if(action.total>0){
@@ -93,7 +95,9 @@ export default function reducer(state = initState,action){
                         ...state.tableData[action.index],
                         loading:true,
                     }
-                }
+                },
+                mode:'single'
+
             };
         case actions.RENDER_DATA_SINGLE_SUCCESS:
             return{

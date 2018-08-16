@@ -32,6 +32,7 @@ const {renderData,initializeState,resetState,onPageChange}=actions;
 
 class ArrivalList extends Component {
   componentDidMount(){
+    console.log("did mount arrivalList?");
     this.props.Table.checkCount=0;
     this.props.Table.totalData=0;
     const areasLen = areas.length;
@@ -41,6 +42,16 @@ class ArrivalList extends Component {
       this.props.renderData(i,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType)
       :this.props.renderData(area.key,area.code,this.props.DateRange.date,this.props.Searchbar.filterType,this.props.Searchbar.filterer,this.props.DateRange.dateType);
     });
+  }
+
+  componentWillMount(nextProps){
+    console.log("will mount arrivalList?");
+    this.props.Searchbar.filterer=null;
+    this.props.Searchbar.filterType=0;
+    this.props.DateRange.dateType=0;
+    this.props.DateRange.date= moment().format('YYYY-MM-DD').toString();
+    this.props.Table.checkCount=0;
+    this.props.Table.totalData=0;
   }
   render() {
    
@@ -165,7 +176,7 @@ class ArrivalList extends Component {
                 </Col>
               </Row>
             </Box>
-            {this.props.Table.checkCount===21 ? notification("success", "All Tables Loaded!"):null}
+            {this.props.Table.checkCount===21 && this.props.Table.mode==='multi'? notification("success", "Render Complete"):null}
           </LayoutContentWrapper>
         </div>
       );
