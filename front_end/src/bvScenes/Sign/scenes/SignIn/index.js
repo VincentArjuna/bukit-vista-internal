@@ -73,6 +73,16 @@ class SignIn extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log("WillReceiveProps,this.props.logged in?:"+this.props.isLoggedIn+",WillReceiveProps,nextProps.logged in? : "+nextProps.isLoggedIn);
+    if (
+      this.props.isLoggedIn !== nextProps.isLoggedIn &&
+      nextProps.isLoggedIn === true
+    ) {
+      this.setState({ redirectToReferrer: true });
+    }
+  }
+
   render() {
     const from = { pathname: "/dashboard" };
     const { redirectToReferrer } = this.state;
