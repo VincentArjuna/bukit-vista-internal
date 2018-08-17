@@ -24,20 +24,22 @@ class UserController extends Controller
     public function validator(Request $request)
     {
         $users = Users::where('user_email', $request->input('data.user_email'))->first();
-        if(Hash::check($request->input('data.user_password'),$users->user_password))
-        {
-            $users->save();
-            return true;
-        }else
-        {
-            return false;
+        if($user){
+            if(Hash::check($request->input('data.user_password'),$users->user_password))
+            {
+                $users->save();
+                return true;
+            }else
+            {
+                return false;
+            }
         }
     }
     public function login(Request $request)
     {
         if($this->validator($request) == false)
         {
-            return 'Wrong Password';
+            return respond('Wrong Email/Password',403);
         }else
         {
             $users = Users::where('user_email', $request->input('data.user_email'))->first();

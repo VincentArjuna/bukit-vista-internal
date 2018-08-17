@@ -36,7 +36,7 @@ Route::get('listing/profile/{id}', 'ListingsController@showProfile');
 //Add new 'Listing'
 Route::post('listing/add','ListingsController@create');
 //Update a 'Listing'
-Route::post('listing/update/{id}','ListingsController@update');
+Route::post('listing/update','ListingsController@update');
 //Delete from 'Listing'
 Route::get('listing/delete/{id}','ListingsController@softDelete');
 //Restore Softdeleted listing
@@ -50,7 +50,7 @@ Route::get('unit/show_del', 'UnitController@showDeleted');
 //Add new 'Unit'
 Route::post('unit/add','UnitController@create');
 //Update a 'Unit'
-Route::post('unit/update/','UnitController@update');
+Route::post('unit/update','UnitController@update');
 //Delete from 'Unit'
 Route::get('unit/delete/{id}','UnitController@softDelete');
 //Restore deleted Unit
@@ -96,6 +96,7 @@ Route::get('property/show_del', 'PropertiesController@showDeleted');
 //Add new 'Property'
 Route::post('property/add','PropertiesController@create');
 //Update/Edit 'Property'
+Route::post('property/update', 'PropertiesController@update');
 //SoftDelete 'Property'
 Route::get('property/delete/{id}', 'PropertiesController@softDelete');
 //Restore sofdeleted property
@@ -139,7 +140,7 @@ Route::get('profile/restore/{id}', 'ProfilesController@restore');
 
 //ArrivalList
 //Display arrival (check_in and area)
-Route::post('arrival', 'ArrivalListsController@showArrival');
+Route::post('arrival', 'ArrivalListsController@showArrival2');
 //Download as CSV
 Route::get('booking/{tgl}/download','ArrivalListsController@csvWriter');
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\BookingEmployee;
-
+use App\Properties;
 class BEController extends Controller
 {
     /**

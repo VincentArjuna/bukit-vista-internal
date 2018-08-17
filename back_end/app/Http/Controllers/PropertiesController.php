@@ -36,21 +36,26 @@ class PropertiesController extends Controller
     public function create(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $properties = new Properties;
-        $properties->property_id = $this->new_prop_id();
-        $properties->property_name = $request->input('data.property_name');
-        $properties->property_type = $request->input('data.property_type');
-        $properties->property_status = $request->input('data.property_status');
-        $properties->property_package = $request->input('data.property_package');
-        $properties->property_design = $request->input('data.property_design');
-        $properties->property_proximity = $request->input('data.property_proximity');
-        $properties->property_life_support = $request->input('data.property_life_support');
-        $properties->property_service = $request->input('data.property_service');
-        $properties->property_owner_group_link = $request->input('data.property_owner_group_link');
-        $properties->area_id = $request->input('data.area_id');
-        $properties->employee_id = $request->input('data.employee_id');
-        $properties->save();
-        return 'Data added';
+        try {
+            $properties = new Properties;
+            $properties->property_id = $this->new_prop_id();
+            $properties->property_name = $request->input('data.property_name');
+            $properties->property_type = $request->input('data.property_type');
+            $properties->property_status = $request->input('data.property_status');
+            $properties->property_package = $request->input('data.property_package');
+            $properties->property_design = $request->input('data.property_design');
+            $properties->property_proximity = $request->input('data.property_proximity');
+            $properties->property_life_support = $request->input('data.property_life_support');
+            $properties->property_service = $request->input('data.property_service');
+            $properties->property_owner_group_link = $request->input('data.property_owner_group_link');
+            $properties->area_id = $request->input('data.area_id');
+            $properties->employee_id = $request->input('data.employee_id');
+            $properties->save();
+            return 'TRUE';
+        } catch (Exception $e) {
+            report($e);
+            return 'FALSE';
+        }
     }
 
     /**
@@ -148,20 +153,25 @@ class PropertiesController extends Controller
     public function update(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $properties = Properties::where('property_id', $request->input('data.property_id'))->first();
-        $properties->property_name = $request->input('data.property_name');
-        $properties->property_type = $request->input('data.property_type');
-        $properties->property_status = $request->input('data.property_status');
-        $properties->property_package = $request->input('data.property_package');
-        $properties->property_design = $request->input('data.property_design');
-        $properties->property_proximity = $request->input('data.property_proximity');
-        $properties->property_life_support = $request->input('data.property_life_support');
-        $properties->property_service = $request->input('data.property_service');
-        $properties->property_owner_group_link = $request->input('data.property_owner_group_link');
-        $properties->area_id = $request->input('data.area_id');
-        $properties->employee_id = $request->input('data.employee_id');
-        $properties->save();
-        return 'Data Updated';
+        $id = $request->input('data.property_id');
+        $properties = Properties::where('property_id', $id)->first();
+        if($properties){
+            $properties->property_name = $request->input('data.property_name');
+            $properties->property_type = $request->input('data.property_type');
+            $properties->property_status = $request->input('data.property_status');
+            $properties->property_package = $request->input('data.property_package');
+            $properties->property_design = $request->input('data.property_design');
+            $properties->property_proximity = $request->input('data.property_proximity');
+            $properties->property_life_support = $request->input('data.property_life_support');
+            $properties->property_service = $request->input('data.property_service');
+            $properties->property_owner_group_link = $request->input('data.property_owner_group_link');
+            $properties->area_id = $request->input('data.area_id');
+            $properties->employee_id = $request->input('data.employee_id');
+            $properties->save();
+            return 'TRUE';
+        }else {
+            return 'FALSE';
+        }
     }
 
     /**

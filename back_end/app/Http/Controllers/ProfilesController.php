@@ -15,7 +15,7 @@ class ProfilesController extends Controller
      */
     public function index()
     {
-        $profiles = Profiles::Latest()->paginate(20);
+        $profiles = Profiles::orderBy('employee_name')->paginate(30);
         return $profiles;
     }
 

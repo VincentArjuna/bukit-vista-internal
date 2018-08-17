@@ -39,20 +39,26 @@ class ListingsController extends Controller
     public function create(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $listings = new Listing;
-        $listings->listing_id = $request->input('data.listing_id');
-        $listings->listing_name = $request->input('data.listing_name');
-        $listings->listing_onboard_date = $request->input('data.listing_onboard_date');
-        $listings->listing_status = $request->input('data.listing_status');
-        $listings->listing_instant_book = $request->input('data.listing_instant_book');
-        $listings->listing_account_owner = $request->input('data.listing_account_owner');
-        $listings->listing_account_bv = $request->input('data.listing_account_bv');
-        $listings->listing_remark = $request->input('data.listing_remark');
-        $listings->unit_id = $request->input('data.unit_id');
-        $listings->profile_id = $request->input('data.profile_id');
-        $listings->employee_id = $request->input('data.employee_id');
-        $listings->save();
-        return 'New Data Added';
+        $id = $request->input('data.listing_id');
+        $listings = Listing::where('listing_id', $id)->first();
+        if (!$listings){
+            $listings = new Listing;
+            $listings->listing_id = $id;
+            $listings->listing_name = $request->input('data.listing_name');
+            $listings->listing_onboard_date = $request->input('data.listing_onboard_date');
+            $listings->listing_status = $request->input('data.listing_status');
+            $listings->listing_instant_book = $request->input('data.listing_instant_book');
+            $listings->listing_account_owner = $request->input('data.listing_account_owner');
+            $listings->listing_account_bv = $request->input('data.listing_account_bv');
+            $listings->listing_remark = $request->input('data.listing_remark');
+            $listings->unit_id = $request->input('data.unit_id');
+            $listings->profile_id = $request->input('data.profile_id');
+            $listings->employee_id = $request->input('data.employee_id');
+            $listings->save();
+            return 'TRUE';
+        }else {
+            return 'FALSE';
+        }
     }
 
     /**
@@ -145,24 +151,29 @@ class ListingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $rawonboard = date_create($request->input('data.onboard_date'));
         $onboard_date = date_format($rawonboard,"Y-m-d");
+        $id = $request->input('data.listing_id');
         $listings = Listing::where('listing_id', $id)->first();
-        $listings->listing_name = $request->input('data.listing_name');
-        $listings->listing_onboard_date = $onboard_date;
-        $listings->listing_status = $request->input('data.listing_status');
-        $listings->listing_instant_book = $request->input('data.listing_instant_book');
-        $listings->listing_account_owner = $request->input('data.listing_account_owner');
-        $listings->listing_account_bv = $request->input('data.listing_account_bv');
-        $listings->listing_remark = $request->input('data.listing_remark');
-        $listings->unit_id = $request->input('data.unit_id');
-        $listings->profile_id = $request->input('data.profile_id');
-        $listings->employee_id = $request->input('data.employee_id');
-        $listings->save();
-        return "Data Updated";
+        if($listings){
+            $listings->listing_name = $request->input('data.listing_name');
+            $listings->listing_onboard_date = $onboard_date;
+            $listings->listing_status = $request->input('data.listing_status');
+            $listings->listing_instant_book = $request->input('data.listing_instant_book');
+            $listings->listing_account_owner = $request->input('data.listing_account_owner');
+            $listings->listing_account_bv = $request->input('data.listing_account_bv');
+            $listings->listing_remark = $request->input('data.listing_remark');
+            $listings->unit_id = $request->input('data.unit_id');
+            $listings->profile_id = $request->input('data.profile_id');
+            $listings->employee_id = $request->input('data.employee_id');
+            $listings->save();
+            return 'TRUE';
+        }else {
+            return 'FALSE';
+        }
     }
 
     /**
