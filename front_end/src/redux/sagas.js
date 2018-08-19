@@ -7,6 +7,7 @@ import employeeSaga from '../bvScenes/ResourcesManagement/scenes/Employee/redux/
 import listingSaga from '../bvScenes/MarketBuilding/scenes/Listing/redux/sagas';
 import unitSaga from '../bvScenes/MarketBuilding/scenes/Unit/redux/sagas';
 import propertySaga from '../bvScenes/MarketBuilding/scenes/Property/redux/sagas';
+import notesSaga from '../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/redux/sagas';
 
 export default function* rootSaga(getState) {
   yield all([
@@ -17,5 +18,6 @@ export default function* rootSaga(getState) {
     listingSaga(),
     unitSaga(),
     propertySaga(),
+    notesSaga(),
   ]);
 }

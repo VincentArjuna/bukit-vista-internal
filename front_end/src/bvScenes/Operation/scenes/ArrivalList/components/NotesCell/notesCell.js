@@ -6,6 +6,7 @@ import Input, {
   InputGroup,
   Textarea
 } from '../../../../../../bvComponents/Uielements/input';
+import ToDo from './components/index';
 
 const FormItem = Form.Item;
 export default class extends Component {
@@ -41,6 +42,7 @@ export default class extends Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
+        <ToDo/>
         </Modal>
       </div>
     );

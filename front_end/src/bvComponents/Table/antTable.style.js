@@ -46,7 +46,7 @@ const TableWrapper = styled(Table)`
   .ant-table-tbody > tr > td {
     font-size: 12px;
     color: ${palette('text', 3)};
-    border-bottom: 1px solid ${palette('border', 0)};
+    border-bottom: 1px solid ${palette('border', 1)};
 
     a {
       color: ${palette('primary', 0)};

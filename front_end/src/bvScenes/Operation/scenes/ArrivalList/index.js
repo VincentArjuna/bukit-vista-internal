@@ -4,6 +4,7 @@ import { Row, Col } from 'antd';
 import Box from  '../../../../bvComponents/Utility/box';
 import moment from 'moment';
 import LayoutContentWrapper from "../../../../bvComponents/Utility/layoutWrapper.js";
+import LayoutContent from "../../../../bvComponents/Utility/layoutContent";
 import basicStyle from '../../../../settings/basicStyle.js';
 import {columns,title,areas,filterTypes,mode} from './config.js';
 import { Collapse } from 'antd';
@@ -25,7 +26,7 @@ const Collapses = props => (
 const style = {
   textAlign: 'center',
   background: '#ffffff',
-  padding: '30px 50px',
+  padding: '30px 30px',
   height:'100%'
 };
 const {renderData,initializeState,resetState,onPageChange}=actions;
@@ -58,10 +59,9 @@ class ArrivalList extends Component {
     const { rowStyle, colStyle } = basicStyle;
     if(this.props.Table.checkCount>0){
       return (
-        <div>
+          <div>
           <Header totalData={this.props.Table.totalData} mode={mode}title={title} filters={filterTypes}/>  
-          <LayoutContentWrapper>
-            <Box>    
+            <LayoutContent>
               <Row style={rowStyle} justify="start" align="middle">
                 <Col md={24} sm={12} xs={24} style={colStyle}>
                 <ContentHolder>
@@ -175,10 +175,9 @@ class ArrivalList extends Component {
                 </ContentHolder>
                 </Col>
               </Row>
-            </Box>
+            </LayoutContent>
             {this.props.Table.checkCount===21 && this.props.Table.mode==='multi'? notification("success", "Render Complete"):null}
-          </LayoutContentWrapper>
-        </div>
+          </div>
       );
     }else if(this.props.Table.checkCount<areas.length || this.props.Table.totalData === 0){
       return(
