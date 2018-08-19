@@ -40,7 +40,7 @@ class Topbar extends Component {
 
           <ul className="isoRight">
 
-            <li
+            {/* <li
               onClick={() => this.setState({ selectedItem: "notification" })}
               className="isoNotify"
             >
@@ -58,7 +58,7 @@ class Topbar extends Component {
               className="isoUser"
             >
               <TopbarUser locale={locale} />
-            </li>
+            </li> */}
           </ul>
         </Header>
       </TopbarWrapper>

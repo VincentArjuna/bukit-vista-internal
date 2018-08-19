@@ -2,7 +2,7 @@ const options = [
     {
       key: 'marketBuilding',
       label: 'Market Building',
-      leftIcon: 'ion-document',
+      leftIcon: 'ion-android-map',
       children :[
         {
           key: 'listing',
