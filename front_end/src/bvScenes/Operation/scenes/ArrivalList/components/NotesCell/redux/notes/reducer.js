@@ -1,41 +1,23 @@
-import fakeData from '../../components/fakeData';
-import todoActions from './actions';
-
-const colors = ['#7ED321', '#de1b1b', '#511E78', '#ff9009', '#42a5f5'];
-const todos = new fakeData(5, colors.length).getAll();
+import actions from './actions';
 
 const initState = {
-  todos,
-  colors
+  results:[],
+  loading:false,
+  notificationLoading:false,
+  notificationSuccess:false
 };
 
-export default function todoReducer(state = initState, action) {
-  const todos = state.todos;
-  const newtodos = [];
+export default function reducer(state = initState, action) {
   switch (action.type) {
-    case todoActions.CHANGE_TODO:
-      return {
+    case actions.RENDER_NOTES:
+      return{
         ...state,
-        todos: action.todos
+        loading:true
       };
-    case todoActions.ALL_COMPLETED:
-      todos.forEach(todo => {
-        todo.completed = true;
-        newtodos.push(todo);
-      });
-      return {
-        ...state,
-        todos: newtodos
-      };
-    case todoActions.DELETE_COMPLETED:
-      todos.forEach(todo => {
-        if (todo.completed !== true) {
-          newtodos.push(todo);
-        }
-      });
-      return {
-        ...state,
-        todos: newtodos
+    case actions.RENDER_NOTES_SUCCESS:
+      return{
+        results:action.results,
+        loading:false
       };
     default:
       return state;

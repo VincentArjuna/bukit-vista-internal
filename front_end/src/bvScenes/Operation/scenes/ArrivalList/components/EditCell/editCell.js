@@ -166,6 +166,7 @@ class EditCell extends Component {
 
   showModal = () => {
     this.setState({ visible: true });
+    this.props.renderDataEmployee();
   }
 
   handleCancel = () => {
@@ -234,7 +235,7 @@ class EditCell extends Component {
     this.formRef = formRef;
   }
   componentDidMount(){
-    this.props.renderDataEmployee();
+    //this.props.renderDataEmployee();
   }
   render() {
     return (

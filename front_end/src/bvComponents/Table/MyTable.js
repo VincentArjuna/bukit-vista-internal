@@ -30,7 +30,7 @@ class MyTable extends Component {
           title:'Details',
           dataIndex:'details',
           render: (text, record, index) => (
-            <EditCell key={this.props.key} index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList} 
+            <EditCell key={this.props.key} index={index} dataList={this.props.dataList} 
               onPageChange={this.props.onPageChange}
               page={this.props.page}
               indexTable={this.props.index}
@@ -40,10 +40,10 @@ class MyTable extends Component {
           )
         }
         const notesColumn={
-          title:'Add Notes',
+          title:'Notes',
           dataIndex:'notes',
           render: (text, record, index) => (
-            <NotesCell index={index} onDeleteCell={this.onDeleteCell} dataList={this.props.dataList} />
+            <NotesCell index={index} dataList={this.props.dataList} />
           )
         }
         columns.push(notesColumn);

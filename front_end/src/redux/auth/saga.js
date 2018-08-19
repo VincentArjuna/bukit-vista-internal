@@ -66,7 +66,7 @@ export function* loginRequest() {
       yield put({
         type: actions.LOGIN_SUCCESS,
         token: renderData.remember_token,
-        profile: renderData.employee_id
+        profile: renderData.user_id
       });
     }else {
       yield put({ type: actions.LOGIN_ERROR });
@@ -110,7 +110,7 @@ export function* checkAuthorization() {
         yield put({
           type: actions.LOGIN_SUCCESS,
           token:token,
-          profile:renderRequest.employee_id
+          profile:renderRequest.user_id
         });
       }
     }

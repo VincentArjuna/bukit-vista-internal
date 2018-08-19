@@ -1,27 +1,7 @@
 import React, { Component } from 'react';
-import Button from '../../../../../../../bvComponents/Uielements/button';
-import Checkbox from '../../../../../../../bvComponents/Uielements/checkbox';
-import { RadioButton, RadioGroup } from '../../../../../../../bvComponents/Uielements/radio';
-import { timeDifference } from '../../../../../../../helpers/utility';
-import notification from '../../../../../../../bvComponents/Notification';
-import ColorChoser from '../../../../../../../bvComponents/ColorChoser';
-import EditableComponent from '../../../../../../../bvComponents/EditableComponent';
-import { TodoListWrapper } from './todo.style';
 
-function filterTodos(todos, search) {
-  const selectedTodos =
-    search === 'All'
-      ? todos
-      : todos.filter(todo => todo.completed === (search === 'Completed'));
-  let completed = 0;
-  selectedTodos.forEach(todo => {
-    if (todo.completed) {
-      completed += 1;
-    }
-  });
-  return { selectedTodos, completed };
-}
-export default class TodoList extends Component {
+
+class TodoList extends Component {
   constructor(props) {
     super(props);
     this.singleTodo = this.singleTodo.bind(this);
@@ -60,7 +40,6 @@ export default class TodoList extends Component {
     this.setState({ search: event.target.value });
   }
   render() {
-    const { search } = this.state;
     const { selectedTodos, completed } = filterTodos(this.props.todos, search);
     return (
       <TodoListWrapper className="isoTodoContent">

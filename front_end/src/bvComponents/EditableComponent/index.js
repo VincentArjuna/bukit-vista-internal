@@ -34,7 +34,7 @@ export default class EditableComponent extends Component {
         {editable ? (
           <div className="isoNoteEditWrapper">
             <Input
-              rows={3}
+              rows={1}
               value={value}
               onChange={this.handleChange}
               onPressEnter={this.check}
