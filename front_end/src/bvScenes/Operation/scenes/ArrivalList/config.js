@@ -1,5 +1,3 @@
-import React from 'react';
-import clone from 'clone';
 import {
   LinkCell,
   TextCell
@@ -8,6 +6,7 @@ import {
 
 const renderCell = (object, type, key,choice) => {
   let value;
+  let boldOption=false;
   if(key==='host.employee_name'){
     value=object['host']['employee_name'];
   }else{
@@ -16,13 +15,16 @@ const renderCell = (object, type, key,choice) => {
   if(choice !== null){
     value= choice[value];
   }
+  if(object['booking_guest_status']===1){
+    boldOption=true;
+  }
   switch (type) {
     case 'LinkCell':
       return LinkCell(value);
     case 'TextCell':
-      return TextCell(value);
+      return TextCell(value,boldOption);
     default:
-      return TextCell(value);
+      return TextCell(value,boldOption);
   }
 };
 
@@ -73,6 +75,12 @@ const columns = [
     render: object => renderCell(object, 'TextCell', 'host.employee_name',null)
   },
   {
+    title: 'Communication Channel',
+    key: 'booking_comm_channel',
+    width: '50',
+    render: object => renderCell(object, 'TextCell', 'booking_comm_channel',choices[1])
+  },
+  {
     title: 'Status',
     key: 'booking_guest_status',
     width: '50',
@@ -83,7 +91,15 @@ const choices=[
   {
     '0':'Not Checked In',
     '1':'Checked In',
-    '2':'Checked In, Not Meeting Host'
+    '2':'Checked In, Not Meeting Host',
+    '3':'Overbooking'
+  },
+  {
+    '1':'Whatsapp',
+    '2':'Airbnb Message',
+    '3':'WeChat',
+    '4':'Booking.com',
+    '5':'Agoda'
   }
 ];
 const areas = [

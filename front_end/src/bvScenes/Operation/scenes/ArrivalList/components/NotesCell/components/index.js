@@ -14,6 +14,9 @@ const {addNotes,renderNotes}=actions;
 const { Header, Content } = Layout;
 
 class NotesList extends Component {
+  onDelete=(id)=>{
+    console.log(id);
+  };
   singleTodo(note,profile) {
     return (
       <div className="isoTodoList" key={note.note_id}>
@@ -35,7 +38,6 @@ class NotesList extends Component {
           className="isoTodoDelete"
           icon="close"
           type="button"
-          //onClick={onDelete}
         />:null}
       </div>
     );

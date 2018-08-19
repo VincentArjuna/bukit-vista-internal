@@ -26,14 +26,19 @@ const renderCell = (object, type, key,choice) => {
   };
   const columns=[
     {
-        title:'ID',
-        key:'booking_id',
-        render: object => renderCell(object, 'TextCell', 'booking_id',null)
+        title:'Received Timestamp',
+        key:'booking_received_timestamp',
+        render: object => renderCell(object, 'TextCell', 'booking_received_timestamp',null)
     },
     {
         title:'Guest Name',
         key:'booking_guest_name',
         render: object => renderCell(object, 'TextCell', 'booking_guest_name',null)
+    },
+    {
+        title:'Unit Name',
+        key:'unit_name',
+        render: object => renderCell(object, 'TextCell', 'unit_name',null)
     },
     {
         title:'Check In',
@@ -46,30 +51,15 @@ const renderCell = (object, type, key,choice) => {
         render: object => renderCell(object, 'TextCell', 'booking_check_out',null)
     },
     {
-        title:'Earned',
-        key:'booking_earned',
-        render: object => renderCell(object, 'TextCell', 'booking_earned',null)
-    },
-    {
-        title:'Currency',
-        key:'booking_currency',
-        render: object => renderCell(object, 'TextCell', 'booking_currency',choices[0])
+        title:'Profile',
+        key:'profile_name',
+        render: object => renderCell(object, 'TextCell', 'profile_name',null)
     },
     {
         title:'Conversation URL',
         key:'booking_conversation_url',
         render: object => renderCell(object, 'CopyCell', 'booking_conversation_url',null)
-    },
-    {
-        title:'Received Timestamp',
-        key:'booking_received_timestamp',
-        render: object => renderCell(object, 'TextCell', 'booking_received_timestamp',null)
-    },
-    {
-        title:'Listing ID',
-        key:'listing_id',
-        render: object => renderCell(object, 'TextCell', 'listing_id',null)
-    },
+    }
 ];
 const filterTypes=[
     {
