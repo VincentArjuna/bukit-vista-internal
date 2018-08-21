@@ -52,13 +52,13 @@ class Topbar extends Component {
               className="isoMsg"
             >
               <TopbarMessage locale={locale} />
-            </li>
+            </li>*/}
             <li
               onClick={() => this.setState({ selectedItem: "user" })}
               className="isoUser"
             >
               <TopbarUser locale={locale} />
-            </li> */}
+            </li>
           </ul>
         </Header>
       </TopbarWrapper>

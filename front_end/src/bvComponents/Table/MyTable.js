@@ -4,10 +4,15 @@ import TableWrapper from './antTable.style';
 import clone from 'clone';
 import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/editCell';
 import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/notesCell';
+
 import EditListing from '../../bvScenes/MarketBuilding/scenes/Listing/components/editListing';
 import EditProperty from '../../bvScenes/MarketBuilding/scenes/Property/components/editProperty';
 import EditUnit from '../../bvScenes/MarketBuilding/scenes/Unit/components/editUnit';
 import EditBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/components/editBooking';
+
+import EditEmployee from '../../bvScenes/ResourcesManagement/scenes/Employee/components/editEmployee';
+import EditProfile from '../../bvScenes/ResourcesManagement/scenes/Profile/components/editProfile';
+import ResetPassword from '../../bvScenes/ResourcesManagement/scenes/User/components/resetPassword';
 
 class MyTable extends Component {
   constructor(props) {
@@ -85,6 +90,33 @@ class MyTable extends Component {
         )
       }
       columns.push(editBooking);
+    }else if(this.props.mode==="employee"){
+      const editEmployee={
+        title:'Edit Employee',
+        dataIndex:'edit',
+        render: (text, record, index) => (
+          <EditEmployee index={index} dataList={this.props.dataList} />
+        )
+      }
+      columns.push(editEmployee);
+    }else if(this.props.mode==="profile"){
+      const editProfile={
+        title:'Edit Profile',
+        dataIndex:'edit',
+        render: (text, record, index) => (
+          <EditProfile index={index} dataList={this.props.dataList} />
+        )
+      }
+      columns.push(editProfile);    
+    }else if(this.props.mode==="user"){
+      const resetPassword={
+        title:'Reset Password',
+        dataIndex:'reset',
+        render: (text, record, index) => (
+          <ResetPassword index={index} dataList={this.props.dataList} />
+        )
+      }
+      columns.push(resetPassword);    
     }
     return columns;
   };

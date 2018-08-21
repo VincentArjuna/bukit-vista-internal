@@ -27,6 +27,45 @@ const onEditRequestBookingEmployee = async (param) =>
         .then(res=>res)
         .catch(error => error);
 
+const onAddRequestEmployee = async (param) =>
+    await fetch(`${URL_AREA}employee/add`, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        },
+        body:stringify( 
+        {   
+            'data[employee_name]': param[0],
+            'data[employee_address]': param[1],
+            'data[employee_phone]': param[2],
+            'data[employee_status]': param[3],
+        })
+    }).then(res=>res.json())
+    .then(res=>res)
+    .catch(error => error);
+
+const onEditRequestEmployee = async (param) =>
+    await fetch(`${URL_AREA}employee/update`, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        },
+        body:stringify( 
+        {   
+            'data[employee_name]': param[0],
+            'data[employee_address]': param[1],
+            'data[employee_phone]': param[2],
+            'data[employee_status]': param[3],
+            'data[employee_id]':param[4]
+        })
+    }).then(res=>res.json())
+    .then(res=>res)
+    .catch(error => error);
+    
 function* editRequestBookingEmployee({payload}){
     try{
         const param=[
@@ -53,10 +92,41 @@ function* renderRequestEmployee({}){
         console.log("saga error");
     }
 }
+function* addRequestEmployee({payload}){
+    try{
+        const param=[
+            payload.name,
+            payload.address,
+            payload.phone,
+            payload.status
+        ];
+        yield call(onAddRequestEmployee,param);
+
+    }catch(error){
+        console.log("saga add employee error");
+    }
+}
+function* editRequestEmployee({payload}){
+    try{
+        const param=[
+            payload.name,
+            payload.address,
+            payload.phone,
+            payload.status,
+            payload.id
+        ];
+        yield call(onEditRequestEmployee,param);
+
+    }catch(error){
+        console.log("saga edit employee error");
+    }
+}
 
 
 
 export default function* rootSaga() {
     yield all([takeLatest(actions.RENDER_DATA_EMPLOYEE,renderRequestEmployee)]);
     yield all([takeLatest(actions.EDIT_BOOKING_EMPLOYEE,editRequestBookingEmployee)]);
+    yield all([takeLatest(actions.ADD_EMPLOYEE,addRequestEmployee)]);
+    yield all([takeLatest(actions.EDIT_EMPLOYEE,editRequestEmployee)]);
 }

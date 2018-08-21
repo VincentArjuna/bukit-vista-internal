@@ -150,7 +150,7 @@ const CollectionCreateForm = Form.create()(
             {getFieldDecorator('booking_id',{
                   initialValue:this.props.dataList[this.props.index].booking_id
                 })(<Input hidden={true} />)}
-              </FormItem>
+            </FormItem>
           </Form>
         </Modal>
       );

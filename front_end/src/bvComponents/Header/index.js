@@ -9,10 +9,16 @@ import PageHeader from "../Utility/pageHeader";
 import { Select } from 'antd';
 import Button from '../../bvComponents/Uielements/button';
 import basicStyle from '../../settings/basicStyle';
+
 import AddBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/components/addBooking';
 import AddListing from '../../bvScenes/MarketBuilding/scenes/Listing/components/addListing';
 import AddProperty from '../../bvScenes/MarketBuilding/scenes/Property/components/addProperty';
 import AddUnit from '../../bvScenes/MarketBuilding/scenes/Unit/components/addUnit';
+
+import AddEmployee from '../../bvScenes/ResourcesManagement/scenes/Employee/components/addEmployee';
+import AddProfile from '../../bvScenes/ResourcesManagement/scenes/Profile/components/addProfile';
+import AddUser from '../../bvScenes/ResourcesManagement/scenes/User/components/addUser';
+
 import actions from '../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 
 const {downloadCsv} = actions;
@@ -40,6 +46,8 @@ class Header extends Component {
                     </Col>
                 </Row>
             );
+        }else if(this.props.mode ==='profile' || this.props.mode==='employee'||this.props.mode==='user'){
+            return;
         }else{
             return(
                 <Row style={rowStyle} gutter={gutter} justify="start">
@@ -72,6 +80,18 @@ class Header extends Component {
                 return(
                     <AddUnit/>
                 );
+            case "profile":
+                return(
+                    <AddProfile/>
+                );
+            case "employee":
+                return(
+                    <AddEmployee/>
+                );
+            case "user":
+                return(
+                    <AddUser/>
+                );
             default:
                 return;
 
@@ -102,14 +122,14 @@ class Header extends Component {
                 <LayoutContent>
                 <PageHeader>{this.props.title}</PageHeader>
                     {this.renderComponents()}
-                <Row style={rowStyle} gutter={gutter} justify="start">
-                    <Col md={6} sm={12} xs={24} style={colStyle}>
-                        {this.renderInfo()}
-                    </Col>
-                    <Col push={15} md={3} sm={12} xs={24} style={colStyle}>
-                        {this.renderButtons()}
-                    </Col>
-                </Row>
+                    <Row style={rowStyle} gutter={gutter} justify="start">
+                        <Col md={6} sm={12} xs={24} style={colStyle}>
+                            {this.renderInfo()}
+                        </Col>
+                        <Col push={15} md={3} sm={12} xs={24} style={colStyle}>
+                            {this.renderButtons()}
+                        </Col>
+                    </Row>
                 </LayoutContent>
             </div>
         );

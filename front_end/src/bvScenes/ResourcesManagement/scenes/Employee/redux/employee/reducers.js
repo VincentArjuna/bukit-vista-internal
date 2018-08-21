@@ -44,6 +44,14 @@ export default function reducer(state = initState,action){
                     driverResponse:action.response
                 };
             }
+        case actions.ADD_EMPLOYEE:
+            return{
+                ...state,
+            }
+        case actions.EDIT_EMPLOYEE:
+            return{
+                ...state,
+            }
         default:
             return state;
     }

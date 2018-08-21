@@ -4,6 +4,7 @@ import asyncComponent from '../helpers/AsyncFunc';
 //import customRoutes from '../../customApp/router';
 import operationRoutes from '../bvScenes/Operation/router';
 import marketBuildingRoutes from '../bvScenes/MarketBuilding/router';
+import resourcesManagementRoutes from '../bvScenes/ResourcesManagement/router';
 const routes = [
   {
     path: '',
@@ -11,6 +12,7 @@ const routes = [
   },
   ...operationRoutes,
   ...marketBuildingRoutes,
+  ...resourcesManagementRoutes
 ];
 
 class AppRouter extends Component {
