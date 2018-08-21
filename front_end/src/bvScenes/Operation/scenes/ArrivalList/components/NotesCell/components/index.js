@@ -64,13 +64,27 @@ class Notes extends Component {
       newTodo: ""
     };
   }
-  handleAdd=()=>{
-    this.props.addNotes(this.props.Auth.profile,this.props.bookingId,this.state.newTodo);
-    this.setState({ newTodo: "" });
-    this.props.renderNotes(this.props.bookingId);
-    this.props.Notes.notificationSuccess=true;
-    this.props.Notes.notificationLoading=false;
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.Notes.notificationSuccess === true){
+      console.log("success kepanggil")
+      message.success(<MessageContent>Note successfully added</MessageContent>,3);
+      this.props.renderNotes(this.props.bookingId);
+    }
+    if(nextProps.Notes.notificationFail === true){
+      console.log("error kepanggil")
+      message.error(<MessageContent>Fail to add note</MessageContent>,3);
+      this.props.renderNotes(this.props.bookingId);
+    }
+}
 
+  handleAdd=e=>{
+    if(e.key==="Enter" && this.state.newTodo !== ""){
+      this.props.addNotes(this.props.Auth.profile,this.props.bookingId,this.state.newTodo);
+    }
+  };
+
+  handleChange=e=>{
+    this.setState({ newTodo: e.target.value });
   };
   componentDidMount(){
     console.log("notes component did mount?");
@@ -89,27 +103,9 @@ class Notes extends Component {
             placeholder={"input your notes here..."}
             value={this.state.newTodo}
             className="isoTodoInput"
-            onChange={event => this.setState({ newTodo: event.target.value })}
-            onPressEnter={event => {
-              this.props.Notes.notificationLoading=true;
-               this.handleAdd();
-            }}
+            onChange={this.handleChange}
+            onKeyPress={this.handleAdd}
           />
-          {this.props.Notes.notificationLoading? 
-              message.loading(
-              <MessageContent>Action in progress..</MessageContent>,
-              0)
-              :null
-          }
-          {this.props.Notes.notificationSuccess? 
-              message.success(
-                <MessageContent>
-                  This is a prompt message for success, and it will disappear in 10 seconds
-                </MessageContent>,
-                3
-              )
-              :null
-          }
       </Layout>
 
     );

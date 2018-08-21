@@ -47,17 +47,19 @@ function* addRequestNotes({payload}){
       payload.bookingId,
       payload.text
     ];
+    console.log(param);
     const renderResults=yield call(onAddRequestNotes,param);
-    console.log("sukses add ga?" + renderResults);
-    if(renderResults.data){
+    if(renderResults){
       yield put(actions.addNotesSuccess());
+    }else{
+      yield put(actions.addNotesFail());
     }
-
   }catch(error){
     console.log("saga add notes error " + error);
+    yield put(actions.addNotesFail());
   }
 }
 export default function* rootSaga() {
   yield all([takeEvery(actions.RENDER_NOTES,renderRequestNotes)]);
-  yield all([takeEvery(actions.ADD_NOTES,addRequestNotes)]);
+  yield all([takeLatest(actions.ADD_NOTES,addRequestNotes)]);
 }

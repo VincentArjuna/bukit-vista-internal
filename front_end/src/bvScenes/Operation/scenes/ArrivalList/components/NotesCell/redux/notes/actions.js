@@ -3,6 +3,7 @@ const actions = {
   RENDER_NOTES_SUCCESS:'RENDER_NOTES_SUCCESS',
   ADD_NOTES:'ADD_NOTES',
   ADD_NOTES_SUCCESS:'ADD_NOTES_SUCCESS',
+  ADD_NOTES_FAIL:'ADD_NOTES_FAIL',
   renderNotes:(bookingId)=>({
     type:actions.RENDER_NOTES,
     payload:{bookingId}
@@ -17,7 +18,9 @@ const actions = {
   }),
   addNotesSuccess:()=>({
     type:actions.ADD_NOTES_SUCCESS
+  }),
+  addNotesFail:()=>({
+    type:actions.ADD_NOTES_FAIL
   })
-
 };
 export default actions;

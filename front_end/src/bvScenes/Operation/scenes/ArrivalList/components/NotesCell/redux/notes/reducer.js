@@ -4,7 +4,8 @@ const initState = {
   results:[],
   loading:false,
   notificationLoading:false,
-  notificationSuccess:false
+  notificationSuccess:false,
+  notificationFail:false
 };
 
 export default function reducer(state = initState, action) {
@@ -12,13 +13,36 @@ export default function reducer(state = initState, action) {
     case actions.RENDER_NOTES:
       return{
         ...state,
-        loading:true
+        loading:true,
+        notificationLoading:false,
+        notificationSuccess:false,
+        notificationFail:false
       };
     case actions.RENDER_NOTES_SUCCESS:
       return{
+        ...state,
         results:action.results,
-        loading:false
+        loading:false,
       };
+    case actions.ADD_NOTES:
+      return{
+        ...state,
+        notificationLoading:true,
+        notificationSuccess:false,
+        notificationFail:false,
+      };
+    case actions.ADD_NOTES_SUCCESS:
+      return{
+        ...state,
+        notificationLoading:false,
+        notificationSuccess:true
+      };
+    case actions.ADD_NOTES_FAIL:
+      return{
+        ...state,
+        notificationLoading:false,
+        notificationFail:true
+      }
     default:
       return state;
   }
