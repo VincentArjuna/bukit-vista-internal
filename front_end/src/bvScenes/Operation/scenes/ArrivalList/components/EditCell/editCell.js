@@ -199,7 +199,8 @@ class EditCell extends Component {
         this.props.editBookingEmployee(
           values["booking_id"],
           values["host"],
-          0
+          0,
+          "host"
         );
       }
       //driver
@@ -207,7 +208,8 @@ class EditCell extends Component {
         this.props.editBookingEmployee(
           values["booking_id"],
           values["driver"],
-          1
+          1,
+          "driver"
         );
       }
       //verifier
@@ -215,7 +217,8 @@ class EditCell extends Component {
         this.props.editBookingEmployee(
           values["booking_id"],
           values["verifier"],
-          2
+          2,
+          "verifier"
         );
       }
       console.log("page now : "+this.props.page);
@@ -236,7 +239,12 @@ class EditCell extends Component {
     this.formRef = formRef;
   }
   componentDidMount(){
-    //this.props.renderDataEmployee();
+  }
+  componentWillReceiveProps(nextProps){
+    console.log("response log " +nextProps.Current.response);
+    if(nextProps.Current.response === "success"){
+
+    }
   }
   render() {
     return (
@@ -261,7 +269,8 @@ function mapStateToProps(state) {
     Employee:state.employee,
     Table:state.arrivalTable,
     Searchbar:state.searchbar,
-    DateRange:state.daterange
+    DateRange:state.daterange,
+    Current:state.bookingCurrent
   };
 }
 export default connect(

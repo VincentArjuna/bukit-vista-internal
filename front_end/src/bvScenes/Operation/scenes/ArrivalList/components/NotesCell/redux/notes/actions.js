@@ -4,6 +4,12 @@ const actions = {
   ADD_NOTES:'ADD_NOTES',
   ADD_NOTES_SUCCESS:'ADD_NOTES_SUCCESS',
   ADD_NOTES_FAIL:'ADD_NOTES_FAIL',
+  DELETE_NOTES:'DELETE_NOTES',
+  DELETE_NOTES_SUCCESS:'DELETE_NOTES_SUCCESS',
+  DELETE_NOTES_FAIL:'DELETE_NOTES_FAIL',
+  EDIT_NOTES:'EDIT_NOTES',
+  EDIT_NOTES_SUCCESS:'EDIT_NOTES_SUCCESS',
+  EDIT_NOTES_FAIL:'EDIT_NOTES_FAIL',
   renderNotes:(bookingId)=>({
     type:actions.RENDER_NOTES,
     payload:{bookingId}
@@ -21,6 +27,26 @@ const actions = {
   }),
   addNotesFail:()=>({
     type:actions.ADD_NOTES_FAIL
-  })
+  }),
+  deleteNotes:(id)=>({
+    type:actions.DELETE_NOTES,
+    payload:{id}
+  }),
+  deleteNotesSuccess:()=>({
+    type:actions.DELETE_NOTES_SUCCESS
+  }),
+  deleteNotesFail:()=>({
+    type:actions.DELETE_NOTES_FAIL
+  }),
+  editNotes:(userId,bookingId,text,notesId)=>({
+    type:actions.EDIT_NOTES,
+    payload:{userId,bookingId,text,notesId}
+  }),
+  editNotesSuccess:()=>({
+    type:actions.EDIT_NOTES_SUCCESS
+  }),
+  editNotesFail:()=>({
+    type:actions.EDIT_NOTES_FAIL
+  }),
 };
 export default actions;

@@ -11,13 +11,14 @@ const actions={
         type: actions.RENDER_DATA_EMPLOYEE_SUCCESS,
         results
     }),
-    editBookingEmployee:(booking_id,employee_id,be_role)=>({
+    editBookingEmployee:(booking_id,employee_id,be_role,employeeType)=>({
         type:actions.EDIT_BOOKING_EMPLOYEE,
-        payload:{booking_id,employee_id,be_role}
+        payload:{booking_id,employee_id,be_role,employeeType}
     }),
-    editBookingEmployeeResponse:(response)=>({
+    editBookingEmployeeResponse:(response,employeeType)=>({
         type:actions.EDIT_BOOKING_EMPLOYEE_RESPONSE,
-        response
+        response,
+        employeeType
     }),
 }
 

@@ -34,8 +34,10 @@ function* editRequestBookingEmployee({payload}){
             payload.employee_id,
             payload.be_role
         ];
-        console.log(param);
-        yield call(onEditRequestBookingEmployee,param);
+        const renderResult=yield call(onEditRequestBookingEmployee,param);
+        if(renderResult){
+            yield put(actions.editBookingEmployeeResponse("success",payload.type));
+        }
         
     }catch(error){
         console.log("saga error");
@@ -45,9 +47,7 @@ function* renderRequestEmployee({}){
     try{
         const renderResult = yield call(onRenderRequestEmployee);
         if(renderResult.data){
-            yield put(
-                actions.renderDataEmployeeSuccess(renderResult.data)
-            );
+            yield put(actions.renderDataEmployeeSuccess(renderResult.data));
         }
     }catch(error){
         console.log("saga error");

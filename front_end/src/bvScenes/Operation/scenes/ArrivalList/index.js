@@ -7,11 +7,11 @@ import LayoutContentWrapper from "../../../../bvComponents/Utility/layoutWrapper
 import LayoutContent from "../../../../bvComponents/Utility/layoutContent";
 import basicStyle from '../../../../settings/basicStyle.js';
 import {columns,title,areas,filterTypes,mode} from './config.js';
-import { Collapse } from 'antd';
+import { Collapse,message } from 'antd';
 import CollapseWrapper from '../../../../bvComponents/Collapse/collapse.style';
 import ContentHolder from '../../../../bvComponents/Utility/contentHolder';
 import Spin from '../../../../bvComponents/Spin/spin.style';
-import notification from '../../../../bvComponents/Notification';
+import MessageContent from "../../../../bvComponents/Message/message.style";
 
 import Header from '../../../../bvComponents/Header/index.js';
 import MyTable from '../../../../bvComponents/Table/MyTable';
@@ -55,7 +55,6 @@ class ArrivalList extends Component {
     this.props.Table.totalData=0;
   }
   render() {
-   
     const { rowStyle, colStyle } = basicStyle;
     if(this.props.Table.checkCount>0){
       return (
@@ -176,7 +175,9 @@ class ArrivalList extends Component {
                 </Col>
               </Row>
             </LayoutContent>
-            {this.props.Table.checkCount===21 && this.props.Table.mode==='multi'? notification("success", "Render Complete"):null}
+            {/* {this.props.Table.checkCount <21  ?
+               :null} */}
+            {this.props.Table.checkCount===21 && this.props.Table.mode==='multi'? message.success(<MessageContent>All tables loaded!</MessageContent>,5):null}
           </div>
       );
     }else if(this.props.Table.checkCount<areas.length || this.props.Table.totalData === 0){
@@ -196,7 +197,7 @@ function mapStateToProps(state){
   return{
     Table: state.arrivalTable,
     DateRange:state.daterange,
-    Searchbar:state.searchbar
+    Searchbar:state.searchbar,
   };
 }
 

@@ -10,12 +10,13 @@ import { message } from 'antd';
 import MessageContent from "../../../../../../../bvComponents/Message/message.style";
 import actions from '../redux/notes/actions';
 
-const {addNotes,renderNotes}=actions;
+const {addNotes,deleteNotes,editNotes,renderNotes}=actions;
 const { Header, Content } = Layout;
 
 class NotesList extends Component {
-  onDelete=(id)=>{
-    console.log(id);
+  handleDelete=e=>{
+    console.log(e.target.value);
+    this.props.deleteNotes(e.target.value);
   };
   singleTodo(note,profile) {
     return (
@@ -26,7 +27,10 @@ class NotesList extends Component {
           <EditableComponent
             value={note.note_text}
             itemKey="todo"
-            //onChange={updateTodo}
+            notesId={note.note_id}
+            userId={note.user_id}
+            editNotes={this.props.editNotes}
+            bookingId={this.props.booking}
           />:
             <div>
            {note.note_text}
@@ -38,6 +42,8 @@ class NotesList extends Component {
           className="isoTodoDelete"
           icon="close"
           type="button"
+          value={note.note_id}
+          onClick={this.handleDelete}
         />:null}
       </div>
     );
@@ -67,12 +73,12 @@ class Notes extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.Notes.notificationSuccess === true){
       console.log("success kepanggil")
-      message.success(<MessageContent>Note successfully added</MessageContent>,3);
+      message.success(<MessageContent>{nextProps.Notes.message}</MessageContent>,3);
       this.props.renderNotes(this.props.bookingId);
     }
     if(nextProps.Notes.notificationFail === true){
       console.log("error kepanggil")
-      message.error(<MessageContent>Fail to add note</MessageContent>,3);
+      message.error(<MessageContent>{nextProps.Notes.message}</MessageContent>,3);
       this.props.renderNotes(this.props.bookingId);
     }
 }
@@ -97,6 +103,9 @@ class Notes extends Component {
             <NotesList
               notes={notes}
               profile={Auth.profile}
+              deleteNotes={this.props.deleteNotes}
+              booking={this.props.bookingId}
+              editNotes={this.props.editNotes}
             />
           </Content>
           <Input
@@ -118,4 +127,4 @@ function mapStateToProps(state) {
     Auth:state.Auth
   };
 }
-export default connect(mapStateToProps, {addNotes,renderNotes})(Notes);
+export default connect(mapStateToProps, {addNotes,editNotes,renderNotes,deleteNotes})(Notes);

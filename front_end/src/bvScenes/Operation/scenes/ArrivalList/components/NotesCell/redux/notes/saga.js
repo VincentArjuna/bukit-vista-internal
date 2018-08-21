@@ -23,7 +23,29 @@ const onAddRequestNotes = async (param) =>
         'data[booking_id]': param[1],
         'data[note_text]': param[2],
         })
-  }).then(res=>res.json())
+  })
+  .then(res=>res)
+  .catch(error => error);
+
+  const onEditRequestNotes = async (param) =>
+  await fetch(`${URL_AREA}update/${param[3]}`, {
+      method: 'POST',
+      headers: {
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+      },
+      body:stringify( 
+      { 'data[user_id]': param[0],
+        'data[booking_id]': param[1],
+        'data[note_text]': param[2],
+        })
+  })
+  .then(res=>res)
+  .catch(error => error);
+
+const onDeleteRequestNotes = async (param) =>
+  await fetch(`${URL_AREA}softdelete/${param}`)
   .then(res=>res)
   .catch(error => error);
 
@@ -49,7 +71,8 @@ function* addRequestNotes({payload}){
     ];
     console.log(param);
     const renderResults=yield call(onAddRequestNotes,param);
-    if(renderResults){
+    console.log(renderResults);
+    if(renderResults.status === 200){
       yield put(actions.addNotesSuccess());
     }else{
       yield put(actions.addNotesFail());
@@ -59,7 +82,48 @@ function* addRequestNotes({payload}){
     yield put(actions.addNotesFail());
   }
 }
+
+
+
+function* deleteRequestNotes({payload}){
+  try{
+    const renderResults=yield call(onDeleteRequestNotes,payload.id);
+    console.log(renderResults.status);
+    if(renderResults.status === 200){
+      yield put(actions.deleteNotesSuccess());
+    }else{
+      yield put(actions.deleteNotesFail());
+    }
+  }catch(error){
+    console.log("saga delete notes error " + error);
+    yield put(actions.deleteNotesFail());
+  }
+}
+
+function* editRequestNotes({payload}){
+  try{
+    const param=[
+      payload.userId,
+      payload.bookingId,
+      payload.text,
+      payload.notesId
+    ];
+    console.log(param);
+    const renderResults=yield call(onEditRequestNotes,param);
+    console.log(renderResults.status);
+    if(renderResults.status === 200){
+      yield put(actions.editNotesSuccess());
+    }else{
+      yield put(actions.editNotesFail());
+    }
+  }catch(error){
+    console.log("saga edit notes error " + error);
+    yield put(actions.deleteNotesFail());
+  }
+}
 export default function* rootSaga() {
   yield all([takeEvery(actions.RENDER_NOTES,renderRequestNotes)]);
   yield all([takeLatest(actions.ADD_NOTES,addRequestNotes)]);
+  yield all([takeLatest(actions.DELETE_NOTES,deleteRequestNotes)]);
+  yield all([takeLatest(actions.EDIT_NOTES,editRequestNotes)]);
 }

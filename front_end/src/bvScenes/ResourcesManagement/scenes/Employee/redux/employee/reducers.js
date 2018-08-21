@@ -1,7 +1,10 @@
 import actions from './actions';
 
 const initState={
-    results:[]
+    results:[],
+    hostResponse:"",
+    driverResponse:"",
+    verifierResponse:""
 }
 
 export default function reducer(state = initState,action){
@@ -23,10 +26,24 @@ export default function reducer(state = initState,action){
                 be_role:action.payload.be_role
             };
         case actions.EDIT_BOOKING_EMPLOYEE_RESPONSE:
-            return{
-                ...state,
-                response:action.response
-            };
+            if(action.employeeType==="host"){
+                return{
+                    ...state,
+                    hostResponse:action.response
+                };
+            }else
+            if(action.employeeType==="verifier"){
+                return{
+                    ...state,
+                    verifierResponse:action.response
+                };
+            }else
+            if(action.employeeType==="driver"){
+                return{
+                    ...state,
+                    driverResponse:action.response
+                };
+            }
         default:
             return state;
     }

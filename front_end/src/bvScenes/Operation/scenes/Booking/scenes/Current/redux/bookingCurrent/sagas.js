@@ -192,8 +192,13 @@ function* editRequestBooking({payload}){
             payload.booking_notes
         ];
         console.log(param);
-        yield call(onEditRequestBooking,param);
-        console.log("ok edit booking");
+        const renderData = yield call(onEditRequestBooking,param);
+        if(renderData){
+            console.log("ok edit booking");
+            yield put(actions.editBookingResponse("success"));
+        }else{
+            yield put(actions.editBookingResponse("error"));
+        }
     }catch(error){
         console.log("saga error");
     }
