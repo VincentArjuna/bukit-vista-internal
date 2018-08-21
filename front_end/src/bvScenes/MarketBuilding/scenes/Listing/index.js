@@ -10,12 +10,12 @@ import actions from './redux/listing/actions';
 const {renderDataListing,onPageChange}=actions;
 class Listing extends Component {
     componentDidMount(){
-      this.props.Searchbar.filterType=0;
+      this.props.Searchbar.filterType=4;
       this.props.renderDataListing(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10);
     }
 
     componentWillMount(){
-      this.props.Searchbar.filterType=0;
+      this.props.Searchbar.filterType=4;
       this.props.Searchbar.filterer=null;
     }
     render() {

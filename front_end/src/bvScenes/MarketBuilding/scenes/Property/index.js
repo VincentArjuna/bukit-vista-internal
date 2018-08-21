@@ -11,11 +11,11 @@ const {renderDataProperty,onPageChange}=actions;
 
 class Property extends Component {
     componentDidMount(){
-      this.props.Searchbar.filterType=0;
+      this.props.Searchbar.filterType=2;
       this.props.renderDataProperty(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10);
     }
     componentWillMount(){
-      this.props.Searchbar.filterType=0;
+      this.props.Searchbar.filterType=2;
       this.props.Searchbar.filterer=null;
     }
     render() {

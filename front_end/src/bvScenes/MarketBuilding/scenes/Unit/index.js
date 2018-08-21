@@ -11,11 +11,11 @@ const {renderDataUnit,onPageChange}=actions;
 
 class Unit extends Component {
     componentDidMount(){
-      this.props.Searchbar.filterType=0;
+      this.props.Searchbar.filterType=2;
       this.props.renderDataUnit(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10);
     }
     componentWillMount(){
-      this.props.Searchbar.filterType=0;
+      this.props.Searchbar.filterType=2;
       this.props.Searchbar.filterer=null;
     }
     render() {

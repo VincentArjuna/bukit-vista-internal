@@ -1,6 +1,7 @@
 import {
   LinkCell,
   TextCell,
+  CopyCell
 } from '../../../../bvComponents/Table/helper/helperCells';
 
 const renderCell = (object, type, key,choice) => {
@@ -13,6 +14,13 @@ const renderCell = (object, type, key,choice) => {
         return LinkCell(value);
       case 'TextCell':
         return TextCell(value);
+      case 'CopyCell':
+        let desc="Copy";
+        value = "https://www.airbnb.com/rooms/"+value;
+        if(value==null){
+            desc="No URL";
+        }
+        return CopyCell(value,desc);
       default:
         return TextCell(value);
     }
@@ -20,24 +28,14 @@ const renderCell = (object, type, key,choice) => {
   
   const columns=[
     {
-        title:'ID',
+        title:'Link',
         key:'listing_id',
-        render: object => renderCell(object, 'TextCell', 'listing_id',null)
+        render: object => renderCell(object, 'CopyCell', 'listing_id',null)
     },
     {
         title:'Name',
         key:'listing_name',
         render: object => renderCell(object, 'TextCell', 'listing_name',null)
-    },
-    {
-        title:'Onboard Date',
-        key:'listing_onboard_date',
-        render: object => renderCell(object, 'TextCell', 'listing_onboard_date',null)
-    },
-    {
-        title:'Status',
-        key:'listing_status',
-        render: object => renderCell(object, 'TextCell', 'listing_status',choices[0])
     },
     {
         title:'Instant Book',
@@ -55,24 +53,14 @@ const renderCell = (object, type, key,choice) => {
         render: object => renderCell(object, 'TextCell', 'listing_account_bv',null)
     },
     {
-        title:'Remark',
-        key:'listing_remark',
-        render: object => renderCell(object, 'TextCell', 'listing_remark',choices[2])
+        title:'Unit',
+        key:'unit_name',
+        render: object => renderCell(object, 'TextCell', 'unit_name',null)
     },
     {
-        title:'Unit ID',
-        key:'unit_id',
-        render: object => renderCell(object, 'TextCell', 'unit_id',null)
-    },
-    {
-        title:'Profile ID',
-        key:'profile_id',
-        render: object => renderCell(object, 'TextCell', 'profile_id',null)
-    },
-    {
-        title:'Employee ID',
-        key:'employee_id',
-        render: object => renderCell(object, 'TextCell', 'employee_id',null)
+        title:'Profile',
+        key:'profile_name',
+        render: object => renderCell(object, 'TextCell', 'profile_name',null)
     },
 ];
 
