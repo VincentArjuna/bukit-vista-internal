@@ -1,6 +1,7 @@
 import {
     LinkCell,
-    TextCell
+    TextCell,
+    CopyCell
   } from '../../../../bvComponents/Table/helper/helperCells';
   
   const renderCell = (object, type, key,choice) => {
@@ -13,6 +14,12 @@ import {
           return LinkCell(value);
         case 'TextCell':
           return TextCell(value);
+        case 'CopyCell':
+            let desc="Copy";
+            if(value==null){
+                desc="No URL";
+            }
+            return CopyCell(value,desc);
         default:
           return TextCell(value);
       }
@@ -67,7 +74,7 @@ import {
       {
           title:'Owner Group Link',
           key:'property_owner_group_link',
-          render: object => renderCell(object, 'TextCell', 'property_owner_group_link',null)
+          render: object => renderCell(object, 'CopyCell', 'property_owner_group_link',null)
       },
       {
             title:'Area ID',
