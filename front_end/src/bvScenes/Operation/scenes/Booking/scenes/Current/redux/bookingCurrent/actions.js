@@ -23,9 +23,9 @@ const actions={
     updateData:()=>({
         type:actions.UPDATE_ARRIVAL_LIST,
     }),
-    editBookingResponse:(response)=>({
+    editBookingResponse:(message)=>({
         type:actions.EDIT_BOOKING_RESPONSE,
-        response
+        message
     }),
     renderDataBc : (date,filterer,date_type,filter_type)=>({
         type: actions.RENDER_DATA_BC,
@@ -45,9 +45,9 @@ const actions={
         type:actions.ADD_BOOKING,
         payload:{check_in,check_out,comm,currency,earned,eta,name,number,phone,booking_id,listing_id,source,conversation}
     }),
-    addBookingResponse:(response)=>({
+    addBookingResponse:(message)=>({
         type:actions.ADD_BOOKING_RESPONSE,
-        response
+        message
     }),
     downloadCsv:(date)=>({
         type:actions.DOWNLOAD_CSV,

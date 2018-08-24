@@ -66,7 +66,7 @@ const onAddBookingRequest=async(param)=>
             'data[booking_received_timestamp]':moment().format('YYYY-MM-DD HH:mm:ss').toString(),
             'data[listing_id]':param[12],
         })
-    }).then(res=>res.json())
+    })
     .then(res=>res)
     .catch(error => error);
 
@@ -88,7 +88,7 @@ const onEditRequestBooking = async(param)=>
         'data[booking_comm_channel]':param[6],
         'data[booking_notes]':param[7]
      })
-    }).then(res=>res.json())
+    })
     .then(res=>res)
     .catch(error => error);
 
@@ -118,7 +118,7 @@ const onEditRequestBooking = async(param)=>
         'data[booking_conversation_url]':param[13],
         'data[listing_id]':param[14],
      })
-    }).then(res=>res.json())
+    })
     .then(res=>res)
     .catch(error => error);
                 
@@ -244,6 +244,11 @@ function* addBooking({payload}){
         ];
         console.log(param);
         const renderResults =yield call(onAddBookingRequest,param);
+        if(renderResults.status === 200){
+            yield put(actions.addBookingResponse("success"));
+          }else{
+            yield put(actions.addBookingResponse("error"));
+          }
         console.log(renderResults);
         
     }catch(error){
@@ -294,7 +299,12 @@ function* editAllRequestBooking({payload}){
             payload.listing,
         ];
         console.log(param);
-        yield call(onEditAllRequestBooking,param);
+        const renderResults=yield call(onEditAllRequestBooking,param);
+        if(renderResults.status === 200){
+            yield put(actions.editBookingResponse("success"));
+          }else{
+            yield put(actions.editBookingResponse("error"));
+          }
     }catch(error){
         console.log("saga error");
     }

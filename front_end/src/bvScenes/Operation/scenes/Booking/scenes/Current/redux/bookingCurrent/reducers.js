@@ -4,7 +4,8 @@ const initState={
     results:[],
     page:1,
     total:0,
-    response:""
+    response:"",
+    message:null
 }
 
 export default function reducer(state = initState,action){
@@ -16,13 +17,15 @@ export default function reducer(state = initState,action){
                 filterer:action.payload.filterer,
                 date_type:action.payload.date_type,
                 filter_type:action.payload.filter_type,
+                message:null
             };
         case actions.RENDER_DATA_SUCCESS_BC:
             return{
                 ...state,
                 results:action.results,
                 page:action.page,
-                total:action.total
+                total:action.total,
+                message:null
             };
         case actions.RENDER_DATA_MONTHLY_BC:
             return{
@@ -33,32 +36,36 @@ export default function reducer(state = initState,action){
                 ...state,
                 results:action.results,
                 page:action.page,
-                total:action.total
+                total:action.total,
+                message:null
             }
         case actions.ADD_BOOKING:
             return{
                 ...state,
-                payload:action.payload
+                payload:action.payload,
+                message:null
             }
         case actions.ADD_BOOKING_RESPONSE:
             return{
                 ...state,
-                response:action.response
+                message:action.message
             }
         case actions.EDIT_BOOKING:
             return{
                 ...state,
-                payload:action.payload
+                payload:action.payload,
+                message:null
             };
         case actions.EDIT_BOOKING_ALL:
             return{
                 ...state,
-                payload:action.payload
+                payload:action.payload,
+                message:null
             }
         case actions.EDIT_BOOKING_RESPONSE:
             return{
                 ...state,
-                response:action.response
+                message:action.message
             };
         case actions.DOWNLOAD_CSV:
             return{

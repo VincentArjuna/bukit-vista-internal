@@ -43,7 +43,7 @@ const onAddListingRequest=async(param)=>
             'data[profile_id]':param[9],
             'data[employee_id]':param[10],
         })
-    }).then(res=>res.json())
+    })
     .then(res=>res)
     .catch(error => error);
 
@@ -69,7 +69,7 @@ const onEditListingRequest=async(param)=>
             'data[employee_id]':param[10],
             'data[listing_id]':param[0]
         })
-    }).then(res=>res.json())
+    })
     .then(res=>res)
     .catch(error => error);
 
@@ -111,6 +111,11 @@ function* addListing({payload}){
         ];
         console.log(param);
         const renderResults=yield call(onAddListingRequest,param);
+        if(renderResults.status===200){
+            yield put(actions.addListingResponse("success"));
+        }else{
+            yield put(actions.addListingResponse("error"));
+        }
         console.log(renderResults);
 
     }catch(error){
@@ -135,6 +140,11 @@ function* editListing({payload}){
         ];
         console.log(param);
         const renderResults= yield call(onEditListingRequest,param);
+        if(renderResults.status===200){
+            yield put(actions.editListingResponse("success"));
+        }else{
+            yield put(actions.editListingResponse("error"));
+        }
         console.log(renderResults);
 
     }catch(error){

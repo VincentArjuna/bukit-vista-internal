@@ -42,7 +42,7 @@ await fetch(`${URL_AREA}/add`, {
         'data[unit_percentage_bv]':param[8],
         'data[property_id]':param[9],
      })
-}).then(res=>res.json())
+})
 .then(res=>res)
 .catch(error => error);
 
@@ -68,7 +68,7 @@ await fetch(`${URL_AREA}/update`, {
         'data[property_id]':param[9],
         'data[unit_id]':param[10]
      })
-}).then(res=>res.json())
+})
 .then(res=>res)
 .catch(error => error);
 
@@ -109,6 +109,11 @@ function* addUnit({payload}){
         ];
         console.log(param);
         const renderResults=yield call(onAddUnitRequest,param);
+        if(renderResults.status===200){
+            yield put(actions.addUnitResponse("success"));
+        }else{
+            yield put(actions.addUnitResponse("error"));
+        }
         console.log(renderResults);
 
     }catch(error){
@@ -132,6 +137,11 @@ function* editUnit({payload}){
         ];
         console.log(param);
         const renderResults=yield call(onEditUnitRequest,param);
+        if(renderResults.status===200){
+            yield put(actions.editUnitResponse("success"));
+        }else{
+            yield put(actions.editUnitResponse("error"));
+        }
         console.log(renderResults);
 
     }catch(error){

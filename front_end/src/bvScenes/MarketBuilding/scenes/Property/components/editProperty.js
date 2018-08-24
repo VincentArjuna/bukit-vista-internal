@@ -5,6 +5,9 @@ import Button from '../../../../../bvComponents/Uielements/button';
 import Select,{SelectOption}from '../../../../../bvComponents/Uielements/select';
 import aEmployee from '../../../../ResourcesManagement/scenes/Employee/redux/employee/actions';
 import aProperty from '../../../../../bvScenes/MarketBuilding/scenes/Property/redux/property/actions';
+import { message } from 'antd';
+import MessageContent from "../../../../../bvComponents/Message/message.style";
+
 import Box from '../../../../../bvComponents/Utility/box';
 const FormItem = Form.Item;
 const Option = SelectOption;
@@ -252,12 +255,7 @@ class EditProperty extends Component {
           values["employee"],
           values["property_id"]
       );
-      this.props.onPageChange(
-        this.props.Searchbar.filterType,
-        this.props.Searchbar.filterer,
-        10,
-        this.props.Property.page
-      );
+
       form.resetFields();
       this.setState({ visible: false });;
     });
@@ -269,6 +267,22 @@ class EditProperty extends Component {
   componentDidMount(){
     this.props.renderDataEmployee();
 
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.Property.notificationMessage === "success"){
+        console.log("success kepanggil")
+        message.success(<MessageContent>Property successfully edited!</MessageContent>,3);
+        this.props.onPageChange(
+            this.props.Searchbar.filterType,
+            this.props.Searchbar.filterer,
+            10,
+            this.props.Property.page
+          );
+      }
+      if(nextProps.Property.notificationMessage === "error"){
+        console.log("error kepanggil")
+        message.error(<MessageContent>Fail to edit property</MessageContent>,3);
+      }
   }
   render() {
     return (

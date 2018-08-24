@@ -27,6 +27,7 @@ class Current extends Component {
     this.props.DateRange.dateType=0;
     this.props.DateRange.date= moment().format('YYYY-MM-DD').toString();
   }
+
   render() {
     return (    
         <div>

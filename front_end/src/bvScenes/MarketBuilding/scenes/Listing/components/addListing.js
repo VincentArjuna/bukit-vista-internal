@@ -9,6 +9,8 @@ import Spin from '../../../../../bvComponents/Uielements/spin';
 import aUnit from '../../../../../bvScenes/MarketBuilding/scenes/Unit/redux/unit/actions';
 import aEmployee from '../../../../ResourcesManagement/scenes/Employee/redux/employee/actions';
 import aListing from '../../../../../bvScenes/MarketBuilding/scenes/Listing/redux/listing/actions';
+import { message } from 'antd';
+import MessageContent from "../../../../../bvComponents/Message/message.style";
 
 const FormItem = Form.Item;
 const Option = SelectOption;
@@ -252,6 +254,18 @@ class AddListing extends Component {
   componentDidMount(){
     this.props.renderDataEmployee();
 
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.Listing.notificationMessage === "success"){
+        console.log("success kepanggil")
+        message.success(<MessageContent>Listing successfully added!</MessageContent>,3);
+        
+      }
+      if(nextProps.Listing.notificationMessage === "error"){
+        console.log("error kepanggil")
+        message.error(<MessageContent>Fail to add listing</MessageContent>,3);
+        
+      }
   }
   render() {
     return (

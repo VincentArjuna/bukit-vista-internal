@@ -10,6 +10,8 @@ import aBooking from '../../../../../../../bvScenes/Operation/scenes/Booking/sce
 import aListing from '../../../../../../../bvScenes/MarketBuilding/scenes/Listing/redux/listing/actions';
 import aUnit from '../../../../../../../bvScenes/MarketBuilding/scenes/Unit/redux/unit/actions';
 import aEmployee from '../../../../../../ResourcesManagement/scenes/Employee/redux/employee/actions';
+import { message } from 'antd';
+import MessageContent from "../../../../../../../bvComponents/Message/message.style";
 
 const FormItem = Form.Item;
 const Option = SelectOption;
@@ -255,8 +257,16 @@ class AddBooking extends Component {
     this.props.renderDataBc(0,0,0,0);
     this.props.renderDataListing(0,null);
     this.props.renderDataEmployee();
-    
-
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.Current.message === "success"){
+        console.log("success kepanggil")
+        message.success(<MessageContent>Booking successfully added!</MessageContent>,3);
+      }
+      if(nextProps.Current.message === "error"){
+        console.log("error kepanggil")
+        message.error(<MessageContent>Fail to add booking</MessageContent>,3);
+      }
   }
   render() {
     return (

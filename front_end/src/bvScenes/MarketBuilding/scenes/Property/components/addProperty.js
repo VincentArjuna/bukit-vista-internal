@@ -5,6 +5,8 @@ import Button from '../../../../../bvComponents/Uielements/button';
 import Select,{SelectOption}from '../../../../../bvComponents/Uielements/select';
 import aEmployee from '../../../../ResourcesManagement/scenes/Employee/redux/employee/actions';
 import aProperty from '../../../../../bvScenes/MarketBuilding/scenes/Property/redux/property/actions';
+import { message } from 'antd';
+import MessageContent from "../../../../../bvComponents/Message/message.style";
 
 const FormItem = Form.Item;
 const Option = SelectOption;
@@ -248,6 +250,16 @@ class AddProperty extends Component {
     this.props.renderDataEmployee();
 
   }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.Property.notificationMessage === "success"){
+        console.log("success kepanggil")
+        message.success(<MessageContent>Property successfully added!</MessageContent>,3);
+      }
+      if(nextProps.Property.notificationMessage === "error"){
+        console.log("error kepanggil")
+        message.error(<MessageContent>Fail to add property</MessageContent>,3);
+      }
+  }
   render() {
     return (
       <div>
@@ -267,7 +279,8 @@ class AddProperty extends Component {
 
 function mapStateToProps(state) {
   return { 
-    Employee:state.employee
+    Employee:state.employee,
+    Property:state.property
   };
 }
 export default connect(

@@ -8,6 +8,8 @@ import Select,{SelectOption}from '../../../../../bvComponents/Uielements/select'
 import Spin from '../../../../../bvComponents/Uielements/spin';
 import aProperty from '../../Property/redux/property/actions';
 import aUnit from '../../Unit/redux/unit/actions';
+import { message } from 'antd';
+import MessageContent from "../../../../../bvComponents/Message/message.style";
 
 const FormItem = Form.Item;
 const Option = SelectOption;
@@ -205,7 +207,16 @@ class AddUnit extends Component {
   saveFormRef = (formRef) => {
     this.formRef = formRef;
   }
-
+  componentWillReceiveProps(nextProps){
+    if(nextProps.Unit.notificationMessage === "success"){
+        console.log("success kepanggil")
+        message.success(<MessageContent>Unit successfully added!</MessageContent>,3);
+      }
+      if(nextProps.Unit.notificationMessage === "error"){
+        console.log("error kepanggil")
+        message.error(<MessageContent>Fail to add unit</MessageContent>,3);
+      }
+  }
   render() {
     return (
       <div>
@@ -229,7 +240,8 @@ class AddUnit extends Component {
 function mapStateToProps(state) {
   return { 
     Employee:state.employee,
-    Property:state.property
+    Property:state.property,
+    Unit:state.unit
   };
 }
 export default connect(

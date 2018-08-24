@@ -17,6 +17,7 @@ class Property extends Component {
     componentWillMount(){
       this.props.Searchbar.filterType=2;
       this.props.Searchbar.filterer=null;
+      this.props.renderDataProperty(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10);
     }
     render() {
       return (    

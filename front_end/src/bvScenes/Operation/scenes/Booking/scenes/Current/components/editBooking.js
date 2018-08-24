@@ -8,7 +8,8 @@ import Select,{SelectOption}from '../../../../../../../bvComponents/Uielements/s
 import Spin from '../../../../../../../bvComponents/Uielements/spin';
 import aBooking from '../../../../../../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 import aListing from '../../../../../../../bvScenes/MarketBuilding/scenes/Listing/redux/listing/actions';
-
+import { message } from 'antd';
+import MessageContent from "../../../../../../../bvComponents/Message/message.style";
 const FormItem = Form.Item;
 const Option = SelectOption;
 
@@ -35,6 +36,7 @@ class extends React.Component {
         this.props.renderDataListing(2,value,30)
 
     }
+
     render() {
       const { visible, onCancel, onCreate, form } = this.props;
       const { getFieldDecorator } = form;
@@ -244,13 +246,7 @@ class EditBooking extends Component {
           values["conversation"]!==null?values["conversation"]:"",
           values["listing_id"],
         );
-      this.props.onPageChange(
-        this.props.DateRange.date,
-        this.props.Searchbar.filterer,
-        this.props.DateRange.dateType,
-        this.props.Searchbar.filterType,
-        this.props.Current.page
-      );
+
       form.resetFields();
       this.setState({ visible: false });;
     });
@@ -258,6 +254,23 @@ class EditBooking extends Component {
 
   saveFormRef = (formRef) => {
     this.formRef = formRef;
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.Current.message === "success"){
+        console.log("success kepanggil")
+        message.success(<MessageContent>Booking successfully edited!</MessageContent>,3);
+        this.props.onPageChange(
+            this.props.DateRange.date,
+            this.props.Searchbar.filterer,
+            this.props.DateRange.dateType,
+            this.props.Searchbar.filterType,
+            this.props.Current.page
+          );
+      }
+      if(nextProps.Current.message === "error"){
+        console.log("error kepanggil")
+        message.error(<MessageContent>Fail to edit booking</MessageContent>,3);
+      }
   }
 
   render() {

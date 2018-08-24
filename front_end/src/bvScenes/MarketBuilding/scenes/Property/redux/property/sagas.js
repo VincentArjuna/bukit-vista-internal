@@ -4,7 +4,7 @@ import {stringify} from 'querystring';
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/property';
 
 const onRenderRequestProperty = async (param) =>
-await fetch(`${URL_AREA}?page=${param[3]}`, {
+    await fetch(`${URL_AREA}?page=${param[3]}`, {
     method: 'POST',
     headers: {
         'Cache-Control': 'no-cache',
@@ -22,7 +22,7 @@ await fetch(`${URL_AREA}?page=${param[3]}`, {
 .catch(error => error);
 
 const onAddPropertyRequest=async(param)=>
-await fetch(`${URL_AREA}/add`, {
+    await fetch(`${URL_AREA}/add`, {
     method: 'POST',
     headers: {
         'Cache-Control': 'no-cache',
@@ -43,12 +43,12 @@ await fetch(`${URL_AREA}/add`, {
         'data[area_id]':param[9],
         'data[employee_id]':param[10],
      })
-}).then(res=>res.json())
+})
 .then(res=>res)
 .catch(error => error);
 
 const onEditPropertyRequest=async(param)=>
-await fetch(`${URL_AREA}/update`, {
+    await fetch(`${URL_AREA}/update`, {
     method: 'POST',
     headers: {
         'Cache-Control': 'no-cache',
@@ -70,7 +70,7 @@ await fetch(`${URL_AREA}/update`, {
         'data[employee_id]':param[10],
         'data[property_id]':param[11]
      })
-}).then(res=>res.json())
+})
 .then(res=>res)
 .catch(error => error);
 
@@ -112,6 +112,11 @@ function* addProperty({payload}){
         ];
         console.log(param);
         const renderResults=yield call(onAddPropertyRequest,param);
+        if(renderResults.status===200){
+            yield put(actions.addPropertyResponse("success"));
+        }else{
+            yield put(actions.addPropertyResponse("error"));
+        }
         console.log(renderResults);
 
     }catch(error){
@@ -136,6 +141,11 @@ function* editProperty({payload}){
         ];
         console.log(param);
         const renderResults=yield call(onEditPropertyRequest,param);
+        if(renderResults.status===200){
+            yield put(actions.editPropertyResponse("success"));
+        }else{
+            yield put(actions.editPropertyResponse("error"));
+        }
         console.log(renderResults);
 
     }catch(error){
