@@ -35,9 +35,13 @@ class ViewInvoice extends Component {
 
   }
   onChange=(date,dateString)=>{
+    console.log(dateString);
+    this.setState({
+      date:dateString
+    });
     this.props.renderDataMonthlyBc(dateString,this.props.dataList[this.props.index].property_id);
     this.setState({
-      date:date
+      date:dateString
     });
   }
   render() {
@@ -121,7 +125,7 @@ class ViewInvoice extends Component {
                 <h3 className="Title">Bookings</h3>
                 <div className="PageHeader">
                   <MonthPicker onChange={this.onChange} defaultValue={this.state.date}/>
-                  <Button color="primary" onClick={() => this.props.downloadCsvMonthly(this.state.date.toString(),property.property_id)}>
+                  <Button color="primary" onClick={() => this.props.downloadCsvMonthly(this.state.date.toString(),property.property_id,property.property_name)}>
                     <span>Download CSV</span>
                   </Button>
                 </div>

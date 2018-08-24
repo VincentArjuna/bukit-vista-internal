@@ -81,7 +81,15 @@ const filterTypes=[
     {
         key:'4',
         name:'Profile'
-    }
+    },
+    {
+        key:'5',
+        name:'Overbooking'
+    },
+    {
+        key:'6',
+        name:'Cancellation'
+    },
   ];
 const columnsPropertyBooking=[
     {

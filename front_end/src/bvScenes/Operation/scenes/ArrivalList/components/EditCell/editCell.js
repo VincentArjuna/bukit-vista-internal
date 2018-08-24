@@ -105,7 +105,7 @@ const CollectionCreateForm = Form.create()(
                     <Option value={0}>Not Checked In</Option>
                     <Option value={1}>Checked In</Option>
                     <Option value={2}>Checked In, Not Meeting Host</Option>
-                    <Option value={3}>Overbooking</Option> 
+                    <Option value={3}>Leave Notes</Option> 
                 </Select>)}
               </FormItem>
             <FormItem label="Communication Channel">

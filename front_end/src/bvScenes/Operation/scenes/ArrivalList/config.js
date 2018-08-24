@@ -6,8 +6,7 @@ import {
 
 const renderCell = (object, type, key,choice) => {
   let value;
-  let boldOption=false;
-  let redOption=false;
+  let colorOption="black";
   if(key==='host.employee_name'){
     value=object['host']['employee_name'];
   }else{
@@ -17,20 +16,30 @@ const renderCell = (object, type, key,choice) => {
     value= choice[value];
   }
   if(object['booking_guest_status']===1){
-    boldOption=true;
+    colorOption="#f9c300";
+  }else if(object['booking_guest_status']===2){
+    colorOption="blue";
+  }
+  else if(object['booking_guest_status']===3){
+    colorOption="green";
   }
   if(object['booking_status']===4){
-    redOption=true;
-    boldOption=false;
+    colorOption="red"
   }
+  
+  if(object)
+  //kuning -checkin
+  //biru - checkin, not meeting host
+  //hijau - checkin, late
   switch (type) {
     case 'LinkCell':
       return LinkCell(value);
     case 'TextCell':
-      return TextCell(value,boldOption,redOption);
+      return TextCell(value,colorOption);
     default:
-      return TextCell(value,boldOption,redOption);
+      return TextCell(value,colorOption);
   }
+
 };
 
 const columns = [

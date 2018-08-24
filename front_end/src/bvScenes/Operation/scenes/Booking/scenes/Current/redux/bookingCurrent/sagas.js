@@ -123,25 +123,15 @@ const onEditRequestBooking = async(param)=>
     .catch(error => error);
                 
 const onDownloadMonthlyRequest=async(param)=>
-    await fetch(`${URL_BOOKING}by_prop/download`, {
-    method: 'POST',
-    headers: {
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
-        'Content-Disposition':'attachment'
-    },
-    body:stringify({
-        'data[date]':param[0],
-        'data[property_id]':param[1]
-    }),
-    responseType: 'blob', 
+    axios({
+        url:`${URL_BOOKING}by_prop/${param[1]}/${param[0]}/download`,
+        method: 'GET',
+        responseType: 'blob', // important
     }).then((response) => {
-        console.log(response.body);
-        const url = window.URL.createObjectURL(new Blob([response]));
+        const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download',`CHECKIN_MONTHLY_${param[0]}.csv`);
+        link.setAttribute('download',`${param[2]}_${param[0]}.csv`);
         document.body.appendChild(link);
         link.click();
     });
@@ -170,7 +160,7 @@ function* downloadCsv({payload}){
 }
 function* downloadCsvMonthly({payload}){
     try{
-        const param = [payload.date,payload.propertyId];
+        const param = [payload.date,payload.propertyId,payload.propertyName];
         console.log(param);
         yield call(onDownloadMonthlyRequest,param);
     }catch(error){

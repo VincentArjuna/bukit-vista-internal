@@ -194,6 +194,11 @@ class MyTable extends Component {
           dataSource={this.props.dataList}
           onChange={this.onChange}
           loading={this.props.loading}
+          onRow={(record) => {
+            return {
+              onClick: () => {console.log(record)},       // click row
+            };
+          }}        
         />
       </div>
     );

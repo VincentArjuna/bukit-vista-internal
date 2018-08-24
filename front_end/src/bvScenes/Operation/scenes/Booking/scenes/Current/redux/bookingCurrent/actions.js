@@ -63,9 +63,9 @@ const actions={
         total,
         page
     }),
-    downloadCsvMonthly:(date,propertyId)=>({
+    downloadCsvMonthly:(date,propertyId,propertyName)=>({
         type:actions.DOWNLOAD_CSV_MONTHLY,
-        payload:{date,propertyId}
+        payload:{date,propertyId,propertyName}
     })
 };
 

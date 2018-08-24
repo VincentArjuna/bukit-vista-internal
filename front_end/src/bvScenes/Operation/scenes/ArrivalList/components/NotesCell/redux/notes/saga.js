@@ -5,10 +5,21 @@ import { stringify } from 'querystring';
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/notes/';
 
 const onRenderRequestNotes = async (param) =>
-    await fetch(`${URL_AREA}booking/${param}`)
-        .then(res=>res.json())
-        .then(res=>res)
-        .catch(error => error);
+  await fetch(`${URL_AREA}booking`, {
+  method: 'POST',
+  headers: {
+      'Cache-Control': 'no-cache',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+  },
+  body:stringify( 
+  { 
+    'data[booking_id]': param,
+    })
+})
+.then(res=>res.json())
+.then(res=>res)
+.catch(error => error);
 
 const onAddRequestNotes = async (param) =>
   await fetch(`${URL_AREA}add`, {

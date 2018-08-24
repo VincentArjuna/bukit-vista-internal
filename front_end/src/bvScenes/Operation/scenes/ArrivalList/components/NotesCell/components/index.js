@@ -22,7 +22,7 @@ class NotesList extends Component {
     return (
       <div className="isoTodoList" key={note.note_id}>
         <div className="isoTodoContentWrapper">
-          <span className="isoTodoDate">{timeDifference(note.created_at)} by {note.user_id}</span>
+          <span className="isoTodoDate">{timeDifference(note.created_at)} by {note.employee_name}</span>
           {note.user_id===profile?
           <EditableComponent
             value={note.note_text}

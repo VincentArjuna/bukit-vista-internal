@@ -11,7 +11,9 @@ const {editProfile,renderDataProfile}=actions;
 const CollectionCreateForm = Form.create()(
 class extends React.Component {
 
-
+  componentDidMount(){
+    console.log(this.props.dataList[this.props.index]);
+  }
     render() {
       const { visible, onCancel, onCreate, form } = this.props;
       const { getFieldDecorator } = form;
@@ -86,6 +88,7 @@ class EditProfile extends Component {
   saveFormRef = (formRef) => {
     this.formRef = formRef;
   }
+
   render() {
     return (
       <div>

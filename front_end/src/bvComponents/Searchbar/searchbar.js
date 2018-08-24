@@ -20,6 +20,7 @@ class Searchbar extends Component{
         this.state = {
           searchFilter: "",
           searched:false,
+          filtererToggle:false
         };
       }
     
@@ -30,11 +31,13 @@ class Searchbar extends Component{
         });
         this.props.Searchbar.filterer=e.target.value;
         if(this.props.Searchbar.filterer===""){
+          
           let temp = this.props.Searchbar.filterType;
           this.props.Searchbar.filterType=0;
           this.renderChange();
           this.props.Searchbar.filterType=temp;
         }
+
       };
 
       renderChange=()=>{
@@ -80,10 +83,68 @@ class Searchbar extends Component{
       
       handleChangeFilterMode=(value)=>{
         this.props.Searchbar.filterType = value;
+        if(this.props.mode==="bookingCurrent"){
+          if(this.props.Searchbar.filterType===5 || this.props.Searchbar.filterType==='5'){
+            this.setState({
+              filtererToggle:true
+            });
+            this.props.Searchbar.filterer="4";
+            this.props.renderDataBc(
+              this.props.DateRange.date,
+              this.props.Searchbar.filterer,
+              this.props.DateRange.dateType,
+              this.props.Searchbar.filterType
+              );
+          }else if(this.props.Searchbar.filterType===6||this.props.Searchbar.filterType==='6'){
+            this.setState({
+              filtererToggle:true
+            });
+            this.props.Searchbar.filterType='5';
+            this.props.Searchbar.filterer="2";
+            this.props.renderDataBc(
+              this.props.DateRange.date,
+              this.props.Searchbar.filterer,
+              this.props.DateRange.dateType,
+              this.props.Searchbar.filterType
+              );
+          }
+          else{
+            this.props.Searchbar.filterer=null;
+            this.setState({
+              filtererToggle:false
+            });
+          }
+        }
+
+
+        //for overbooking -- Booking table only
+        
       }
       handleSearch=e=>{
         if(e.key==="Enter" && (this.props.Searchbar.filterer!== null || this.props.Searchbar.filterer!== "")){
-          this.renderChange();
+          if(this.props.mode==="listing"){
+            if(this.props.Searchbar.filterType==='10'){
+               let remarkType = this.props.Searchbar.filterer.toLowerCase();
+                if(remarkType==="new"){
+                  this.props.Searchbar.filterer = '1';
+                }else if(remarkType==="va"){
+                  this.props.Searchbar.filterer = '2';
+                }else if(remarkType==="cs"){
+                  this.props.Searchbar.filterer = '3';
+                }else if(remarkType==="np"){
+                  this.props.Searchbar.filterer = '4';
+                }else if(remarkType==="others"){
+                  this.props.Searchbar.filterer = '5';
+                }else{
+                  this.props.Searchbar.filterer=null;
+                }
+                this.renderChange();
+            }else{
+              this.renderChange();
+            }
+          }else{
+            this.renderChange();
+          }
         }
       }
       render() {
@@ -103,6 +164,7 @@ class Searchbar extends Component{
               onBlurCapture={this.handleBlur}
               addonAfter={selectAfter}
               onKeyPress={this.handleSearch}
+              disabled={this.state.filtererToggle}
             />
           </div>
         );

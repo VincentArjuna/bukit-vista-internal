@@ -38,6 +38,16 @@ const renderCell = (object, type, key,choice) => {
         render: object => renderCell(object, 'TextCell', 'listing_name',null)
     },
     {
+        title:'Remark',
+        key:'listing_remark',
+        render: object => renderCell(object, 'TextCell', 'listing_remark',choices[2])
+    },
+    {
+        title:'Status',
+        key:'listing_status',
+        render: object => renderCell(object, 'TextCell', 'listing_status',choices[0])
+    },
+    {
         title:'Instant Book',
         key:'listing_instant_book',
         render: object => renderCell(object, 'TextCell', 'listing_instant_book',choices[1])
@@ -86,6 +96,18 @@ const filterTypes=[
         name:'Unit Name'
     },
     {
+        key:'8',
+        name:'Account Owner'
+    },
+    {
+        key:'9',
+        name:'Account BV'
+    },
+    {
+        key:'10',
+        name:'Remark'
+    },
+    {
         key:'5',
         name:'Profile Name'
     },
@@ -97,6 +119,7 @@ const filterTypes=[
         key:'7',
         name:'Onboard Date'
     },
+
   ];
 const choices=[
     {
