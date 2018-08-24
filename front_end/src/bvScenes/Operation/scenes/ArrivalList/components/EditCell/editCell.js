@@ -140,12 +140,6 @@ const CollectionCreateForm = Form.create()(
                       </Select>
                   )}
               </FormItem>
-              <FormItem label="Notes">
-                {getFieldDecorator('notes',{
-                  initialValue:this.props.dataList[this.props.index].booking_notes
-                })(
-                <Input/>)}
-              </FormItem>
             <FormItem>
             {getFieldDecorator('booking_id',{
                   initialValue:this.props.dataList[this.props.index].booking_id

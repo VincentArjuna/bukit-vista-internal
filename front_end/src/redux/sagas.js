@@ -10,7 +10,7 @@ import listingSaga from '../bvScenes/MarketBuilding/scenes/Listing/redux/sagas';
 import unitSaga from '../bvScenes/MarketBuilding/scenes/Unit/redux/sagas';
 import propertySaga from '../bvScenes/MarketBuilding/scenes/Property/redux/sagas';
 import notesSaga from '../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/redux/sagas';
-
+import invoiceSaga from '../bvScenes/MarketBuilding/scenes/Property/components/Invoice/redux/sagas';
 export default function* rootSaga(getState) {
   yield all([
     authSagas(),
@@ -23,5 +23,6 @@ export default function* rootSaga(getState) {
     unitSaga(),
     propertySaga(),
     notesSaga(),
+    invoiceSaga()
   ]);
 }

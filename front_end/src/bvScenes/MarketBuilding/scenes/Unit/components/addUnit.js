@@ -137,9 +137,13 @@ class extends React.Component {
             <FormItem label="Property">
                 {getFieldDecorator(
                     'property_id', {
-                        rules: [{ required: true, message: 'This is required' }]
+                        rules: [{ required: true, message: 'This is required' }],
+                        initialValue:this.props.isProperty?this.props.propId:null
                     }
                 )(
+                    this.props.isProperty?
+                    <Input disabled defaultValue={this.props.propId}/>
+                    :
                     <Select
                     showSearch
                     placeholder="Select property"
@@ -213,6 +217,9 @@ class AddUnit extends Component {
           onCreate={this.handleCreate}
           renderDataProperty={this.props.renderDataProperty}
           Property={this.props.Property}
+          isProperty={this.props.isProperty}
+          propId={this.props.propId}
+          propName={this.props.Name}
         />
       </div>
     );

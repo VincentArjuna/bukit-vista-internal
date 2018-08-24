@@ -8,7 +8,17 @@ import {Button } from 'antd';
 
 const ImageCell = src => <ImageCellView src={src} />;
 const LinkCell = (link, href) => <a href={href ? href : '#'}>{link}</a>;
-const TextCell = (text,boldOption) => boldOption? <p><b>{text}</b></p> : <p>{text}</p>;
+const TextCell = (text,boldOption,redOption) => {
+  if(boldOption){
+    return <p><b>{text}</b></p>;
+  }
+  else if(redOption){
+    return <p style={{color:"red"}}><b>{text}</b></p>;
+  }else{
+    return <p>{text}</p>;
+  }
+};
+
 const CopyCell= (text,desc) => 
   <CopyToClipboard text={text}>
     <Button>{desc}</Button>
@@ -23,3 +33,4 @@ export {
   FilterDropdown,
   CopyCell,
 };
+

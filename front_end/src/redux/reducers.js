@@ -11,7 +11,7 @@ import Listing from '../bvScenes/MarketBuilding/scenes/Listing/redux/reducers';
 import Unit from '../bvScenes/MarketBuilding/scenes/Unit/redux/reducers';
 import Property from '../bvScenes/MarketBuilding/scenes/Property/redux/reducers';
 import Notes from '../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/redux/reducers';
-
+import Invoice from '../bvScenes/MarketBuilding/scenes/Property/components/Invoice/redux/reducers';
 export default {
   Auth,
   App,
@@ -28,4 +28,5 @@ export default {
   ...Employee,
   ...Profile,
   ...Notes,
+  ...Invoice,
 };

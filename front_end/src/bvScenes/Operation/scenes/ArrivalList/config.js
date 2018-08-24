@@ -7,6 +7,7 @@ import {
 const renderCell = (object, type, key,choice) => {
   let value;
   let boldOption=false;
+  let redOption=false;
   if(key==='host.employee_name'){
     value=object['host']['employee_name'];
   }else{
@@ -18,13 +19,17 @@ const renderCell = (object, type, key,choice) => {
   if(object['booking_guest_status']===1){
     boldOption=true;
   }
+  if(object['booking_status']===4){
+    redOption=true;
+    boldOption=false;
+  }
   switch (type) {
     case 'LinkCell':
       return LinkCell(value);
     case 'TextCell':
-      return TextCell(value,boldOption);
+      return TextCell(value,boldOption,redOption);
     default:
-      return TextCell(value,boldOption);
+      return TextCell(value,boldOption,redOption);
   }
 };
 
@@ -92,7 +97,7 @@ const choices=[
     '0':'Not Checked In',
     '1':'Checked In',
     '2':'Checked In, Not Meeting Host',
-    '3':'Overbooking'
+    '3':'Leave Notes'
   },
   {
     '1':'Whatsapp',

@@ -100,8 +100,9 @@ const filterTypes=[
   ];
 const choices=[
     {
-        '1':'Partner',
-        '0':'Non-Partner'   
+        '1':'Listed',
+        '2':'Ready to Launch',
+        '3':'Unlisted'   
     },
     {
         '1':'Yes',

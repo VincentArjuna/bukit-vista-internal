@@ -83,6 +83,68 @@ const filterTypes=[
         name:'Profile'
     }
   ];
+const columnsPropertyBooking=[
+    {
+        title:'Guest Name',
+        key:'booking_guest_name',
+        width:'9%',
+        render: object => renderCell(object, 'TextCell', 'booking_guest_name',null)
+    },
+    {
+        title:'Status',
+        key:'booking_status',
+        width:'9%',
+        render: object => renderCell(object, 'TextCell', 'booking_status',null)
+    },
+    {
+        title:'Check In',
+        key:'booking_check_in',
+        width:'9%',
+        render: object => renderCell(object, 'TextCell', 'booking_check_in',null)
+    },
+    {
+        title:'Check Out',
+        key:'booking_check_out',
+        width:'9%',
+        render: object => renderCell(object, 'TextCell', 'booking_check_out',null)
+    },
+    {
+        title:'Guest Number',
+        key:'booking_guest_number',
+        width:'9%',
+        render: object => renderCell(object, 'TextCell', 'booking_guest_number',null)
+    },
+    {
+        title:'Earned',
+        key:'booking_earned',
+        width:'9%',
+        render: object => renderCell(object, 'TextCell', 'booking_earned',null)
+    },
+    {
+        title:'Currency',
+        key:'booking_currency',
+        width:'9%',
+        render: object => renderCell(object, 'TextCell', 'booking_currency',choices[0])
+    },
+    {
+        title:'Source',
+        key:'booking_source',
+        width:'9%',
+        render: object => renderCell(object, 'TextCell', 'booking_source',null)
+    },
+    {
+        title:'Conversation URL',
+        key:'booking_conversation_url',
+        width:'9%',
+        render: object => renderCell(object, 'CopyCell', 'booking_check_out',null)
+    },
+    {
+        title:'Profile Name',
+        key:'profile_name',
+        render: object => renderCell(object, 'TextCell', 'profile_name',null)
+    },
+
+];
 const choices=[
     {
         '1':'IDR',
@@ -92,4 +154,4 @@ const choices=[
 ];
 const title= "Booking / Current";
 const mode="bookingCurrent";
-export {columns,title,filterTypes,mode};
+export {columns,title,filterTypes,mode,columnsPropertyBooking};

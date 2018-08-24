@@ -24,6 +24,17 @@ export default function reducer(state = initState,action){
                 page:action.page,
                 total:action.total
             };
+        case actions.RENDER_DATA_MONTHLY_BC:
+            return{
+                ...state
+            }
+        case actions.RENDER_DATA_MONTHLY_SUCCESS_BC:
+            return{
+                ...state,
+                results:action.results,
+                page:action.page,
+                total:action.total
+            }
         case actions.ADD_BOOKING:
             return{
                 ...state,
@@ -53,6 +64,11 @@ export default function reducer(state = initState,action){
             return{
                 ...state,
                 response:action.response
+            }
+        case actions.DOWNLOAD_CSV_MONTHLY:
+            return{
+                ...state,
+                response:actions.response
             }
         default:
             return state;

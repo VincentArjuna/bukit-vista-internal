@@ -3,10 +3,10 @@ import axios from 'axios';
 import actions from './actions';
 import { stringify } from 'querystring';
 import moment from'moment';
-const URL_BOOKING = 'https://internal.bukitvista.com/tools/api/booking';
+const URL_BOOKING = 'https://internal.bukitvista.com/tools/api/';
 
 const onRenderRequest = async (param) =>
-    await fetch(`${URL_BOOKING}?page=${param[4]}`, {
+    await fetch(`${URL_BOOKING}booking?page=${param[4]}`, {
         method: 'POST',
         headers: {
             'Cache-Control': 'no-cache',
@@ -23,8 +23,24 @@ const onRenderRequest = async (param) =>
     .then(res=>res)
     .catch(error => error);
 
+const onRenderMonthlyRequest = async (param) =>
+    await fetch(`${URL_BOOKING}booking/by_prop?page=${param[2]}`, {
+        method: 'POST',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' 
+        },
+        body:stringify( 
+        {
+          'data[date]': param[0],
+          'data[property_id]': param[1]})
+    }).then(res=>res.json())
+    .then(res=>res)
+    .catch(error => error);
+
 const onAddBookingRequest=async(param)=>
-    await fetch(`${URL_BOOKING}/add`, {
+    await fetch(`${URL_BOOKING}booking/add`, {
         method: 'POST',
         headers: {
             'Cache-Control': 'no-cache',
@@ -55,7 +71,7 @@ const onAddBookingRequest=async(param)=>
     .catch(error => error);
 
 const onEditRequestBooking = async(param)=>
-    await fetch(`${URL_BOOKING}/update`, {
+    await fetch(`${URL_BOOKING}booking/update`, {
         method: 'POST',
         headers: {
             'Cache-Control': 'no-cache',
@@ -77,7 +93,7 @@ const onEditRequestBooking = async(param)=>
     .catch(error => error);
 
     const onEditAllRequestBooking = async(param)=>
-    await fetch(`${URL_BOOKING}/update`, {
+    await fetch(`${URL_BOOKING}booking/update`, {
         method: 'POST',
         headers: {
             'Cache-Control': 'no-cache',
@@ -106,9 +122,33 @@ const onEditRequestBooking = async(param)=>
     .then(res=>res)
     .catch(error => error);
                 
+const onDownloadMonthlyRequest=async(param)=>
+    await fetch(`${URL_BOOKING}by_prop/download`, {
+    method: 'POST',
+    headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+        'Content-Disposition':'attachment'
+    },
+    body:stringify({
+        'data[date]':param[0],
+        'data[property_id]':param[1]
+    }),
+    responseType: 'blob', 
+    }).then((response) => {
+        console.log(response.body);
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download',`CHECKIN_MONTHLY_${param[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+    });
+
 const onDownloadRequest=async(param)=>
     axios({
-        url:`${URL_BOOKING}/${param}/download`,
+        url:`${URL_BOOKING}booking/${param}/download`,
         method: 'GET',
         responseType: 'blob', // important
     }).then((response) => {
@@ -128,6 +168,15 @@ function* downloadCsv({payload}){
         console.log("Error Download : "+error)
     }
 }
+function* downloadCsvMonthly({payload}){
+    try{
+        const param = [payload.date,payload.propertyId];
+        console.log(param);
+        yield call(onDownloadMonthlyRequest,param);
+    }catch(error){
+        console.log("Error Download Monthly: "+error)
+    }
+}
 function* renderRequest({payload}){
     try{
         const param=[
@@ -142,6 +191,28 @@ function* renderRequest({payload}){
             console.log(renderResults);
             yield put(
                 actions.renderDataSuccessBc(
+                    renderResults.data,
+                    renderResults.total,
+                    renderResults.current_page,
+                )
+            );
+        }
+    }catch(error){
+        console.log("saga error");
+    }
+}
+function* renderMonthlyRequest({payload}){
+    try{
+        const param=[
+            payload.date,
+            payload.propertyId,
+            payload.page
+        ];
+        const renderResults =yield call(onRenderMonthlyRequest,param);
+        if(renderResults.data){
+            console.log(renderResults);
+            yield put(
+                actions.renderDataMonthlySuccessBc(
                     renderResults.data,
                     renderResults.total,
                     renderResults.current_page,
@@ -232,6 +303,8 @@ export default function* rootSaga() {
     yield all([takeEvery(actions.EDIT_BOOKING,editRequestBooking)]);
     yield all([takeEvery(actions.EDIT_BOOKING_ALL,editAllRequestBooking)]);
     yield all([takeLatest(actions.RENDER_DATA_BC,renderRequest)]);
+    yield all([takeLatest(actions.RENDER_DATA_MONTHLY_BC,renderMonthlyRequest)]);
     yield all([takeEvery(actions.ADD_BOOKING,addBooking)]);
     yield all([takeLatest(actions.DOWNLOAD_CSV,downloadCsv)]);
+    yield all([takeLatest(actions.DOWNLOAD_CSV_MONTHLY,downloadCsvMonthly)]);
 }

@@ -2,9 +2,12 @@
 const actions={
     RENDER_DATA_BC:'RENDER_DATA_BC',
     RENDER_DATA_SUCCESS_BC :'RENDER_DATA_SUCCESS_BC',
+    RENDER_DATA_MONTHLY_BC:'RENDER_DATA_MONTHLY_BC',
+    RENDER_DATA_MONTHLY_SUCCESS_BC:'RENDER_DATA_MONTHLY_SUCCESS_BC',
     ADD_BOOKING:'ADD_BOOKING',
     ADD_BOOKING_RESPONSE:'ADD_BOOKING_RESPONSE',
     DOWNLOAD_CSV:'DOWNLOAD_CSV',
+    DOWNLOAD_CSV_MONTHLY:'DOWNLOAD_CSV_MONTHLY',
     UPDATE_ARRIVAL_LIST:'UPDATE_ARRIVAL_LIST',
     EDIT_BOOKING: 'EDIT_BOOKING',
     EDIT_BOOKING_ALL:'EDIT_BOOKING_ALL',
@@ -49,6 +52,20 @@ const actions={
     downloadCsv:(date)=>({
         type:actions.DOWNLOAD_CSV,
         payload:{date}
+    }),
+    renderDataMonthlyBc:(date,propertyId)=>({
+        type:actions.RENDER_DATA_MONTHLY_BC,
+        payload:{date,propertyId,page:1}
+    }),
+    renderDataMonthlySuccessBc:(results,total,page)=>({
+        type: actions.RENDER_DATA_MONTHLY_SUCCESS_BC,
+        results,
+        total,
+        page
+    }),
+    downloadCsvMonthly:(date,propertyId)=>({
+        type:actions.DOWNLOAD_CSV_MONTHLY,
+        payload:{date,propertyId}
     })
 };
 

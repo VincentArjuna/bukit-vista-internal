@@ -5,7 +5,7 @@ import Button from '../../../../../bvComponents/Uielements/button';
 import Select,{SelectOption}from '../../../../../bvComponents/Uielements/select';
 import aEmployee from '../../../../ResourcesManagement/scenes/Employee/redux/employee/actions';
 import aProperty from '../../../../../bvScenes/MarketBuilding/scenes/Property/redux/property/actions';
-
+import Box from '../../../../../bvComponents/Utility/box';
 const FormItem = Form.Item;
 const Option = SelectOption;
 
@@ -14,8 +14,6 @@ const {editProperty,onPageChange}=aProperty;
 
 const CollectionCreateForm = Form.create()(
 class extends React.Component {
-
-
     render() {
       const { visible, onCancel, onCreate, form } = this.props;
       const { getFieldDecorator } = form;
@@ -28,7 +26,8 @@ class extends React.Component {
           onCancel={onCancel}
           onOk={onCreate}
         >
-            <Form layout="vertical">
+            <Box>
+            <Form layout="horizontal">
                 <FormItem label="Name">
                     {getFieldDecorator(
                         'name', {
@@ -212,6 +211,7 @@ class extends React.Component {
                 </FormItem>
             
             </Form>
+            </Box>
         </Modal>
       );
     }

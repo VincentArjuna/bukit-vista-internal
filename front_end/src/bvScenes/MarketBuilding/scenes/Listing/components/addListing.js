@@ -82,8 +82,9 @@ class extends React.Component {
                     }
                 )(
                     <Select>
-                        <Option value={1}>Partner</Option>
-                        <Option value={0}>Non-Partner</Option>
+                        <Option value={1}>Listed</Option>
+                        <Option value={2}>Ready to Launch</Option>
+                        <Option value={3}>Unlisted</Option>
                     </Select>
                 )}
             </FormItem>   

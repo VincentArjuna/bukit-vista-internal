@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import TableWrapper from './antTable.style';
 import clone from 'clone';
+
 import EditCell from '../../bvScenes/Operation/scenes/ArrivalList/components/EditCell/editCell';
 import NotesCell from '../../bvScenes/Operation/scenes/ArrivalList/components/NotesCell/notesCell';
 
@@ -13,6 +14,8 @@ import EditBooking from '../../bvScenes/Operation/scenes/Booking/scenes/Current/
 import EditEmployee from '../../bvScenes/ResourcesManagement/scenes/Employee/components/editEmployee';
 import EditProfile from '../../bvScenes/ResourcesManagement/scenes/Profile/components/editProfile';
 import ResetPassword from '../../bvScenes/ResourcesManagement/scenes/User/components/resetPassword';
+  
+import DownloadCsvMonthly from '../../bvScenes/MarketBuilding/scenes/Property/components/downloadCsvMonthly';
 
 class MyTable extends Component {
   constructor(props) {
@@ -63,14 +66,14 @@ class MyTable extends Component {
       }
       columns.push(editListing);
     }else if(this.props.mode === "property"){
-      const editProperty={
-        title:'Edit Property',
-        dataIndex:'edit',
+      const downloadCsvMonthly={
+        title:'View',
+        dataIndex:'view',
         render: (text, record, index) => (
-          <EditProperty index={index} dataList={this.props.dataList} />
+          <DownloadCsvMonthly index={index} dataList={this.props.dataList} />
         )
       }
-      columns.push(editProperty);
+      columns.push(downloadCsvMonthly);
     }else if(this.props.mode === "unit"){
       const editUnit={
         title:'Edit Unit',
@@ -168,7 +171,12 @@ class MyTable extends Component {
     }else if(this.props.mode==='listing' || this.props.mode==='unit' ||this.props.mode==='property' ){
       this.props.onPageChange(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10,pagination.current);
     }
-  }
+  };
+
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
 
   render() {
     const classes = `isoCustomizedTableWrapper`;

@@ -15,6 +15,7 @@ import AddListing from '../../bvScenes/MarketBuilding/scenes/Listing/components/
 import AddProperty from '../../bvScenes/MarketBuilding/scenes/Property/components/addProperty';
 import AddUnit from '../../bvScenes/MarketBuilding/scenes/Unit/components/addUnit';
 
+
 import AddEmployee from '../../bvScenes/ResourcesManagement/scenes/Employee/components/addEmployee';
 import AddProfile from '../../bvScenes/ResourcesManagement/scenes/Profile/components/addProfile';
 import AddUser from '../../bvScenes/ResourcesManagement/scenes/User/components/addUser';
@@ -29,7 +30,8 @@ class Header extends Component {
     handleDownloadCsv=event=>{
         if(this.props.DateRange.dateType==="0" || this.props.DateRange.dateType===0){
             this.props.downloadCsv(this.props.DateRange.date);
-        }else{
+        }
+        else{
             alert("Sorry, check in only");
         }
     }
@@ -78,7 +80,7 @@ class Header extends Component {
                 );
             case "unit":
                 return(
-                    <AddUnit/>
+                    <AddUnit isProperty={false} propId={null} propName={null}/>
                 );
             case "profile":
                 return(

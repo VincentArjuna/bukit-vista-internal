@@ -97,6 +97,44 @@ import {
           name:'Onboard Date'
       },
     ];
+  const columnsPropertyUnit=[
+      {
+        title:'ID',
+        key:'unit_id',
+        width:'18%',
+        render: object => renderCell(object, 'TextCell', 'unit_id',null)
+      },
+      {
+      title:'Name',
+      key:'unit_name',
+      width:'18%',
+      render: object => renderCell(object, 'TextCell', 'unit_name',null)
+      },
+      {
+        title:'Base Price',
+        key:'unit_base_price',
+        width:'18%',
+        render: object => renderCell(object, 'TextCell', 'unit_base_price',null)
+      },
+      {
+      title:'Currency',
+      key:'unit_currency',
+      width:'18%',
+      render: object => renderCell(object, 'TextCell', 'unit_currency',choices[0])
+      },
+      {
+        title:'Capacity',
+        key:'unit_capacity',
+        width:'18%',
+        render: object => renderCell(object, 'TextCell', 'unit_capacity',null)
+      },
+      {
+        title:'Number of Room',
+        key:'unit_number_room',
+        render: object => renderCell(object, 'TextCell', 'unit_number_room',null)
+      },
+      
+  ];
   const choices=[
     {
       '1':'IDR',
@@ -111,4 +149,4 @@ import {
   ];
   const title= "Unit";
   const mode="unit";
-  export {columns,title,filterTypes,mode};
+  export {columns,title,filterTypes,mode,columnsPropertyUnit};

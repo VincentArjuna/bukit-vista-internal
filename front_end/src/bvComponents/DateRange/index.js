@@ -66,6 +66,9 @@ class DateRange extends Component {
                 <Option value="2">
                   In House
                 </Option>
+                <Option value="3">
+                  By Month
+                </Option>
             </Select>
           </Group>
         </div>
