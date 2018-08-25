@@ -85,7 +85,9 @@ function* editRequestBookingEmployee({payload}){
 function* renderRequestEmployee({}){
     try{
         const renderResult = yield call(onRenderRequestEmployee);
+        
         if(renderResult.data){
+            console.log(renderResult.last_page);
             yield put(actions.renderDataEmployeeSuccess(renderResult.data));
         }
     }catch(error){
