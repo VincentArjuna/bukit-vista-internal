@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = Users::Latest()->paginate(20);
+        $users = Users::Latest()->paginate(10);
         return $users;
     }
     public function validator(Request $request)
@@ -132,9 +132,21 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function resetPassword(Request $request)
     {
-        //
+        $id = $request->input('data.user_id');
+        $email = $request->input('data.user_email');
+        $users = Users::where('user_email', $email)->first();
+        if($users)
+        {
+            $password = Hash::make($request->input('data.user_password'));
+            $users->user_password = $password;
+            $users->save();
+            return 'TRUE';
+        }else
+        {
+            return 'FALSE';
+        }
     }
 
     /**

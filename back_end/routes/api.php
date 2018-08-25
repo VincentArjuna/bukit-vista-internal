@@ -87,6 +87,8 @@ Route::post('booking/update', 'BookingsController@update');
 Route::get('booking/delete/{id}', 'BookingsController@softDelete');
 //restore softdeleted booking
 Route::get('booking/restore/{id}', 'BookingsController@restore');
+//Display booking per_prop, per_month
+Route::post('booking/by_prop', 'BookingsController@monthlyBookProp');
 
 //Properties
 //Display all 'Properties'
@@ -140,9 +142,12 @@ Route::get('profile/restore/{id}', 'ProfilesController@restore');
 
 //ArrivalList
 //Display arrival (check_in and area)
-Route::post('arrival', 'ArrivalListsController@showArrival2');
+Route::post('arrival', 'ArrivalListsController@showArrival');
 //Download as CSV
 Route::get('booking/{tgl}/download','ArrivalListsController@csvWriter');
+//Download as CSV monthly property
+Route::get('by_prop/{id}/{tgl}/download','ArrivalListsController@csvMonthly');
+
 
 //Log
 //Display all log

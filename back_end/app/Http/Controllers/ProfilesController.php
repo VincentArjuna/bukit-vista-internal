@@ -15,10 +15,16 @@ class ProfilesController extends Controller
      */
     public function index()
     {
-        $profiles = Profiles::orderBy('employee_name')->paginate(30);
+        $profiles = Profiles::orderBy('profile_name')->paginate(30);
         return $profiles;
     }
 
+    public function newProfile_ID()
+    {
+        $ctr = Profiles::Latest()->count();
+        $profile_id='PA'.sprintf("%04s", $ctr);
+        return $profile_id;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -28,7 +34,7 @@ class ProfilesController extends Controller
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $profiles = new Profiles;
-        $profiles->profile_id = $request->input('data.profile_id');
+        $profiles->profile_id = $this->newProfile_ID();
         $profiles->profile_name = $request->input('data.profile_name');
         $profiles->profile_email = $request->input('data.profile_email');
         $profiles->save();
@@ -86,9 +92,10 @@ class ProfilesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
+        $id = $request->input('data.profile_id');
         $profiles = Profiles::where('profile_id', $id)->first();
         $profiles->profile_name = $request->input('data.profile_name');
         $profiles->profile_email = $request->input('data.profile_email');

@@ -8,7 +8,9 @@ use App\Unit;
 use App\Profiles;
 use App\fnPaginate;
 use App\employee;
+use App\Bookings;
 use DateTime;
+use DB;
 
 class ListingsController extends Controller
 {
@@ -55,6 +57,7 @@ class ListingsController extends Controller
             $listings->profile_id = $request->input('data.profile_id');
             $listings->employee_id = $request->input('data.employee_id');
             $listings->save();
+            $bookings = Bookings::where('temp_column', $id)->update(['listing_id' => $id, 'temp_column' => NULL]);
             return 'TRUE';
         }else {
             return 'FALSE';
@@ -83,59 +86,111 @@ class ListingsController extends Controller
         $filter_type = $request->input('data.filter_type');
         $filterer = $request->input('data.filterer');
         $per_page = $request->input('data.per_page');
+        $searcher = ['listing.*',
+                    DB::raw('(select unit_name from unit u where u.unit_id=listing.unit_id) 
+                            as unit_name'),
+                    DB::raw('(select profile_name from profile p where p.profile_id=listing.profile_id)
+                            as profile_name')];
         if($filter_type == 0)
         {
-            $listings = Listing::Latest()->paginate($per_page);
+            $listings = DB::table('listing')->select($searcher)->latest()
+            ->paginate($per_page);
             return $listings;
-        }else if($filter_type == 1)
+        }else if ($filter_type == 1)
         {
-            $listings = Listing::where('listing_id', 'like', '%'.$filterer.'%')->paginate($per_page);
+            $listings = DB::table('listing')->select($searcher)
+            ->where('listing_id', 'like', '%'.$filterer.'%')->latest()
+            ->paginate($per_page);
             return $listings;
-        }else if($filter_type == 2)
+        }else if ($filter_type == 2)
         {
-            $listings = Listing::where('listing_name', 'like', '%'.$filterer.'%')->paginate($per_page);
+            $listings = DB::table('listing')->select($searcher)
+            ->where('listing_name', 'like', '%'.$filterer.'%')->latest()
+            ->paginate($per_page);
             return $listings;
-        }else if($filter_type == 3)
+        }else if ($filter_type == 3)
         {
-            $listings = Listing::where('unit_id', 'like', '%'.$filterer.'%')->paginate($per_page);
+            $listings = DB::table('listing')->select($searcher)
+            ->where('unit_id', 'like', '%'.$filterer.'%')->latest()
+            ->paginate($per_page);
             return $listings;
         }else if($filter_type == 4)
         {
-            $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->get();
+            $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->latest()->get();
             $collect = collect();
             foreach($units as $unit)
             {
-                $listings = Listing::where('unit_id', $unit->unit_id)->get();
+                $listings = DB::table('listing')->select($searcher)
+                ->where('unit_id', $unit->unit_id)->get();
                 $collect = $collect->merge($listings);
             }
             $paginated = fnPaginate::pager($collect, $request);
             return $paginated;
         }else if($filter_type == 5)
         {
-            $profiles = Profiles::where('profile_name', 'like', '%'.$filterer.'%')->get();
+            $profiles = Profiles::where('profile_name', 'like', '%'.$filterer.'%')->latest()->get();
             $collect = collect();
             foreach($profiles as $profile)
             {
-                $listings = Listing::where('profile_id', $profile->profile_id)->get();
+                $listings = DB::table('listing')->select($searcher)
+                ->where('profile_id', $profiles->profile_id)->get();
                 $collect = $collect->merge($listings);
             }
             $paginated = fnPaginate::pager($collect, $request);
             return $paginated;
         }else if($filter_type == 6)
         {
-            $employees = employee::where('employee_name', 'like', '%'.$filterer.'%')->get();
+            $employees = employee::where('employee_name', 'like', '%'.$filterer.'%')->latest()->get();
             $collect = collect();
             foreach($employees as $employee)
             {
-                $listings = Listing::where('employee_id', $employee->employee_id)->get();
+                $listings = DB::table('listing')->select($searcher)
+                ->where('employee_id', $employee->employee_id)->get();
                 $collect = $collect->merge($listings);
             }
             $paginated = fnPaginate::pager($collect, $request);
             return $paginated;
         }else if($filter_type == 7)
         {
-            $listings = Listing::where('listing_onboard_date', 'like', '%'.$filterer.'%')->paginate($per_page);
+            $listings = DB::table('listing')->select($searcher)
+            ->where('listing_onboard_date', 'like', '%'.$filterer.'%')->latest()
+            ->paginate($per_page);
             return $listings;
+        }else if($filter_type == 8)
+        {
+            $listings = DB::table('listing')->select($searcher)
+            ->where('listing_account_owner', 'like', '%'.$filterer.'%')->latest()
+            ->paginate($per_page);
+            return $listings;
+        }else if($filter_type == 9)
+        {
+            $listings = DB::table('listing')->select($searcher)
+            ->where('listing_account_bv', 'like', '%'.$filterer.'%')->latest()
+            ->paginate($per_page);
+            return $listings;
+        }else if ($filter_type == 10)
+        {
+            $listings = DB::table('listing')->select($searcher)
+            ->where('listing_remark', $filterer)->latest()
+            ->paginate($per_page);
+            return $listings;
+        }else if ($filter_type == 11)
+        {
+            $properties = Properties::where('area_id', $filterer)->get();
+            $collect = collect();
+            foreach ($properties as $property)
+            {
+                $units = Unit::where('property_id', $property->property_id)->get();
+                foreach ($units as $unit)
+                {
+                    $listings = DB::table('listing')->select($searcher)
+                    ->where('unit_id', $unit->unit_id)->latest()
+                    ->get();
+                    $collect = $collect->merge($listings);
+                }
+            }
+            $paginated = fnPaginate::pager($collect, $request);
+            return $paginated;
         }
     }
     public function showDeleted()

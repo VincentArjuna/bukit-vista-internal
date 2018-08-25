@@ -18,7 +18,13 @@ class EmployeeController extends Controller
         $employees = employee::where('employee_status',1)->orderBy('employee_name')->paginate(50);
         return $employees;
     }
-
+    
+    public function newEmployee_ID()
+    {
+        $ctr = employee::Latest()->count();
+        $employee_id='E'.sprintf("%04s", $ctr);
+        return $employee_id;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -28,7 +34,7 @@ class EmployeeController extends Controller
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $employees = new employee;
-        $employees->employee_id = $request->input('data.employee_id');
+        $employees->employee_id = $this->newEmployee_ID();
         $employees->employee_name = $request->input('data.employee_name');
         $employees->employee_address = $request->input('data.employee_address');
         $employees->employee_phone = $request->input('data.employee_phone');
@@ -88,16 +94,17 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
+        $id = $request->input('data.employee_id');
         $employees = employee::where('employee_id', $id)->first();
         $employees->employee_name = $request->input('data.employee_name');
         $employees->employee_address = $request->input('data.employee_address');
         $employees->employee_phone = $request->input('data.employee_phone');
         $employees->employee_status = $request->input('data.employee_status');
         $listings->save();
-        return 'New Data Added';
+        return 'Data Updated';
     }
 
     /**

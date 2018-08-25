@@ -39,6 +39,32 @@ class BookingsController extends Controller
         $merged =  $merged->merge($profiles);
         return $merged;
     }
+    public function monthlyBookProp(Request $request)
+    {
+        $id = $request->input('data.property_id');
+        $date = $request->input('data.date');
+        $units = Unit::where('property_id', $id)->get();
+        $ar = [];
+        foreach($units as $unit)
+        {
+            $listings = Listing::where('unit_id', $unit->unit_id)->get();
+            foreach($listings as $listing)
+            {
+                $bookings = Bookings::where('listing_id', $listing->listing_id)
+                ->where('booking_check_in', 'like', '%'.$date.'%')->get();
+                $profiles = Profiles::where('profile_id', $listing->profile_id)->first();
+                foreach($bookings as $booking)
+                {
+                    $collect = collect();
+                    $collect = $collect->merge($booking);
+                    $collect = $collect->merge($profiles);
+                    array_push($ar,$collect);
+                }
+            }
+        }
+        $paginated = fnPaginate::pager($ar, $request);
+        return $paginated;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -112,51 +138,36 @@ class BookingsController extends Controller
         $date = $request->input('data.date');
         $filter_type = $request->input('data.filter_type');
         $filterer = $request->input('data.filterer');
+        $searcher = ['booking.*',
+        DB::raw('(select 
+                    (select unit_name from unit u where u.unit_id=l.unit_id)
+                    from listing l where l.listing_id=booking.listing_id
+                    ) as unit_name'),
+        DB::raw('(select 
+                    (select profile_name from profile p where p.profile_id=l.profile_id)
+                    from listing l where l.listing_id=booking.listing_id
+                    )as profile_name')];
         if($date_type == 0 )
         {
             if($filter_type == 0)
             {
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
-                )->where('booking_status', 1)->paginate(10);
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_status', '!=', 2)->paginate(10);
                 return $bookings;
             }else if ($filter_type == 1)
             {
                 //$bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_id', 'like', '%'.$filterer.'%')
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 2)
             {
                 //$bookings = Bookings::where('booking_guest_name', 'like', '%'.$filterer.'%')->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_guest_name', 'like', '%'.$filterer.'%')
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 3)
@@ -165,17 +176,9 @@ class BookingsController extends Controller
                 //$bookings = Bookings::where('listing_id', $listings->listing_id)->paginate(10);
                 $ar = collect();
                 foreach($listings as $listing){
-                    $bookings = DB::table('booking')->select('booking.*',
-                        DB::raw('(select 
-                                    (select unit_name from unit u where u.unit_id=l.unit_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    ) as unit_name'),
-                        DB::raw('(select 
-                                    (select profile_name from profile p where p.profile_id=l.profile_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    )as profile_name')
+                    $bookings = DB::table('booking')->select($searcher
                     )->where('listing_id', $listing->listing_id)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
                     $ar = $ar->merge($bookings);
                 }
@@ -190,76 +193,51 @@ class BookingsController extends Controller
                     $listings = Listing::where('profile_id', $profile->profile_id)->get();
                     foreach($listings as $listing)
                     {
-                        $bookings = DB::table('booking')->select('booking.*',
-                        DB::raw('(select 
-                                    (select unit_name from unit u where u.unit_id=l.unit_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    ) as unit_name'),
-                        DB::raw('(select 
-                                    (select profile_name from profile p where p.profile_id=l.profile_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    )as profile_name')
+                        $bookings = DB::table('booking')->select($searcher
                         )->where('listing_id', $listing->listing_id)
-                        ->where('booking_status', 1)
+                        ->where('booking_status', '!=', 2)
                         ->get();
                         $ar = $ar->merge($bookings);
                     }
                 }
                 $paginated = fnPaginate::pager($ar, $request);
                 return $paginated;
+            }else if ($filter_type == 5)
+            {
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_status', $filterer)
+                ->orderBy('booking_check_in', 'DESC')
+                ->paginate(10);
+                return $bookings;
             }
         }else if ($date_type == 1)
         {
             if($filter_type == 0)
             {
                 //$bookings = Bookings::where('booking_check_in', $date)->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_check_in', $date)
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 1)
             {
                 $matcher = ['booking_check_in'=> $date];
                 //$bookings = Bookings::where($matcher)->where('booking_id','like','%'.$filterer.'%')->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_check_in', $date)
                 ->where('booking_id','like','%'.$filterer.'%')
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 2)
             {
                 $matcher = ['booking_check_in'=> $date];
                 $bookings = Bookings::where($matcher)->where('booking_guest_name', 'like', '%'.$filterer.'%')->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_check_in', $date)
                 ->where('booking_guest_name', 'like', '%'.$filterer.'%')
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 3)
@@ -270,18 +248,10 @@ class BookingsController extends Controller
                 $ar = collect();
                 foreach ($listings as $listing)
                 {
-                    $bookings = DB::table('booking')->select('booking.*',
-                        DB::raw('(select 
-                                    (select unit_name from unit u where u.unit_id=l.unit_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    ) as unit_name'),
-                        DB::raw('(select 
-                                    (select profile_name from profile p where p.profile_id=l.profile_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    )as profile_name')
+                    $bookings = DB::table('booking')->select($searcher
                     )->where('booking_check_in', $date)
                     ->where('listing_id', $listing->listing_id)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
                     $ar = $ar->merge($bookings);
                 }
@@ -296,75 +266,51 @@ class BookingsController extends Controller
                     $listings = Listing::where('profile_id', $profile->profile_id)->get();
                     foreach($listings as $listing)
                     {          
-                        $bookings = DB::table('booking')->select('booking.*',
-                            DB::raw('(select 
-                                        (select unit_name from unit u where u.unit_id=l.unit_id)
-                                        from listing l where l.listing_id=booking.listing_id
-                                        ) as unit_name'),
-                            DB::raw('(select 
-                                        (select profile_name from profile p where p.profile_id=l.profile_id)
-                                        from listing l where l.listing_id=booking.listing_id
-                                        )as profile_name')
+                        $bookings = DB::table('booking')->select($searcher
                         )->where('booking_check_in', $date)
                         ->where('listing_id', $listing->listing_id)
-                        ->where('booking_status', 1)
+                        ->where('booking_status', '!=', 2)
                         ->get();
                         $ar = $ar->merge($bookings);
                     }
                 }
                 $paginated = fnPaginate::pager($ar, $request);
                 return $paginated;
+            }else if ($filter_type == 5)
+            {
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_status', $filterer)
+                ->WHERE('booking_check_in', $date)
+                ->orderBy('booking_check_in', 'DESC')
+                ->paginate(10);
+                return $bookings;
             }
         }else if ($date_type == 2)
         {
             if($filter_type == 0)
             {
                 //$bookings = Bookings::where('booking_check_out', $date)->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                        DB::raw('(select 
-                                    (select unit_name from unit u where u.unit_id=l.unit_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    ) as unit_name'),
-                        DB::raw('(select 
-                                    (select profile_name from profile p where p.profile_id=l.profile_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                     )->where('booking_check_out', $date)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 1)
             {
                 //$bookings = Bookings::where($matcher)->where('booking_id','like','%'.$filterer.'%')->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                        DB::raw('(select 
-                                    (select unit_name from unit u where u.unit_id=l.unit_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    ) as unit_name'),
-                        DB::raw('(select 
-                                    (select profile_name from profile p where p.profile_id=l.profile_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                     )->where('booking_check_out', $date)
                     ->where('booking_id','like','%'.$filterer.'%')
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 2)
             {
                 //$bookings = Bookings::where($matcher)->where('booking_guest_name', 'like', '%'.$filterer.'%')->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                        DB::raw('(select 
-                                    (select unit_name from unit u where u.unit_id=l.unit_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    ) as unit_name'),
-                        DB::raw('(select 
-                                    (select profile_name from profile p where p.profile_id=l.profile_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                     )->where('booking_check_out', $date)
                     ->where('booking_guest_name', 'like', '%'.$filterer.'%')
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 3)
@@ -373,18 +319,10 @@ class BookingsController extends Controller
                 $ar = collect();
                 foreach ($listings as $listing)
                 {
-                    $bookings = DB::table('booking')->select('booking.*',
-                        DB::raw('(select 
-                                    (select unit_name from unit u where u.unit_id=l.unit_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    ) as unit_name'),
-                        DB::raw('(select 
-                                    (select profile_name from profile p where p.profile_id=l.profile_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    )as profile_name')
+                    $bookings = DB::table('booking')->select($searcher
                     )->where('booking_check_out', $date)
                     ->where('listing_id', $listing->listing_id)
-                    ->where('booking_status', 1)->get();
+                    ->where('booking_status', '!=', 2)->get();
                     $ar = $ar->merge($bookings);
                 }
                 $paginated = fnPaginate::pager($ar, $request);
@@ -398,75 +336,51 @@ class BookingsController extends Controller
                     $listings = Listing::where('profile_id', $profile->profile_id)->get();
                     foreach($listings as $listing)
                     {          
-                        $bookings = DB::table('booking')->select('booking.*',
-                            DB::raw('(select 
-                                        (select unit_name from unit u where u.unit_id=l.unit_id)
-                                        from listing l where l.listing_id=booking.listing_id
-                                        ) as unit_name'),
-                            DB::raw('(select 
-                                        (select profile_name from profile p where p.profile_id=l.profile_id)
-                                        from listing l where l.listing_id=booking.listing_id
-                                        )as profile_name')
+                        $bookings = DB::table('booking')->select($searcher
                         )->where('booking_check_out', $date)
                         ->where('listing_id', $listing->listing_id)
-                        ->where('booking_status', 1)
+                        ->where('booking_status', '!=', 2)
                         ->get();
                         $ar = $ar->merge($bookings);
                     }
                 }
                 $paginated = fnPaginate::pager($ar, $request);
                 return $paginated;
+            }else if ($filter_type == 5)
+            {
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_status', $filterer)
+                ->WHERE('booking_check_out', $date)
+                ->orderBy('booking_check_in', 'DESC')
+                ->paginate(10);
+                return $bookings;
             }
         }else if ($date_type == 3)
         {
             if($filter_type == 0)
             {
                 //$bookings = Bookings::where('booking_received_timestamp','like', $date.'%')->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_received_timestamp','like', $date.'%')
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 1)
             {
                 //$bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->where('booking_received_timestamp','like', $date.'%')->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_received_timestamp','like', $date.'%')
                 ->where('booking_id', 'like', '%'.$filterer.'%')
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 2)
             {
                 //$bookings = Bookings::where('booking_guest_name', 'like', '%'.$filterer.'%')->where('booking_received_timestamp','like', $date.'%')->paginate(10);
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_received_timestamp','like', $date.'%')
                 ->where('booking_guest_name', 'like', '%'.$filterer.'%')
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->paginate(10);
                 return $bookings;
             }else if ($filter_type == 3)
@@ -475,18 +389,10 @@ class BookingsController extends Controller
                 $ar = collect();
                 foreach ($listings as $listing)
                 {
-                    $bookings = DB::table('booking')->select('booking.*',
-                        DB::raw('(select 
-                                    (select unit_name from unit u where u.unit_id=l.unit_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    ) as unit_name'),
-                        DB::raw('(select 
-                                    (select profile_name from profile p where p.profile_id=l.profile_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    )as profile_name')
+                    $bookings = DB::table('booking')->select($searcher
                     )->where('booking_received_timestamp','like', $date.'%')
                     ->where('listing_id', $listing->listing_id)
-                    ->where('booking_status', 1)->get();
+                    ->where('booking_status', '!=', 2)->get();
                     $ar = $ar->merge($bookings);
                 }
                 $paginated = fnPaginate::pager($ar, $request);
@@ -500,70 +406,46 @@ class BookingsController extends Controller
                     $listings = Listing::where('profile_id', $profile->profile_id)->get();
                     foreach($listings as $listing)
                     {          
-                        $bookings = DB::table('booking')->select('booking.*',
-                            DB::raw('(select 
-                                        (select unit_name from unit u where u.unit_id=l.unit_id)
-                                        from listing l where l.listing_id=booking.listing_id
-                                        ) as unit_name'),
-                            DB::raw('(select 
-                                        (select profile_name from profile p where p.profile_id=l.profile_id)
-                                        from listing l where l.listing_id=booking.listing_id
-                                        )as profile_name')
+                        $bookings = DB::table('booking')->select($searcher
                         )->where('booking_received_timestamp', 'like', $date.'%')
                         ->where('listing_id', $listing->listing_id)
-                        ->where('booking_status', 1)
+                        ->where('booking_status', '!=', 2)
                         ->get();
                         $ar = $ar->merge($bookings);
                     }
                 }
                 $paginated = fnPaginate::pager($ar, $request);
                 return $paginated;
+            }else if ($filter_type == 5)
+            {
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_status', $filterer)
+                ->WHERE('booking_received_timestamp', $date)
+                ->orderBy('booking_check_in', 'DESC')
+                ->paginate(10);
+                return $bookings;
             }
         }else if ($date_type == 4)
         {
             $bookings = [];
             if($filter_type == 0)
             {
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
-                )->where('booking_status', 1)
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_status', '!=', 2)
                 ->get();
             }else if ($filter_type == 1)
             {
                 //$bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->get();
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_id', 'like', '%'.$filterer.'%')
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->get();
             }else if ($filter_type == 2)
             {
                 //$bookings = Bookings::where('booking_guest_name', 'like', '%'.$filterer.'%')->get();
-                $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                $bookings = DB::table('booking')->select($searcher
                 )->where('booking_guest_name', 'like', '%'.$filterer.'%')
-                ->where('booking_status', 1)
+                ->where('booking_status', '!=', 2)
                 ->get();
             }else if ($filter_type == 3)
             {
@@ -572,17 +454,9 @@ class BookingsController extends Controller
                 $ar = collect();
                 foreach ($listings as $listing)
                 {
-                    $bookings = DB::table('booking')->select('booking.*',
-                    DB::raw('(select 
-                                (select unit_name from unit u where u.unit_id=l.unit_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                ) as unit_name'),
-                    DB::raw('(select 
-                                (select profile_name from profile p where p.profile_id=l.profile_id)
-                                from listing l where l.listing_id=booking.listing_id
-                                )as profile_name')
+                    $bookings = DB::table('booking')->select($searcher
                     )->where('listing_id', $listing->listing_id)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
                     $ar = $ar->merge($bookings);
                 }
@@ -596,22 +470,21 @@ class BookingsController extends Controller
                     $listings = Listing::where('profile_id', $profile->profile_id)->get();
                     foreach ($listings as $listing)
                     {
-                        $bookings = DB::table('booking')->select('booking.*',
-                        DB::raw('(select 
-                                    (select unit_name from unit u where u.unit_id=l.unit_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    ) as unit_name'),
-                        DB::raw('(select 
-                                    (select profile_name from profile p where p.profile_id=l.profile_id)
-                                    from listing l where l.listing_id=booking.listing_id
-                                    )as profile_name')
+                        $bookings = DB::table('booking')->select($searcher
                         )->where('listing_id', $listing->listing_id)
-                        ->where('booking_status', 1)
+                        ->where('booking_status', '!=', 2)
                         ->get();
                         $ar = $ar->merge($bookings);
                     }
                 }
                 $bookings = $ar;
+            }else if ($filter_type == 5)
+            {
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_status', $filterer)
+                ->orderBy('booking_check_in', 'DESC')
+                ->paginate(10);
+                return $bookings;
             }
             $collect = [];
             foreach ($bookings as $booking)
@@ -669,7 +542,6 @@ class BookingsController extends Controller
                 $bookings->booking_guest_eta = $request->input('data.booking_guest_eta');
                 $bookings->booking_guest_status = $request->input('data.booking_guest_status');
                 $bookings->booking_comm_channel = $request->input('data.booking_comm_channel');
-                $bookings->booking_notes = $request->input('data.booking_notes');
                 $bookings->booking_earned = $request->input('data.booking_earned');
                 $bookings->booking_currency = $request->input('data.booking_currency');
                 $bookings->booking_source = $request->input('data.booking_source');
@@ -683,7 +555,6 @@ class BookingsController extends Controller
                 $bookings->booking_guest_phone = $request->input('data.booking_guest_phone');
                 $bookings->booking_guest_eta = $request->input('data.booking_guest_eta');
                 $bookings->booking_guest_status = $request->input('data.booking_guest_status');
-                $bookings->booking_notes = $request->input('data.booking_notes');
                 $bookings->booking_guest_number = $request->input('data.booking_guest_number');
             }
             $bookings->save();

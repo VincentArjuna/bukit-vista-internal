@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DateTime;
 use App\Notes;
+use App\Users;
+use App\employee;
+use App\fnPaginate;
 
 class NotesController extends Controller
 {
@@ -21,7 +24,9 @@ class NotesController extends Controller
 
     public function new_note_id()
     {
-        $ctr = Notes::Latest()->count();
+        $notes = Notes::Latest()->first();
+        $id = substr($notes->note_id,1);
+        $ctr = intval($id)+1;
         $note_id = 'N'.sprintf("%04s", $ctr);
         return $note_id;
     }
@@ -66,8 +71,19 @@ class NotesController extends Controller
     }
     public function showBooking($id)
     {
-        $notes = Notes::where('booking_id', $id)->paginate(20);
-        return $notes;
+        $notes = Notes::where('booking_id', $id)->get();
+        $ar = [];
+        foreach($notes as $note)
+        {
+            $users = Users::where('user_id', $note->user_id)->first();
+            $employees = employee::where('employee_id', $users->employee_id)->first();
+            $collect = collect();
+            $collect = $collect->merge($note);
+            $collect = $collect->merge($employees);
+            array_push($ar,$collect);
+        }
+        $paginated = fnpaginate::pager($ar, $request);
+        return $paginated;
     }
     public function showUser($id)
     {

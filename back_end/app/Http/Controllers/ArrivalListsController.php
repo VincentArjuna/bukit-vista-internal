@@ -15,6 +15,7 @@ use App\Profiles;
 use App\Areas;
 use App\BookingEmployee;
 use App\employee;
+use App\Notes;
 use DateTime;
 use DB;
 class ArrivalListsController extends Controller
@@ -29,7 +30,7 @@ class ArrivalListsController extends Controller
         // Check that user date is between start & end
         return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
     }
-    public function showArrival2(Request $request)
+    public function showArrival(Request $request)
     {
          date_default_timezone_set('Asia/Kuala_Lumpur');
         $ar = [];
@@ -39,9 +40,9 @@ class ArrivalListsController extends Controller
         $filterer = $request->input('data.filterer');
         $area = $request->input('data.area');
         $bookings=[];
-        $searcher = ['booking_id','booking_guest_name','booking_check_in', 'booking_check_out',
-                     'booking_guest_phone', 'booking_comm_channel', 'booking_guest_eta','booking_guest_number',
-                     'booking_guest_status','booking_conversation_url','listing_id','booking_notes',
+        $searcher = ['booking_id','booking_guest_name','booking_check_in', 'booking_check_out', 'booking_guest_number',
+                     'booking_guest_phone', 'booking_comm_channel', 'booking_guest_eta',
+                     'booking_guest_status','booking_conversation_url','booking_status','listing_id','booking_notes',
                      DB::raw('(select 
                         (select unit_name from unit u where u.unit_id=l.unit_id)
                         from listing l where l.listing_id=booking.listing_id
@@ -55,17 +56,17 @@ class ArrivalListsController extends Controller
             {
                 $bookings = DB::table('booking')->select($searcher)
                     ->where('booking_check_in', $date)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
             }else if ($date_type == 1)
             {
                 $bookings = DB::table('booking')->select($searcher)
                     ->where('booking_check_out', $date)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
             }else if ($date_type == 2)
             {
-                $bookings = DB::table('booking')->select($searcher)->where('booking_status', 1)
+                $bookings = DB::table('booking')->select($searcher)->where('booking_status', '!=', 2)
                     ->get();
                 $collect = [];
                 foreach ($bookings as $booking)
@@ -84,20 +85,20 @@ class ArrivalListsController extends Controller
                 $bookings = DB::table('booking')->select($searcher)
                     ->where('booking_check_in', $date)
                     ->where('booking_guest_name', 'like', '%'.$filterer.'%')
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
             }else if ($date_type == 1)
             {
                 $bookings = DB::table('booking')->select($searcher)
                     ->where('booking_check_out', $date)
                     ->where('booking_guest_name', 'like', '%'.$filterer.'%')
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
             }else if ($date_type == 2)
             {
                 $bookings = DB::table('booking')->select($searcher)
                     ->where('booking_guest_name', 'like', '%'.$filterer.'%')
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
                 $collect = [];
                 foreach ($bookings as $booking)
@@ -115,18 +116,18 @@ class ArrivalListsController extends Controller
             {
                 $bookings = DB::table('booking')->select($searcher)
                     ->where('booking_check_in', $date)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
             }else if ($date_type == 1)
             {
                 $bookings = DB::table('booking')->select($searcher)
                     ->where('booking_check_out', $date)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
             }else if ($date_type == 2)
             {
                 $bookings = DB::table('booking')->select($searcher)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
                 $collect = [];
                 foreach ($bookings as $booking)
@@ -154,18 +155,18 @@ class ArrivalListsController extends Controller
                 
                 $bookings = DB::table('booking')->select($searcher)
                     ->where('booking_check_in', $date)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
             }else if ($date_type == 1)
             {
                 $bookings = DB::table('booking')->select($searcher)
                     ->where('booking_check_out', $date)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
             }else if ($date_type == 2)
             {
                 $bookings = DB::table('booking')->select($searcher)
-                    ->where('booking_status', 1)
+                    ->where('booking_status', '!=', 2)
                     ->get();
                 $collect = [];
                 foreach ($bookings as $booking)
@@ -249,173 +250,6 @@ class ArrivalListsController extends Controller
         $ar = $ar->values()->toArray();
         $paginated = fnpaginate::pager($ar, $request);
         return $paginated;
-    }
-    public function showArrival(Request $request)
-    {
-        date_default_timezone_set('Asia/Kuala_Lumpur');
-        $ar = [];
-        $date_type = $request->input('data.date_type');
-        $date = $request->input('data.date');
-        $filter_type = $request->input('data.filter_type');
-        $filterer = $request->input('data.filterer');
-        $area = $request->input('data.area');
-        $searcher = ['booking_id','booking_guest_name','booking_check_in', 'booking_check_out',
-                     'booking_guest_phone', 'booking_comm_channel', 'booking_guest_eta','booking_guest_number',
-                     'booking_guest_status','booking_conversation_url','listing_id','booking_notes'];
-        $bookings = [];        
-        if ($filter_type == 1)
-        {
-            if($date_type == 0){
-                $bookings = Bookings::select($searcher)->where('booking_check_in', $date)
-                ->where('booking_guest_name','like', '%'.$filterer.'%')->get();
-            }else if ($date_type == 1)
-            {
-                $bookings = Bookings::select($searcher)->where('booking_check_out', $date)
-                ->where('booking_guest_name','like', '%'.$filterer.'%')->get();
-            }else if($date_type == 2)
-            {
-                $bookings = Bookings::select($searcher)->where('booking_guest_name', 'like', '%'.$filterer.'%')->get();
-                $collect = [];
-                foreach ($bookings as $booking)
-                {
-                    if($this->check_in_range($booking->booking_check_in, $booking->booking_check_out, $date))
-                    {
-                        array_push($collect, $booking);
-                    }
-                }
-                $bookings = $collect;
-            }
-        }else
-        {
-            if($date_type == 0){
-                $bookings = Bookings::select($searcher)->where('booking_check_in', $date)->get();
-            }else if ($date_type == 1)
-            {
-                $bookings = Bookings::select($searcher)->where('booking_check_out', $date)->get();
-            }else if ($date_type ==2)
-            {
-                $bookings = Bookings::get();
-                $collect = [];
-                foreach ($bookings as $booking)
-                {
-                    if($this->check_in_range($booking->booking_check_in, $booking->booking_check_out, $date))
-                    {
-                        array_push($collect, $booking);
-                    }
-                }
-                $bookings = $collect;
-            }
-        }
-        foreach ($bookings as $booking) {
-            $listing = Listing::select('listing_id','unit_id','profile_id')
-            ->where('listing_id', $booking->listing_id)->first();
-            if($filter_type == 2)
-            {
-                $units = Unit::select('unit_id', 'unit_name','property_id')->where('unit_id', $listing->unit_id)->first();
-                //var_dump(stripos($units->unit_name, $filterer));
-                if(stripos($units->unit_name, $filterer)===false){}else 
-                {
-                    $profiles = Profiles::select('profile_name')->where('profile_id', $listing->profile_id)->first();
-                    $properties = Properties::select('property_id','area_id')->where('property_id', $units->property_id)->first();
-                    if($properties->area_id == $area)
-                    {
-                        $bes = BookingEmployee::select('employee_id','be_role')
-                        ->where('booking_id', $booking->booking_id)->get();
-                        $omps['host']=[];
-                        $omps['driver']=[];
-                        $omps['verifier']=[];
-                        foreach($bes as $be)
-                        {
-                            $emps = collect();
-                            $employees = employee::select('employee_name')->where('employee_id', $be->employee_id)->first();
-                            $emps = $emps->merge($be);
-                            $emps = $emps->merge($employees);
-                            if($be->be_role == 0)
-                            {
-                                $omps['host'] = $emps;
-                            }else if ($be->be_role == 1)
-                            {
-                                $omps['driver'] = $emps;
-                            }else if($be->be_role == 2)
-                            {
-                                $omps['verifier'] = $emps;
-                            }
-                        }
-                        $merged = collect();
-                        $merged = $merged->merge($booking);
-                        $merged = $merged->merge($units);
-                        $merged = $merged->merge($profiles);
-                        $data['booking_los'] = $this->LoS($booking->booking_id);
-                        $merged = $merged->merge($data);
-                        $merged = $merged->merge($omps);
-                        array_push($ar,$merged);
-                    }
-                }
-            }else
-            {
-                $units = Unit::select('unit_id', 'unit_name','property_id')->where('unit_id', $listing->unit_id)->first();
-                $profiles = Profiles::select('profile_name')->where('profile_id', $listing->profile_id)->first();
-                $properties = Properties::select('property_id','area_id')->where('property_id', $units->property_id)->first();
-                if($properties->area_id == $area)
-                {
-                    $bes = BookingEmployee::select('employee_id','be_role')
-                    ->where('booking_id', $booking->booking_id)->get();
-                    $omps['host']=[];
-                    $omps['driver']=[];
-                    $omps['verifier']=[];
-                    foreach($bes as $be)
-                    {
-                        $emps = collect();
-                        $employees = employee::select('employee_name')->where('employee_id', $be->employee_id)->first();
-                        $emps = $emps->merge($be);
-                        $emps = $emps->merge($employees);
-                        if($be->be_role == 0)
-                        {
-                            $omps['host'] = $emps;
-                        }else if ($be->be_role == 1)
-                        {
-                            $omps['driver'] = $emps;
-                        }else if($be->be_role == 2)
-                        {
-                            $omps['verifier'] = $emps;
-                        }
-                    }
-                    $merged = collect();
-                    $merged = $merged->merge($booking);
-                    $merged = $merged->merge($units);
-                    $merged = $merged->merge($profiles);
-                    $data['booking_los'] = $this->LoS($booking->booking_id);
-                    $merged = $merged->merge($data);
-                    $merged = $merged->merge($omps);
-                    array_push($ar,$merged);
-                }
-            }
-        }
-        $sort_type = $request->input('data.sort_type');
-        $ar = collect($ar);
-        if($sort_type == 1)
-        {
-            $ar = $ar->sortBy('booking_guest_eta');
-        }else if($sort_type == 2)
-        {
-            $ar = $ar->sortByDesc('booking_guest_eta');
-        }else if ($sort_type == 3)
-        {
-            $ar = $ar->sortBy('booking_guest_name');
-        }else if ($sort_type == 4)
-        {
-            $ar = $ar->sortByDesc('booking_guest_name');
-        }else if ($sort_type == 5)
-        {
-            $ar = $ar->sortBy('unit_name');
-        }else if ($sort_type == 6)
-        {
-            $ar = $ar->sortByDesc('unit_name');
-        }
-        $ar = $ar->values()->toArray();
-        $paginated = fnpaginate::pager($ar, $request);
-        return $paginated;
-        
     }
     public function LoS($id)
     {
@@ -542,6 +376,99 @@ class ArrivalListsController extends Controller
                         $arr['booking_notes'],
                         $arr['area_name']
                 ];
+                $wr->insertOne($tmp);
+            }
+        } catch (CannotInsertRecord $e) {
+            $e->getRecords(); //returns [1, 2, 3]
+        }
+        return response()->download(storage_path('Csv/'.$name));
+    }
+    public function csvMonthly($id, $date)
+    {
+        $ar = [];
+        $properties = Properties::where('property_id', $id)->first();
+        $units = Unit::where('property_id', $id)->get();
+        foreach($units as $unit)
+        {
+            $listings = Listing::where('unit_id', $unit->unit_id)->get();
+            foreach($listings as $listing)
+            {
+                $bookings = Bookings::where('listing_id', $listing->listing_id)
+                ->where('booking_check_in', 'like', '%'.$date.'%')->get();
+                foreach($bookings as $booking)
+                {
+                    $profiles = Profiles::where('profile_id', $listing->profile_id)->first();
+                    $collect = collect();
+                    $collect = $collect->merge($booking);
+                    $collect = $collect->merge($profiles);
+                    array_push($ar,$collect);
+                }
+            }
+        }
+        try {
+            $name = $properties->property_name.'-'.$date.'.csv';
+            $wr = Writer::createFromPath(storage_path('Csv/'.$name), 'w+');
+            $wr->insertOne(['Booking Id',
+                            'Guest Name',
+                            'Booking Status',
+                            'Check In',
+                            'Check Out',
+                            'Guest Number',
+                            'Earned',
+                            'Currency',
+                            'Source',
+                            'Conversation Url',
+                            'Profile',
+                            'Notes']);
+            foreach($ar as $arr)
+            {
+                $notes = Notes::where('booking_id', $arr['booking_id'])->get();
+                $strnotes = '';
+                foreach ($notes as $note)
+                {
+                    $strnotes = $strnotes.$note['note_text'].'\n';
+                }
+                $bc = $arr['booking_currency'];
+                if($bc == 1)
+                {
+                    $bc = 'IDR';
+                }else if ($bc == 2)
+                {
+                    $bc = 'USD';
+                }else if ($bc == 3)
+                {
+                    $bc = 'EUR';
+                }
+                $bs = $arr['booking_source'];
+                if($bs == 1)
+                {
+                    $bs = 'AirBnb';
+                }else if ($bs == 2)
+                {
+                    $bs = 'Traveloka';
+                }else if ($bs == 3)
+                {
+                    $bs = 'Booking.com';
+                }else if ($bs == 4)
+                {
+                    $bs = 'Agoda';
+                }else if ($bs == 5)
+                {
+                    $bs = 'Direct';
+                }
+                
+                $tmp = [$arr['booking_id'],
+                $arr['booking_guest_name'],
+                $arr['booking_status'],
+                $arr['booking_check_in'],
+                $arr['booking_check_out'],
+                $arr['booking_guest_number'],
+                $arr['booking_earned'],
+                $bc,
+                $bs,
+                $arr['booking_conversation_url'],
+                $arr['profile_name'],
+                $strnotes];
                 $wr->insertOne($tmp);
             }
         } catch (CannotInsertRecord $e) {
