@@ -7,7 +7,7 @@ import {columns,title,mode} from './config.js';
 import MyTable from '../../../../bvComponents/Table/MyTable';
 import actions from './redux/user/actions';
 
-const {renderDataUser}=actions;
+const {renderDataUser,onPageChange}=actions;
 class User extends Component {
   componentDidMount(){
       this.props.renderDataUser();
@@ -22,6 +22,9 @@ class User extends Component {
                     columns={columns}
                     dataList={this.props.User.results}
                     mode={mode}
+                    total={this.props.User.total}
+                    onPageChange={this.props.onPageChange}
+                    page={this.props.User.page}
                     />
                 </LayoutContent>
             </LayoutContentWrapper>
@@ -38,5 +41,5 @@ function mapStateToProps(state){
 }
 export default connect(
   mapStateToProps,
-  {renderDataUser}
+  {renderDataUser,onPageChange}
 )(User);

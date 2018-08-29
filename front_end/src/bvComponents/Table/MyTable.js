@@ -170,6 +170,8 @@ class MyTable extends Component {
       );
     }else if(this.props.mode==='listing' || this.props.mode==='unit' ||this.props.mode==='property' ){
       this.props.onPageChange(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10,pagination.current);
+    }else if(this.props.mode==='user'){
+      this.props.onPageChange(pagination.current);
     }
   };
 

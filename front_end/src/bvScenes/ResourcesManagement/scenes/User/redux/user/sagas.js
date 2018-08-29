@@ -4,8 +4,8 @@ import { stringify } from 'querystring';
 
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/';
 
-const onRenderRequestUser = async () =>
-    await fetch(`${URL_AREA}user`)
+const onRenderRequestUser = async (param) =>
+    await fetch(`${URL_AREA}user?page=${param}`)
         .then(res=>res.json())
         .then(res=>res)
         .catch(error => error);
@@ -45,11 +45,12 @@ const onResetPasswordRequestUser = async (param) =>
     }).then(res=>res.json())
     .then(res=>res)
     .catch(error => error);
-function* renderRequestUser({}){
+function* renderRequestUser({payload}){
     try{
-        const renderResult = yield call(onRenderRequestUser);
+        const param = payload.page;
+        const renderResult = yield call(onRenderRequestUser,param);
         if(renderResult.data){
-            yield put(actions.renderDataUserSuccess(renderResult.data));
+            yield put(actions.renderDataUserSuccess(renderResult.data,renderResult.total,renderResult.current_page));
         }
     }catch(error){
         console.log("saga error");

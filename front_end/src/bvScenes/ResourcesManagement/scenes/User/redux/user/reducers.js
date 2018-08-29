@@ -2,6 +2,8 @@ import actions from './actions';
 
 const initState={
     results:[],
+    total:0,
+    page:1
 }
 
 export default function reducer(state = initState,action){
@@ -13,7 +15,9 @@ export default function reducer(state = initState,action){
         case actions.RENDER_DATA_USER_SUCCESS:
             return{
                 ...state,
-                results:action.results
+                results:action.results,
+                total:action.total,
+                page:action.page
             };
         case actions.ADD_USER:
             return{
