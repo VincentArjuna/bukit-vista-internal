@@ -16,7 +16,7 @@ import MessageContent from "../../../../../../../bvComponents/Message/message.st
 const FormItem = Form.Item;
 const Option = SelectOption;
 
-const {renderDataEmployee,editBookingEmployee} = aEmployee;
+const {renderDataEmployee,editBookingEmployee,pageCountEmployee} = aEmployee;
 const {renderDataBc,addBooking}=aBooking;
 const {renderDataUnit}=aUnit;
 const{renderDataListing}=aListing;
@@ -256,7 +256,7 @@ class AddBooking extends Component {
   componentDidMount(){
     this.props.renderDataBc(0,0,0,0);
     this.props.renderDataListing(0,null);
-    this.props.renderDataEmployee();
+    this.props.pageCountEmployee();
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.Current.message === "success"){
@@ -279,7 +279,7 @@ class AddBooking extends Component {
           onCreate={this.handleCreate}
           dataList={this.props.Current.results}
           index={this.props.index}
-          employees={this.props.Employee.results}
+          employees={this.props.Employee.totalData}
           Unit={this.props.Unit}
           renderDataUnit={this.props.renderDataUnit}
           Listing={this.props.Listing}
@@ -304,5 +304,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee ,editBookingEmployee,renderDataBc,renderDataListing,addBooking,renderDataUnit}
+  { renderDataEmployee ,editBookingEmployee,renderDataBc,renderDataListing,addBooking,renderDataUnit,pageCountEmployee}
 )(AddBooking);

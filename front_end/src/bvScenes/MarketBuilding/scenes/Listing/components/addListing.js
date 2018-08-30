@@ -9,6 +9,7 @@ import Spin from '../../../../../bvComponents/Uielements/spin';
 import aUnit from '../../../../../bvScenes/MarketBuilding/scenes/Unit/redux/unit/actions';
 import aEmployee from '../../../../ResourcesManagement/scenes/Employee/redux/employee/actions';
 import aListing from '../../../../../bvScenes/MarketBuilding/scenes/Listing/redux/listing/actions';
+import aProfile from '../../../../ResourcesManagement/scenes/Profile/redux/profile/actions';
 import { message } from 'antd';
 import MessageContent from "../../../../../bvComponents/Message/message.style";
 
@@ -18,6 +19,7 @@ const Option = SelectOption;
 const {renderDataEmployee} = aEmployee;
 const {renderDataUnit}=aUnit;
 const {addListing}=aListing;
+const {renderDataProfile,pageCountProfile}=aProfile;
 
 const CollectionCreateForm = Form.create()(
 class extends React.Component {
@@ -160,27 +162,9 @@ class extends React.Component {
                     optionFilterProp="children"
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} 
                     >
-                        <Option value="PA0000">NULL</Option>
-                        <Option value="PA0001">W</Option>
-                        <Option value="PA0002">BV</Option>
-                        <Option value="PA0003">BC</Option>
-                        <Option value="PA0004">HA</Option>
-                        <Option value="PA0005">TL</Option>
-                        <Option value="PA0006">KK</Option>
-                        <Option value="PA0007">KW</Option>
-                        <Option value="PA0008">BW</Option>
-                        <Option value="PA0009">BSW</Option>
-                        <Option value="PA0010">JW</Option>
-                        <Option value="PA0011">J</Option>
-                        <Option value="PA0012">DJ</Option>
-                        <Option value="PA0013">SH</Option>
-                        <Option value="PA0014">G</Option>
-                        <Option value="PA0015">BS</Option>
-                        <Option value="PA0016">A</Option>
-                        <Option value="PA0017">Gb</Option>
-                        <Option value="PA0018">Agoda</Option>
-                        <Option value="PA0019">T</Option>
-                        <Option value="PA0020">TW</Option>
+                        {this.props.profile.map(profile=>
+                            <Option value={profile.profile_id}>{profile.profile_name}</Option>
+                        )}                       
                     </Select>
                 )}
             </FormItem>  
@@ -253,7 +237,7 @@ class AddListing extends Component {
   }
   componentDidMount(){
     this.props.renderDataEmployee();
-
+    this.props.pageCountProfile();
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.Listing.notificationMessage === "success"){
@@ -277,6 +261,7 @@ class AddListing extends Component {
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
           employees={this.props.Employee.results}
+          profile={this.props.Profile.totalData}
           renderDataUnit={this.props.renderDataUnit}
           Unit={this.props.Unit}
         />
@@ -289,10 +274,11 @@ function mapStateToProps(state) {
   return { 
     Listing:state.listing,
     Unit:state.unit,
-    Employee:state.employee
+    Employee:state.employee,
+    Profile:state.profile
   };
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee ,renderDataUnit,addListing}
+  { renderDataEmployee ,renderDataUnit,addListing,renderDataProfile,pageCountProfile}
 )(AddListing);

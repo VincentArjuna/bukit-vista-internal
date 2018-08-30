@@ -2,9 +2,14 @@ import actions from './actions';
 
 const initState={
     results:[],
+    total:0,
+    page:1,
     hostResponse:"",
     driverResponse:"",
-    verifierResponse:""
+    verifierResponse:"",
+    totalPage:0,
+    totalData:[],
+    rendered:false
 }
 
 export default function reducer(state = initState,action){
@@ -16,7 +21,9 @@ export default function reducer(state = initState,action){
         case actions.RENDER_DATA_EMPLOYEE_SUCCESS:
             return{
                 ...state,
-                results:action.results
+                results:action.results,
+                total:action.total,
+                page:action.page
             };
         case actions.EDIT_BOOKING_EMPLOYEE:
             return{
@@ -51,6 +58,25 @@ export default function reducer(state = initState,action){
         case actions.EDIT_EMPLOYEE:
             return{
                 ...state,
+            };
+        case actions.PAGE_COUNT_EMPLOYEE:
+            
+            return{
+                ...state,
+                totalData:[],
+                rendered:false
+            };
+        case actions.PAGE_COUNT_EMPLOYEE_SUCCESS:
+            console.log("employee :");
+            console.log(action.totalData);
+            return{
+                ...state,
+                totalData:state.totalData.concat(action.totalData),
+            }
+        case actions.DATA_EMPLOYEE_RENDERED:
+            return{
+                ...state,
+                rendered:true
             }
         default:
             return state;

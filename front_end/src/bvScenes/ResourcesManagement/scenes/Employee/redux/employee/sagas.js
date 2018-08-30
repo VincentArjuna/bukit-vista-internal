@@ -4,8 +4,8 @@ import { stringify } from 'querystring';
 
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/';
 
-const onRenderRequestEmployee = async () =>
-    await fetch(`${URL_AREA}employee`)
+const onRenderRequestEmployee = async (param) =>
+    await fetch(`${URL_AREA}employee?page=${param}`)
         .then(res=>res.json())
         .then(res=>res)
         .catch(error => error);
@@ -82,13 +82,14 @@ function* editRequestBookingEmployee({payload}){
         console.log("saga error");
     }
 }
-function* renderRequestEmployee({}){
+function* renderRequestEmployee({payload}){
     try{
-        const renderResult = yield call(onRenderRequestEmployee);
+        const param = payload.page;
+        const renderResult = yield call(onRenderRequestEmployee,param);
         
         if(renderResult.data){
             console.log(renderResult.last_page);
-            yield put(actions.renderDataEmployeeSuccess(renderResult.data));
+            yield put(actions.renderDataEmployeeSuccess(renderResult.data,renderResult.total,renderResult.current_page));
         }
     }catch(error){
         console.log("saga error");
@@ -123,6 +124,30 @@ function* editRequestEmployee({payload}){
         console.log("saga edit employee error");
     }
 }
+function* pageCountRequestEmployee({payload}){
+    try{
+       
+        const page =1;
+        const renderResult = yield call(onRenderRequestEmployee,page);
+        if(renderResult.data){
+            console.log("page count employee");
+            if(renderResult.last_page>0){
+                console.log(renderResult.last_page);
+                const total = renderResult.last_page;
+                let i;
+                for (i = 0; i <total; i++) { 
+                    let pg = i+1;
+                    let result = yield call(onRenderRequestEmployee,pg);
+                    console.log(result.data);
+                    yield put(actions.pageCountEmployeeSuccess(result.data));
+                }
+                yield put(actions.dataEmployeeRendered());
+            }
+        }
+    }catch(error){
+        console.log("saga error page count "+error);
+    }
+}
 
 
 
@@ -131,4 +156,5 @@ export default function* rootSaga() {
     yield all([takeLatest(actions.EDIT_BOOKING_EMPLOYEE,editRequestBookingEmployee)]);
     yield all([takeLatest(actions.ADD_EMPLOYEE,addRequestEmployee)]);
     yield all([takeLatest(actions.EDIT_EMPLOYEE,editRequestEmployee)]);
+    yield all([takeLatest(actions.PAGE_COUNT_EMPLOYEE,pageCountRequestEmployee)]);
 }

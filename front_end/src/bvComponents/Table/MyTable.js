@@ -170,7 +170,7 @@ class MyTable extends Component {
       );
     }else if(this.props.mode==='listing' || this.props.mode==='unit' ||this.props.mode==='property' ){
       this.props.onPageChange(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10,pagination.current);
-    }else if(this.props.mode==='user'){
+    }else if(this.props.mode==='user'||this.props.mode==='profile'||this.props.mode==="employee"){
       this.props.onPageChange(pagination.current);
     }
   };

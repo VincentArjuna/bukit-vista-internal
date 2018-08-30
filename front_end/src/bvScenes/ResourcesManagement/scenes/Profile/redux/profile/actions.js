@@ -4,13 +4,22 @@ const actions={
     EDIT_PROFILE:'EDIT_PROFILE',
     EDIT_PROFILE_RESPONSE:'EDIT_PROFILE_RESPONSE',
     ADD_PROFILE:'ADD_PROFILE',
-
+    PAGE_COUNT:'PAGE_COUNT',
+    PAGE_COUNT_SUCCESS:'PAGE_COUNT_SUCCESS',
+    DATA_PROFILE_RENDERED:'DATA_PROFILE_RENDERED',
     renderDataProfile:()=>({
-        type: actions.RENDER_DATA_PROFILE
+        type:actions.RENDER_DATA_PROFILE,
+        payload:{page:1}
     }),
-    renderDataProfileSuccess:results=>({
+    onPageChange:(page)=>({
+        type:actions.RENDER_DATA_PROFILE,
+        payload:{page}
+    }),
+    renderDataProfileSuccess:(results,total,page)=>({
         type: actions.RENDER_DATA_PROFILE_SUCCESS,
-        results
+        results,
+        total,
+        page
     }),
     addProfile:(name,email)=>({
         type:actions.ADD_PROFILE,
@@ -19,6 +28,17 @@ const actions={
     editProfile:(name,email,id)=>({
         type:actions.EDIT_PROFILE,
         payload:{name,email,id}
+    }),
+    pageCountProfile:()=>({
+        type:actions.PAGE_COUNT,
+        payload:{page:1}
+    }),
+    pageCountProfileSuccess:(totalData)=>({
+        type:actions.PAGE_COUNT_SUCCESS,
+        totalData,
+    }),
+    dataProfileRendered:()=>({
+        type:actions.DATA_PROFILE_RENDERED,
     })
 }
 

@@ -9,7 +9,7 @@ import actionEmployee from '../../../../../../bvScenes/ResourcesManagement/scene
 import actionBooking from '../../../../../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 import actionArrival from '../../../../../Operation/scenes/ArrivalList/components/ArrivalTable/redux/arrivalTable/actions';
 
-const {renderDataEmployee,editBookingEmployee} = actionEmployee;
+const {renderDataEmployee,editBookingEmployee,pageCountEmployee} = actionEmployee;
 const {editBooking}=actionBooking;
 const {renderData}=actionArrival;
 
@@ -161,7 +161,7 @@ class EditCell extends Component {
 
   showModal = () => {
     this.setState({ visible: true });
-    this.props.renderDataEmployee();
+
   }
 
   handleCancel = () => {
@@ -233,6 +233,7 @@ class EditCell extends Component {
     this.formRef = formRef;
   }
   componentDidMount(){
+    this.props.pageCountEmployee();
   }
   componentWillReceiveProps(nextProps){
     console.log("response log " +nextProps.Current.response);
@@ -251,7 +252,7 @@ class EditCell extends Component {
           onCreate={this.handleCreate}
           dataList={this.props.dataList}
           index={this.props.index}
-          employees={this.props.Employee.results}
+          employees={this.props.Employee.totalData}
         />
       </div>
     );
@@ -269,5 +270,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  { editBooking,editBookingEmployee,renderDataEmployee,renderData}
+  { editBooking,editBookingEmployee,renderDataEmployee,renderData,pageCountEmployee}
 )(EditCell);
