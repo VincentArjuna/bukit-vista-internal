@@ -16,7 +16,7 @@ import MessageContent from "../../../../../bvComponents/Message/message.style";
 const FormItem = Form.Item;
 const Option = SelectOption;
 
-const {renderDataEmployee} = aEmployee;
+const {renderDataEmployee,pageCountEmployee} = aEmployee;
 const {renderDataProfile,pageCountProfile}=aProfile;
 const {renderDataUnit}=aUnit;
 const {editListing,onPageChange}=aListing;
@@ -256,7 +256,7 @@ class EditListing extends Component {
     this.formRef = formRef;
   }
   componentDidMount(){
-    this.props.renderDataEmployee();
+    this.props.pageCountEmployee();
     this.props.pageCountProfile();
     console.log("total page " + this.props.Profile.totalPage);
   }
@@ -275,13 +275,13 @@ class EditListing extends Component {
   render() {
         return (
         <div>
-            <Button type="primary"  onClick={this.showModal}>Edit Listing</Button>
+            <Button type="primary" loading={this.props.Employee.rendered?false:true} onClick={this.showModal}>Edit Listing</Button>
             <CollectionCreateForm
             wrappedComponentRef={this.saveFormRef}
             visible={this.state.visible}
             onCancel={this.handleCancel}
             onCreate={this.handleCreate}
-            employees={this.props.Employee.results}
+            employees={this.props.Employee.totalData}
             profile={this.props.Profile.totalData}
             renderDataUnit={this.props.renderDataUnit}
             dataList={this.props.dataList}
@@ -304,5 +304,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee ,renderDataUnit,editListing,onPageChange,renderDataProfile,pageCountProfile}
+  { renderDataEmployee ,renderDataUnit,editListing,onPageChange,renderDataProfile,pageCountProfile,pageCountEmployee}
 )(EditListing);

@@ -16,7 +16,7 @@ import MessageContent from "../../../../../bvComponents/Message/message.style";
 const FormItem = Form.Item;
 const Option = SelectOption;
 
-const {renderDataEmployee} = aEmployee;
+const {renderDataEmployee,pageCountEmployee} = aEmployee;
 const {renderDataUnit}=aUnit;
 const {addListing}=aListing;
 const {renderDataProfile,pageCountProfile}=aProfile;
@@ -236,7 +236,12 @@ class AddListing extends Component {
     this.formRef = formRef;
   }
   componentDidMount(){
-    this.props.renderDataEmployee();
+    this.props.pageCountEmployee();
+    this.props.pageCountProfile();
+  }
+
+  componentWillMount(){
+    this.props.pageCountEmployee();
     this.props.pageCountProfile();
   }
   componentWillReceiveProps(nextProps){
@@ -254,13 +259,13 @@ class AddListing extends Component {
   render() {
     return (
       <div>
-        <Button type="primary"  onClick={this.showModal}>Add Listing</Button>
+        <Button type="primary"  loading={this.props.Employee.rendered?false:true} onClick={this.showModal}>Add Listing</Button>
         <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
-          employees={this.props.Employee.results}
+          employees={this.props.Employee.totalData}
           profile={this.props.Profile.totalData}
           renderDataUnit={this.props.renderDataUnit}
           Unit={this.props.Unit}
@@ -280,5 +285,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee ,renderDataUnit,addListing,renderDataProfile,pageCountProfile}
+  { renderDataEmployee ,renderDataUnit,addListing,renderDataProfile,pageCountProfile,pageCountEmployee}
 )(AddListing);

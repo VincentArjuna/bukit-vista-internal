@@ -11,7 +11,7 @@ import MessageContent from "../../../../../bvComponents/Message/message.style";
 const FormItem = Form.Item;
 const Option = SelectOption;
 
-const {renderDataEmployee} = aEmployee;
+const {renderDataEmployee,pageCountEmployee} = aEmployee;
 const {addProperty}=aProperty;
 
 const CollectionCreateForm = Form.create()(
@@ -247,7 +247,7 @@ class AddProperty extends Component {
     this.formRef = formRef;
   }
   componentDidMount(){
-    this.props.renderDataEmployee();
+    this.props.pageCountEmployee();
 
   }
   componentWillReceiveProps(nextProps){
@@ -263,14 +263,14 @@ class AddProperty extends Component {
   render() {
     return (
       <div>
-        <Button type="primary"  onClick={this.showModal}>Add Property</Button>
+        <Button type="primary" loading={this.props.Employee.rendered?false:true} onClick={this.showModal}>Add Property</Button>
         <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
           index={this.props.index}
-          employees={this.props.Employee.results}
+          employees={this.props.Employee.totalData}
         />
       </div>
     );
@@ -285,5 +285,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee,addProperty}
+  { renderDataEmployee,addProperty,pageCountEmployee}
 )(AddProperty);

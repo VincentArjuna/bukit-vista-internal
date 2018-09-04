@@ -12,7 +12,7 @@ import Box from '../../../../../bvComponents/Utility/box';
 const FormItem = Form.Item;
 const Option = SelectOption;
 
-const {renderDataEmployee} = aEmployee;
+const {renderDataEmployee,pageCountEmployee} = aEmployee;
 const {editProperty,onPageChange}=aProperty;
 
 const CollectionCreateForm = Form.create()(
@@ -265,7 +265,7 @@ class EditProperty extends Component {
     this.formRef = formRef;
   }
   componentDidMount(){
-    this.props.renderDataEmployee();
+    this.props.pageCountEmployee();
 
   }
   componentWillReceiveProps(nextProps){
@@ -287,7 +287,7 @@ class EditProperty extends Component {
   render() {
     return (
       <div>
-        <Button type="primary"  onClick={this.showModal}>Edit Property</Button>
+        <Button type="primary" loading={this.props.Employee.rendered?false:true} onClick={this.showModal}>Edit Property</Button>
         <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
@@ -295,7 +295,7 @@ class EditProperty extends Component {
           onCreate={this.handleCreate}
           index={this.props.index}
           dataList={this.props.dataList}
-          employees={this.props.Employee.results}
+          employees={this.props.Employee.totalData}
         />
       </div>
     );
@@ -311,5 +311,5 @@ function mapStateToProps(state) {
 }
 export default connect(
   mapStateToProps,
-  { renderDataEmployee,editProperty,onPageChange}
+  { renderDataEmployee,editProperty,onPageChange,pageCountEmployee}
 )(EditProperty);
