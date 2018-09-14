@@ -3,7 +3,7 @@ import actions from './actions';
 import { stringify } from 'querystring';
 
 const URL_AREA = 'https://internal.bukitvista.com/tools/api/';
-
+//ini contoh perubahan
 const onRenderRequestEmployee = async (param) =>
     await fetch(`${URL_AREA}employee?page=${param}`)
         .then(res=>res.json())
