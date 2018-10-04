@@ -33,7 +33,6 @@ class extends React.Component {
             valueListing:null,
         }
     }
-
     handleChangeUnit=(value)=>{
         this.setState({
             valueUnit:value,
@@ -141,7 +140,7 @@ class extends React.Component {
                 {getFieldDecorator(
                     'unit_id', {
                         rules: [{ required: true, message: 'This is required' }],
-                        initialValue:this.props.dataList[this.props.index].unit_id
+                        initialValue:this.props.dataList[this.props.index].unit_name
                     }
                 )(
                     <Select
@@ -261,7 +260,7 @@ class EditListing extends Component {
     console.log("total page " + this.props.Profile.totalPage);
   }
   componentWillReceiveProps(nextProps){
-    if(nextProps.Profile.totalPage>3);
+    //if(nextProps.Profile.totalPage>3);
     if(nextProps.Listing.notificationMessage === "success"){
         console.log("success kepanggil")
         message.success(<MessageContent>Listing successfully edited!</MessageContent>,3);

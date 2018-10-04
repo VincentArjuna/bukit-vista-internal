@@ -183,7 +183,7 @@ class extends React.Component {
                         </Select>
                     )}
                 </FormItem>
-                <FormItem label="Added By">
+                <FormItem label="Market Builder">
                     {getFieldDecorator(
                         'employee', {
                             rules: [{ required: true, message: 'This is required' }],

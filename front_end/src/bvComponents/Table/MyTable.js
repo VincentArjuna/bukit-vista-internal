@@ -172,6 +172,10 @@ class MyTable extends Component {
       this.props.onPageChange(this.props.Searchbar.filterType,this.props.Searchbar.filterer,10,pagination.current);
     }else if(this.props.mode==='user'||this.props.mode==='profile'||this.props.mode==="employee"){
       this.props.onPageChange(pagination.current);
+    }else if(this.props.mode==='monthlybooking'){
+      this.props.onPageChange(this.props.dateMonthly,this.props.propertyId,pagination.current);
+    }else if(this.props.mode==='propertyunit'){
+      this.props.onPageChange(this.props.filterType,this.props.propertyId,10,pagination.current);
     }
   };
 

@@ -179,7 +179,7 @@ class extends React.Component {
                         </Select>
                     )}
                 </FormItem>
-                <FormItem label="Added By">
+                <FormItem label="Market Builder">
                     {getFieldDecorator(
                         'employee', {
                             rules: [{ required: true, message: 'This is required' }]
@@ -234,12 +234,12 @@ class AddProperty extends Component {
           values["proximity"],
           values["life_support"],
           values["service"],
-          values["owner_group_link"],
+          (values["owner_group_link"]==null||values["owner_group_link"]==undefined?"":values["owner_group_link"]),
           values["area"],
           values["employee"]
-      )
+      );
       form.resetFields();
-      this.setState({ visible: false });;
+      this.setState({ visible: false });
     });
   }
 

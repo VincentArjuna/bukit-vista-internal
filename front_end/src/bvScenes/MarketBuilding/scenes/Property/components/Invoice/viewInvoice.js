@@ -5,17 +5,22 @@ import moment from 'moment';
 import Button from '../../../../../../bvComponents/Uielements/button';
 import LayoutContent from "../../../../../../bvComponents/Utility/layoutContent";
 import { ViewTable } from '../Table/invoiceTable';
+import MyTable from '../../../../../../bvComponents/Table/MyTable';
 import InvoicePageWrapper from './singleInvoice.style';
 import {columnsPropertyUnit} from '../../../Unit/config';
+import {choices} from '../../config';
+import {areas} from '../../../../../Operation/scenes/ArrivalList/config';
 import {columnsPropertyBooking} from '../../../../../../bvScenes/Operation/scenes/Booking/scenes/Current/config';
 import aUnit from '../../../Unit/redux/unit/actions';
+import aEmployee from '../../../../../ResourcesManagement/scenes/Employee/redux/employee/actions';
 import aBooking from '../../../../../../bvScenes/Operation/scenes/Booking/scenes/Current/redux/bookingCurrent/actions';
 import AddUnit from '../../../../../../bvScenes/MarketBuilding/scenes/Unit/components/addUnit';
 import EditProperty from '../editProperty';
 
 const {MonthPicker}=DatePicker;
-const {renderDataUnit}=aUnit;
-const {renderDataMonthlyBc,downloadCsvMonthly}=aBooking;
+const {renderDataUnit,onPageChange}=aUnit;
+const {pageCountEmployee}= aEmployee;
+const {renderDataMonthlyBc,downloadCsvMonthly,onPageChangeMonthly}=aBooking;
 class ViewInvoice extends Component {
   constructor(props){
     super(props);
@@ -27,13 +32,21 @@ class ViewInvoice extends Component {
 
   }
   componentDidMount(){
+    console.log("ok");
     this.setState({
       date:moment().format('YYYY-MM')
     });
     this.props.renderDataUnit(3,this.props.dataList[this.props.index].property_id,10)
     this.props.renderDataMonthlyBc(moment().format('YYYY-MM').toString(),this.props.dataList[this.props.index].property_id);
-
+    this.props.pageCountEmployee();
   }
+
+  componentWillMount(){
+    this.props.renderDataUnit(3,this.props.dataList[this.props.index].property_id,10)
+    this.props.renderDataMonthlyBc(moment().format('YYYY-MM').toString(),this.props.dataList[this.props.index].property_id);
+    this.props.pageCountEmployee();
+  }
+
   onChange=(date,dateString)=>{
     console.log(dateString);
     this.setState({
@@ -44,6 +57,24 @@ class ViewInvoice extends Component {
       date:dateString
     });
   }
+
+  //converter
+  convertArea=(areaId)=>{
+    let areaName="";
+    areas.map((area,i)=>{area.code == areaId ? areaName=area.name:null});
+    return areaName;
+  }
+  convertEmployee=(employeeId)=>{
+    let employeeName="";
+    this.props.Employee.totalData.map((employee,i)=>{employee.employee_id == employeeId? employeeName=employee.name:null});
+    return employeeName;
+  }
+  convertStatus=(type,propStatus)=>{
+    let status = choices[type];
+    return status[propStatus];
+  }
+
+  //end converter
   render() {
     const { dataList,index } = this.props;
     const property=dataList[index];
@@ -67,15 +98,15 @@ class ViewInvoice extends Component {
                   </p>
                   <p>
                     <span className="orderStatusSpan"><b>Area : </b></span>
-                    <span className="orderStatus">{property.area_id}</span>
+                    <span className="orderStatus">{this.convertArea(property.area_id)}</span>
                   </p>
                   <p>
                     <span className="orderStatusSpan"><b>Status : </b></span>
-                    <span className="orderStatus">{property.property_status}</span>
+                    <span className="orderStatus">{this.convertStatus(1,property.property_status)}</span>
                   </p>
                   <p>
                     <span className="orderStatusSpan"><b>Employee : </b></span>
-                    <span className="orderStatus">{property.employee_id}</span>
+                    <span className="orderStatus">{this.convertEmployee(property.employee_id)}</span>
                   </p>
                   <p>
                     <span className="orderStatusSpan"><b>Owner Group Link : </b></span>
@@ -86,27 +117,27 @@ class ViewInvoice extends Component {
                 <h3 className="Title">Facilities</h3>
                   <p>
                     <span className="orderStatusSpan"><b>Type : </b></span>
-                    <span className="orderStatus">{property.property_type}</span>
+                    <span className="orderStatus">{this.convertStatus(0,property.property_type)}</span>
                   </p>
                   <p>
                     <span className="orderStatusSpan"><b>Package : </b></span>
-                    <span className="orderStatus">{property.property_package}</span>
+                    <span className="orderStatus">{this.convertStatus(2,property.property_package)}</span>
                   </p>
                   <p>
                     <span className="orderStatusSpan"><b>Design : </b></span>
-                    <span className="orderStatus">{property.property_design}</span>
+                    <span className="orderStatus">{this.convertStatus(3,property.property_design)}</span>
                   </p>
                   <p>
                     <span className="orderStatusSpan"><b>Proximity : </b></span>
-                    <span className="orderStatus">{property.property_proximity}</span>
+                    <span className="orderStatus">{this.convertStatus(4,property.property_proximity)}</span>
                   </p>
                   <p>
                     <span className="orderStatusSpan"><b>Life Support : </b></span>
-                    <span className="orderStatus">{property.property_life_support}</span>
+                    <span className="orderStatus">{this.convertStatus(5,property.property_life_support)}</span>
                   </p>
                   <p>
                     <span className="orderStatusSpan"><b>Property Service : </b></span>
-                    <span className="orderStatus">{property.property_service}</span>
+                    <span className="orderStatus">{this.convertStatus(6,property.property_service)}</span>
                   </p>
                 </div>
               </div>
@@ -117,7 +148,17 @@ class ViewInvoice extends Component {
                 </div>
                 <div style={{paddingTop:"30px"}}>
                   <LayoutContent>
-                    <ViewTable page={this.props.Unit.page} columns={columnsPropertyUnit} dataList={this.props.Unit.results} total={this.props.Unit.total}/>
+                    {/*<ViewTable page={this.props.Unit.page} columns={columnsPropertyUnit} dataList={this.props.Unit.results} total={this.props.Unit.total}/>*/}
+                    <MyTable 
+                      columns={columnsPropertyUnit}
+                      dataList={this.props.Unit.results}
+                      total={this.props.Unit.total}
+                      mode={"propertyunit"}
+                      onPageChange={this.props.onPageChange}
+                      page={this.props.Unit.page}
+                      propertyId={property.property_id}
+                      filterType={3}
+                    />
                   </LayoutContent>
                 </div>
               </div>
@@ -131,7 +172,16 @@ class ViewInvoice extends Component {
                 </div>
                 <div style={{paddingTop:"30px"}}>
                   <LayoutContent>
-                    <ViewTable page={this.props.Booking.page} columns={columnsPropertyBooking} dataList={this.props.Booking.results} total={this.props.Booking.total}/>
+                    <MyTable 
+                      columns={columnsPropertyBooking}
+                      dataList={this.props.Booking.results}
+                      total={this.props.Booking.total}
+                      mode={"monthlybooking"}
+                      onPageChange={this.props.onPageChangeMonthly}
+                      page={this.props.Booking.page}
+                      propertyId={property.property_id}
+                      dateMonthly={this.state.date}
+                    />
                   </LayoutContent>
                 </div>
               </div>
@@ -145,7 +195,8 @@ function mapStateToProps(state){
   return{
     Unit:state.unit,
     Property:state.property,
-    Booking:state.bookingCurrent
+    Booking:state.bookingCurrent,
+    Employee:state.employee
   }
 }
-export default connect(mapStateToProps,{renderDataUnit,renderDataMonthlyBc,downloadCsvMonthly})(ViewInvoice);
+export default connect(mapStateToProps,{onPageChange,onPageChangeMonthly,pageCountEmployee,renderDataUnit,renderDataMonthlyBc,downloadCsvMonthly})(ViewInvoice);

@@ -41,6 +41,11 @@ const actions={
         type: actions.RENDER_DATA_BC,
         payload:{date,filterer,date_type,filter_type,page}
     }),
+    //monthly
+    onPageChangeMonthly:(date,propertyId,page)=>({
+        type:actions.RENDER_DATA_MONTHLY_BC,
+        payload:{date,propertyId,page}
+    }),
     addBooking:(check_in,check_out,comm,currency,earned,eta,name,number,phone,booking_id,listing_id,source,conversation)=>({
         type:actions.ADD_BOOKING,
         payload:{check_in,check_out,comm,currency,earned,eta,name,number,phone,booking_id,listing_id,source,conversation}

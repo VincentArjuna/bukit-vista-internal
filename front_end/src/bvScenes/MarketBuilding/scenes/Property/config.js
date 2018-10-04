@@ -111,18 +111,18 @@ import {
       },
     ];
 const choices=[
-    {
+    {//type : 0
         '1':'House',
         '2':'Villa',
         '3':'Apartment',
         '4':'Guesthouse',
         '5':'Resort'
     },
-    {
+    {//status :1
         '1':'Partner',
         '0':'Non-Partner',
     },
-    {
+    {//package :2
         '1':'Partnership',
         '2':'Exclusive',
         '3':'Allocation',
@@ -130,29 +130,29 @@ const choices=[
         '5':'Negotiable',
         '6':'Non-Negotiable'
     },
-    {
+    {//design :3
         '1': 'Basic',
         '2': 'Adventurous',
         '3': 'Unique',
         '4': 'Modern Comfort',
         '5': 'Luxury',
     },
-    {
+    {//proximity : 4
         '1':'Walking distance to attraction',
         '2':'5-10 minutes drive to attraction',
         '3':'Far from center of attraction',
         '4':'Remote location',
     },
-    {
+    {//life support: 5
         '1': 'Walk to supermarket/restaurant',
         '2': 'Drive to supermarket/restaurant',
         '3': 'No nearby shops',
     },
-    {
+    {//service : 6
         '1':'Onsite Staff',
         '2': 'Self Service'
     }
 ];
 const title= "Property";
 const mode="property";
-export {columns,title,filterTypes,mode};
+export {columns,title,filterTypes,mode,choices};
