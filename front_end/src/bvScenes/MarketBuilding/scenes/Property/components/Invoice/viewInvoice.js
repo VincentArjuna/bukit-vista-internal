@@ -4,7 +4,6 @@ import {DatePicker} from 'antd';
 import moment from 'moment';
 import Button from '../../../../../../bvComponents/Uielements/button';
 import LayoutContent from "../../../../../../bvComponents/Utility/layoutContent";
-import { ViewTable } from '../Table/invoiceTable';
 import MyTable from '../../../../../../bvComponents/Table/MyTable';
 import InvoicePageWrapper from './singleInvoice.style';
 import {columnsPropertyUnit} from '../../../Unit/config';
