@@ -224,6 +224,9 @@ class EditListing extends Component {
         return;
       }
       let date=null;
+      let unitId = this.props.dataList[this.props.index].unit_id;
+      let checkUnitId = values["unit_id"].substring(0,2);
+      checkUnitId == "UN" ? unitId=values["unit_id"]:console.log("unit_id not changed");
       if(values["onboard_date"]!==null){
         date=moment(values["onboard_date"]).format('YYYY-MM-DD').toString()
       }
@@ -236,7 +239,7 @@ class EditListing extends Component {
           (values["acc_owner"]!==undefined?values["acc_owner"]:""),
           (values["acc_bv"]!==undefined?values["acc_bv"]:""),
           values["remark"],
-          values["unit_id"],
+          unitId,
           values["profile_id"],
           values["employee_id"]
       )
@@ -247,7 +250,7 @@ class EditListing extends Component {
         this.props.Listing.page
       );
       form.resetFields();
-      this.setState({ visible: false });;
+      this.setState({ visible: false });
     });
   }
 
