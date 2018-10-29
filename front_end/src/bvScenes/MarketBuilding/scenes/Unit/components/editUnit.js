@@ -195,9 +195,11 @@ class EditUnit extends Component {
         return;
       }
       console.log(values);
+      var inputDate= values["onboard_date"];
+      (inputDate == "Invalid date"?inputDate = "0000-00-00":moment(values["onboard_date"]).format('YYYY-MM-DD').toString());
       this.props.editUnit(
           values["unit_name"],
-          moment(values["onboard_date"]).format('YYYY-MM-DD').toString(),
+          inputDate,
           values["base_price"],
           values["currency"],
           values["capacity"],
