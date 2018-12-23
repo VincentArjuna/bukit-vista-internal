@@ -21,7 +21,7 @@ const {renderDataBc,addBooking}=aBooking;
 const {renderDataUnit}=aUnit;
 const{renderDataListing}=aListing;
 const CollectionCreateForm = Form.create()(
-class extends React.Component {
+    class extends React.Component {
     constructor(props) {
         super(props);
         this.handleSearchUnit=debounce(this.handleSearchUnit,800);

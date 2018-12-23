@@ -86,9 +86,7 @@ export function* loginSuccess() {
 }
 
 export function* loginError() {
-  yield takeEvery(actions.LOGIN_ERROR, function*() {
-    
-  });
+  yield takeEvery(actions.LOGIN_ERROR, function*() {});
 }
 
 export function* logout() {
