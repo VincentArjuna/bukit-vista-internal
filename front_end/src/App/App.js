@@ -6,7 +6,7 @@ import { Debounce } from 'react-throttle';
 import WindowResizeListener from 'react-window-size-listener';
 import { ThemeProvider } from 'styled-components';
 import authAction from '../redux/auth/actions';
-import appActions from '../redux/app/actions';
+import appActions from './redux/app/actions';
 import Sidebar from '../bvComponents/Sidebar/Sidebar';
 import Topbar from '../bvComponents/Topbar/Topbar';
 import AppRouter from './AppRouter';

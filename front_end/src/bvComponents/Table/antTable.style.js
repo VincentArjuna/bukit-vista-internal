@@ -16,7 +16,9 @@ const TableWrapper = styled(Table)`
   .ant-table-body {
     overflow-x: auto;
   }
-
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0px;
+  }
   .ant-table-thead > tr > th {
     color: ${palette('secondary', 2)};
     font-size: 13px;
@@ -44,7 +46,7 @@ const TableWrapper = styled(Table)`
   .ant-table-tbody > tr > td {
     font-size: 12px;
     color: ${palette('text', 3)};
-    border-bottom: 1px solid ${palette('border', 0)};
+    border-bottom: 1px solid ${palette('border', 1)};
 
     a {
       color: ${palette('primary', 0)};
@@ -60,7 +62,7 @@ const TableWrapper = styled(Table)`
   .ant-table-tbody > tr.ant-table-row-hover > td,
   .ant-table-thead > tr:hover > td,
   .ant-table-tbody > tr:hover > td {
-    background-color: transparent;
+    background-color: ${palette('grayscale', 4)};
   }
 
   .ant-table-bordered .ant-table-thead > tr > th {

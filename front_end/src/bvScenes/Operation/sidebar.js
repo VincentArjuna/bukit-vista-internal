@@ -2,13 +2,13 @@ const options = [
     {
       key: 'arrivalList',
       label: 'Arrival List',
-      leftIcon: 'ion-document'
+      leftIcon: 'ion-android-people'
       
     },
     {
       key:'booking',
       label:'Booking',
-      leftIcon:'ion-document',
+      leftIcon:'ion-android-folder',
       children :[
         {
           key: 'current',

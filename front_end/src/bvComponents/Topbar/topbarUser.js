@@ -27,9 +27,6 @@ class TopbarUser extends Component {
   render() {
     const content = (
       <TopbarDropdownWrapper className="isoUserDropdown">
-        <a className="isoDropdownLink">
-          <IntlMessages id="sidebar.feedback" />
-        </a>
         <a className="isoDropdownLink" onClick={this.props.logout}>
           <IntlMessages id="topbar.logout" />
         </a>
@@ -47,7 +44,6 @@ class TopbarUser extends Component {
       >
         <div className="isoImgWrapper">
           <img alt="user" src={userpic} />
-          <span className="userActivity online" />
         </div>
       </Popover>
     );

@@ -1,0 +1,144 @@
+import {
+  LinkCell,
+  TextCell,
+  CopyCell
+} from '../../../../bvComponents/Table/helper/helperCells';
+
+const renderCell = (object, type, key,choice) => {
+    let value = object[key];
+    if(choice !== null){
+        value=choice[value];
+    }
+    switch (type) {
+      case 'LinkCell':
+        return LinkCell(value);
+      case 'TextCell':
+        return TextCell(value);
+      case 'CopyCell':
+        let desc="Copy";
+        value = "https://www.airbnb.com/rooms/"+value;
+        if(value==null){
+            desc="No URL";
+        }
+        return CopyCell(value,desc);
+      default:
+        return TextCell(value);
+    }
+  };
+  
+  const columns=[
+    {
+        title:'Link',
+        key:'listing_id',
+        render: object => renderCell(object, 'CopyCell', 'listing_id',null)
+    },
+    {
+        title:'Name',
+        key:'listing_name',
+        render: object => renderCell(object, 'TextCell', 'listing_name',null)
+    },
+    {
+        title:'Remark',
+        key:'listing_remark',
+        render: object => renderCell(object, 'TextCell', 'listing_remark',choices[2])
+    },
+    {
+        title:'Status',
+        key:'listing_status',
+        render: object => renderCell(object, 'TextCell', 'listing_status',choices[0])
+    },
+    {
+        title:'Instant Book',
+        key:'listing_instant_book',
+        render: object => renderCell(object, 'TextCell', 'listing_instant_book',choices[1])
+    },
+    {
+        title:'Account Owner',
+        key:'listing_account_owner',
+        render: object => renderCell(object, 'TextCell', 'listing_account_owner',null)
+    },
+    {
+        title:'Account BV',
+        key:'listing_account_bv',
+        render: object => renderCell(object, 'TextCell', 'listing_account_bv',null)
+    },
+    {
+        title:'Unit',
+        key:'unit_name',
+        render: object => renderCell(object, 'TextCell', 'unit_name',null)
+    },
+    {
+        title:'Profile',
+        key:'profile_name',
+        render: object => renderCell(object, 'TextCell', 'profile_name',null)
+    },
+];
+
+const filterTypes=[
+    {
+      key:'0',
+      name:'Default'
+    },
+    {
+      key:'1',
+      name:'Listing ID'
+    },
+    {
+      key:'2',
+      name:'Listing Name'
+    },
+    {
+        key:'3',
+        name:'Unit ID'
+    },
+    {
+        key:'4',
+        name:'Unit Name'
+    },
+    {
+        key:'8',
+        name:'Account Owner'
+    },
+    {
+        key:'9',
+        name:'Account BV'
+    },
+    {
+        key:'10',
+        name:'Remark'
+    },
+    {
+        key:'5',
+        name:'Profile Name'
+    },
+    {
+        key:'6',
+        name:'Employee Name'
+    },
+    {
+        key:'7',
+        name:'Onboard Date'
+    },
+
+  ];
+const choices=[
+    {
+        '1':'Listed',
+        '2':'Ready to Launch',
+        '3':'Unlisted'   
+    },
+    {
+        '1':'Yes',
+        '0':'No'
+    },
+    {
+        '1':'New',
+        '2':'VA',
+        '3':'CS',
+        '4':'NP',
+        '5':'Others'
+    }
+];
+const title= "Listing";
+const mode="listing";
+export {columns,title,filterTypes,mode};
