@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Listing;
 use App\Unit;
+use App\Properties;
 use App\Profiles;
 use App\fnPaginate;
 use App\employee;

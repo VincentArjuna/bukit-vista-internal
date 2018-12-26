@@ -15,7 +15,7 @@ class ProfilesController extends Controller
      */
     public function index()
     {
-        $profiles = Profiles::orderBy('profile_name')->paginate(30);
+        $profiles = Profiles::orderBy('profile_name')->paginate(10);
         return $profiles;
     }
 
@@ -30,7 +30,7 @@ class ProfilesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $profiles = new Profiles;
@@ -65,12 +65,12 @@ class ProfilesController extends Controller
     }
     public function showName($id)
     {
-        $profiles = Profiles::where('profile_name', $id)->paginate(20);
+        $profiles = Profiles::where('profile_name', $id)->paginate(10);
         return $profiles;
     }
     public function showDeleted()
     {
-        $profiles = Profiles::onlyTrashed()->latest()->paginate(20);
+        $profiles = Profiles::onlyTrashed()->latest()->paginate(10);
         return $profiles;
     }
 

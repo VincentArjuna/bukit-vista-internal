@@ -24,7 +24,7 @@ class UserController extends Controller
     public function validator(Request $request)
     {
         $users = Users::where('user_email', $request->input('data.user_email'))->first();
-        if($user){
+        if($users){
             if(Hash::check($request->input('data.user_password'),$users->user_password))
             {
                 $users->save();
@@ -39,20 +39,21 @@ class UserController extends Controller
     {
         if($this->validator($request) == false)
         {
-            return respond('Wrong Email/Password',403);
+            return response('Wrong Email/Password',403)
+                    ->header('Content-Type', 'text/plain');
         }else
         {
             $users = Users::where('user_email', $request->input('data.user_email'))->first();
             $users->remember_token = Str::random(60);
             $users->save();
-            return $users->remember_token;
+            return response($users,200);
         }
     }
     public function logout(Request $request)
     {
         $users = Users::where('remember_token', $request->input('data.remember_token'))->first();
         $users->remember_token = NULL;
-        $user->save();
+        $users->save();
         return 'Succeed';
     }
     public function details(Request $request)
@@ -77,7 +78,7 @@ class UserController extends Controller
         $users = Users::where('user_email', $request->input('data.user_email'))->first();
         if($users)
         {
-            return 'User Registered';
+            return 'User Exist';
         }else{
             $users = new Users;
             $users->user_id = $this->newUser_ID();
@@ -124,14 +125,7 @@ class UserController extends Controller
     {
         //
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function resetPassword(Request $request)
     {
         $id = $request->input('data.user_id');
@@ -147,6 +141,17 @@ class UserController extends Controller
         {
             return 'FALSE';
         }
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
     }
 
     /**

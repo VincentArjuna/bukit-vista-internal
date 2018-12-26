@@ -12,6 +12,7 @@ use App\Unit;
 use App\Profiles;
 use App\fnPaginate;
 use App\PaymentBooking;
+use App\Areas;
 use DB;
 use DateTime;
 
@@ -32,11 +33,15 @@ class BookingsController extends Controller
         $listings = Listing::where('listing_id', $bookings->listing_id)->first();
         $units = Unit::where('unit_id', $listings->unit_id)->first();
         $profiles = Profiles::where('profile_id', $listings->profile_id)->first();
+        $properties = Properties::where('property_id', $units->property_id)->first();
+        $areas = Areas::where('area_id', $properties->area_id)->first();
         $merged = collect();
-        $merged =  $merged->merge($bookings);
-        $merged =  $merged->merge($listings);
-        $merged =  $merged->merge($units);
-        $merged =  $merged->merge($profiles);
+        $merged = $merged->merge($bookings);
+        $merged = $merged->merge($listings);
+        $merged = $merged->merge($units);
+        $merged = $merged->merge($profiles);
+        $merged = $merged->merge($properties);
+        $merged = $merged->merge($areas);
         return $merged;
     }
     public function monthlyBookProp(Request $request)
@@ -126,6 +131,23 @@ class BookingsController extends Controller
         // Check that user date is between start & end
         return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
     }
+
+    /**
+     * date_type = 0 --> no type
+     * date_type = 1 --> check_in    
+     * date_type = 2 --> check_out    
+     * date_type = 3 --> received_timestamp   
+     * date_type = 4 --> in house (check_out - check_in)
+     * filter_type = 0 --> no filter
+     * filter_type = 1 --> booking_code
+     * filter_type = 2 --> guest_name
+     * filter_type = 3 --> listing_name
+     * filter_type = 4 --> profile_name
+     * date = the date for date_filter
+     * filterer = the text for filter_type
+     * sort_type = 0 -> no sort
+     * 
+    */
     /**
      * Display the specified resource.
      *
@@ -138,6 +160,7 @@ class BookingsController extends Controller
         $date = $request->input('data.date');
         $filter_type = $request->input('data.filter_type');
         $filterer = $request->input('data.filterer');
+        $sort_type = $request->input('data.sort_type');
         $searcher = ['booking.*',
         DB::raw('(select 
                     (select unit_name from unit u where u.unit_id=l.unit_id)
@@ -151,14 +174,17 @@ class BookingsController extends Controller
         {
             if($filter_type == 0)
             {
-                $bookings = DB::table('booking')->select($searcher
-                )->where('booking_status', '!=', 2)->paginate(10);
+                $bookings = DB::table('booking')->select($searcher)
+                ->where('booking_status', '!=', 2)->paginate(10);
+                if($sort_type == 1){
+                    $bookings = $bookings->sortByDesc('booking_buest_name');
+                }
                 return $bookings;
             }else if ($filter_type == 1)
             {
                 //$bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->paginate(10);
-                $bookings = DB::table('booking')->select($searcher
-                )->where('booking_id', 'like', '%'.$filterer.'%')
+                $bookings = DB::table('booking')->select($searcher)
+                ->where('booking_id', 'like', '%'.$filterer.'%')
                 ->where('booking_status', '!=', 2)
                 ->paginate(10);
                 return $bookings;
@@ -202,13 +228,6 @@ class BookingsController extends Controller
                 }
                 $paginated = fnPaginate::pager($ar, $request);
                 return $paginated;
-            }else if ($filter_type == 5)
-            {
-                $bookings = DB::table('booking')->select($searcher
-                )->where('booking_status', $filterer)
-                ->orderBy('booking_check_in', 'DESC')
-                ->paginate(10);
-                return $bookings;
             }
         }else if ($date_type == 1)
         {
@@ -276,14 +295,6 @@ class BookingsController extends Controller
                 }
                 $paginated = fnPaginate::pager($ar, $request);
                 return $paginated;
-            }else if ($filter_type == 5)
-            {
-                $bookings = DB::table('booking')->select($searcher
-                )->where('booking_status', $filterer)
-                ->WHERE('booking_check_in', $date)
-                ->orderBy('booking_check_in', 'DESC')
-                ->paginate(10);
-                return $bookings;
             }
         }else if ($date_type == 2)
         {
@@ -346,14 +357,6 @@ class BookingsController extends Controller
                 }
                 $paginated = fnPaginate::pager($ar, $request);
                 return $paginated;
-            }else if ($filter_type == 5)
-            {
-                $bookings = DB::table('booking')->select($searcher
-                )->where('booking_status', $filterer)
-                ->WHERE('booking_check_out', $date)
-                ->orderBy('booking_check_in', 'DESC')
-                ->paginate(10);
-                return $bookings;
             }
         }else if ($date_type == 3)
         {
@@ -416,14 +419,6 @@ class BookingsController extends Controller
                 }
                 $paginated = fnPaginate::pager($ar, $request);
                 return $paginated;
-            }else if ($filter_type == 5)
-            {
-                $bookings = DB::table('booking')->select($searcher
-                )->where('booking_status', $filterer)
-                ->WHERE('booking_received_timestamp', $date)
-                ->orderBy('booking_check_in', 'DESC')
-                ->paginate(10);
-                return $bookings;
             }
         }else if ($date_type == 4)
         {
@@ -478,13 +473,6 @@ class BookingsController extends Controller
                     }
                 }
                 $bookings = $ar;
-            }else if ($filter_type == 5)
-            {
-                $bookings = DB::table('booking')->select($searcher
-                )->where('booking_status', $filterer)
-                ->orderBy('booking_check_in', 'DESC')
-                ->paginate(10);
-                return $bookings;
             }
             $collect = [];
             foreach ($bookings as $booking)
@@ -500,10 +488,215 @@ class BookingsController extends Controller
         }
     }
     
-    public function showDeleted()
+    //**
+    /* date_type = 0 --> no type
+    /* date_type = 1 --> check_in    
+    /* date_type = 2 --> check_out    
+    /* date_type = 3 --> received_timestamp   
+    /* date_type = 4 --> in house (check_out - check_in)
+    /* filter_type = 0 --> no filter
+    /* filter_type = 1 --> booking_code
+    /* filter_type = 2 --> guest_name
+    /* filter_type = 3 --> listing_name
+    /* filter_type = 4 --> profile_name
+    /* date = the date for date_filter
+    /* filterer = the text for filter_type
+    */
+    
+    public function showDeleted(Request $request)
     {
-        $bookings = Bookings::onlyTrashed()->latest()->paginate();
-        return $bookings;
+        $date_type = $request->input('data.date_type');
+        $date = $request->input('data.date');
+        $filter_type = $request->input('data.filter_type');
+        $filterer = $request->input('data.filterer');
+        $searcher = ['booking.*',
+        DB::raw('(select 
+                    (select unit_name from unit u where u.unit_id=l.unit_id)
+                    from listing l where l.listing_id=booking.listing_id
+                    ) as unit_name'),
+        DB::raw('(select 
+                    (select profile_name from profile p where p.profile_id=l.profile_id)
+                    from listing l where l.listing_id=booking.listing_id
+                    )as profile_name')];
+        if($date_type == 0 )
+        {
+            if($filter_type == 0)
+            {
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_status', 2)->paginate(10);
+                return $bookings;
+            }else if ($filter_type == 1)
+            {
+                //$bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->paginate(10);
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_id', 'like', '%'.$filterer.'%')
+                ->where('booking_status', 2)
+                ->paginate(10);
+                return $bookings;
+            }else if ($filter_type == 2)
+            {
+                //$bookings = Bookings::where('booking_guest_name', 'like', '%'.$filterer.'%')->paginate(10);
+                $bookings = DB::table('booking')->select($searcher
+                )->where('booking_guest_name', 'like', '%'.$filterer.'%')
+                ->where('booking_status', 2)
+                ->paginate(10);
+                return $bookings;
+            }else if ($filter_type == 3)
+            {
+                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->get();
+                //$bookings = Bookings::where('listing_id', $listings->listing_id)->paginate(10);
+                $ar = collect();
+                foreach($listings as $listing){
+                    $bookings = DB::table('booking')->select($searcher
+                    )->where('listing_id', $listing->listing_id)
+                    ->where('booking_status', 2)
+                    ->get();
+                    $ar = $ar->merge($bookings);
+                }
+                $paginated = fnPaginate::pager($ar, $request);
+                return $paginated;
+            }else if ($filter_type == 4)
+            {
+                $profiles = Profiles::where('profile_name','like', '%'.$filterer.'%')->get();
+                $ar = collect();
+                foreach($profiles as $profile)
+                {
+                    $listings = Listing::where('profile_id', $profile->profile_id)->get();
+                    foreach($listings as $listing)
+                    {
+                        $bookings = DB::table('booking')->select($searcher
+                        )->where('listing_id', $listing->listing_id)
+                        ->where('booking_status', 2)
+                        ->get();
+                        $ar = $ar->merge($bookings);
+                    }
+                }
+                $paginated = fnPaginate::pager($ar, $request);
+                return $paginated;
+            }
+        }else if($date_type == 1 )
+        {
+            if($filter_type == 0)
+            {
+                $bookings = DB::table('booking')->select($searcher)
+                ->where('booking_status', 2)
+                ->where('booking_check_in', $date)->paginate(10);
+                return $bookings;
+            }else if ($filter_type == 1)
+            {
+                //$bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->paginate(10);
+                $bookings = DB::table('booking')->select($searcher)
+                ->where('booking_id', 'like', '%'.$filterer.'%')
+                ->where('booking_status', 2)
+                ->where('booking_check_in', $date)
+                ->paginate(10);
+                return $bookings;
+            }else if ($filter_type == 2)
+            {
+                //$bookings = Bookings::where('booking_guest_name', 'like', '%'.$filterer.'%')->paginate(10);
+                $bookings = DB::table('booking')->select($searcher)
+                ->where('booking_guest_name', 'like', '%'.$filterer.'%')
+                ->where('booking_status', 2)
+                ->where('booking_check_in', $date)
+                ->paginate(10);
+                return $bookings;
+            }else if ($filter_type == 3)
+            {
+                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->get();
+                //$bookings = Bookings::where('listing_id', $listings->listing_id)->paginate(10);
+                $ar = collect();
+                foreach($listings as $listing){
+                    $bookings = DB::table('booking')->select($searcher
+                    )->where('listing_id', $listing->listing_id)
+                    ->where('booking_status', 2)
+                    ->where('booking_check_in', $date)
+                    ->get();
+                    $ar = $ar->merge($bookings);
+                }
+                $paginated = fnPaginate::pager($ar, $request);
+                return $paginated;
+            }else if ($filter_type == 4)
+            {
+                $profiles = Profiles::where('profile_name','like', '%'.$filterer.'%')->get();
+                $ar = collect();
+                foreach($profiles as $profile)
+                {
+                    $listings = Listing::where('profile_id', $profile->profile_id)->get();
+                    foreach($listings as $listing)
+                    {
+                        $bookings = DB::table('booking')->select($searcher
+                        )->where('listing_id', $listing->listing_id)
+                        ->where('booking_status', 2)
+                        ->where('booking_check_in', $date)
+                        ->get();
+                        $ar = $ar->merge($bookings);
+                    }
+                }
+                $paginated = fnPaginate::pager($ar, $request);
+                return $paginated;
+            }
+        }else if($date_type == 2)
+        {
+            if($filter_type == 0)
+            {
+                $bookings = DB::table('booking')->select($searcher)
+                ->where('booking_status', 2)
+                ->where('booking_check_out', $date)->paginate(10);
+                return $bookings;
+            }else if ($filter_type == 1)
+            {
+                //$bookings = Bookings::where('booking_id', 'like', '%'.$filterer.'%')->paginate(10);
+                $bookings = DB::table('booking')->select($searcher)
+                ->where('booking_id', 'like', '%'.$filterer.'%')
+                ->where('booking_status', 2)
+                ->where('booking_check_out', $date)
+                ->paginate(10);
+                return $bookings;
+            }else if ($filter_type == 2)
+            {
+                //$bookings = Bookings::where('booking_guest_name', 'like', '%'.$filterer.'%')->paginate(10);
+                $bookings = DB::table('booking')->select($searcher)
+                ->where('booking_guest_name', 'like', '%'.$filterer.'%')
+                ->where('booking_status', 2)
+                ->where('booking_check_out', $date)
+                ->paginate(10);
+                return $bookings;
+            }else if ($filter_type == 3)
+            {
+                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->get();
+                //$bookings = Bookings::where('listing_id', $listings->listing_id)->paginate(10);
+                $ar = collect();
+                foreach($listings as $listing){
+                    $bookings = DB::table('booking')->select($searcher
+                    )->where('listing_id', $listing->listing_id)
+                    ->where('booking_status', 2)
+                    ->where('booking_check_out', $date)
+                    ->get();
+                    $ar = $ar->merge($bookings);
+                }
+                $paginated = fnPaginate::pager($ar, $request);
+                return $paginated;
+            }else if ($filter_type == 4)
+            {
+                $profiles = Profiles::where('profile_name','like', '%'.$filterer.'%')->get();
+                $ar = collect();
+                foreach($profiles as $profile)
+                {
+                    $listings = Listing::where('profile_id', $profile->profile_id)->get();
+                    foreach($listings as $listing)
+                    {
+                        $bookings = DB::table('booking')->select($searcher
+                        )->where('listing_id', $listing->listing_id)
+                        ->where('booking_status', 2)
+                        ->where('booking_check_out', $date)
+                        ->get();
+                        $ar = $ar->merge($bookings);
+                    }
+                }
+                $paginated = fnPaginate::pager($ar, $request);
+                return $paginated;
+            }
+        }
     }
 
     /**

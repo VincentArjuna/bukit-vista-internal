@@ -24,7 +24,9 @@ class PropertiesController extends Controller
     }
     public function new_prop_id()
     {
-        $ctr = Properties::latest()->count();
+        $props = Properties::Latest()->first();
+        $id = substr($props->property_id,2);
+        $ctr = intval($id)+1;
         $prop_id = 'PR'.sprintf("%04s", $ctr);
         return $prop_id;
     }

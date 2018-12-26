@@ -69,8 +69,9 @@ class NotesController extends Controller
         $notes = Notes::where('note_id', $id)->first();
         return $notes;
     }
-    public function showBooking($id)
+    public function showBooking(Request $request)
     {
+        $id = $request->input('data.booking_id');
         $notes = Notes::where('booking_id', $id)->get();
         $ar = [];
         foreach($notes as $note)
@@ -112,7 +113,7 @@ class NotesController extends Controller
     public function update(Request $request, $id)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $notes = Notes::find($id)->first();
+        $notes = Notes::where('note_id',$id)->first();
         $notes->booking_id = $request->input('data.booking_id');
         $notes->user_id = $request->input('data.user_id');
         $notes->note_text = $request->input('data.note_text');
@@ -129,9 +130,8 @@ class NotesController extends Controller
     public function softDelete($id)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $notes = Notes::find($id)->first();
-        $notes->deleted_at = new DateTime();
-        $notes->save();
+        $notes = Notes::where('note_id', $id)->first();
+        $notes->delete();
         return 'Data SoftDeleted';
     }
 }

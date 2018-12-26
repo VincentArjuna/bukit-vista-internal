@@ -30,9 +30,10 @@ class ArrivalListsController extends Controller
         // Check that user date is between start & end
         return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
     }
+    
     public function showArrival(Request $request)
     {
-         date_default_timezone_set('Asia/Kuala_Lumpur');
+        date_default_timezone_set('Asia/Kuala_Lumpur');
         $ar = [];
         $date_type = $request->input('data.date_type');
         $date = $request->input('data.date');
@@ -42,7 +43,7 @@ class ArrivalListsController extends Controller
         $bookings=[];
         $searcher = ['booking_id','booking_guest_name','booking_check_in', 'booking_check_out', 'booking_guest_number',
                      'booking_guest_phone', 'booking_comm_channel', 'booking_guest_eta',
-                     'booking_guest_status','booking_conversation_url','booking_status','listing_id','booking_notes',
+                     'booking_guest_status','booking_conversation_url','booking_status','listing_id',
                      DB::raw('(select 
                         (select unit_name from unit u where u.unit_id=l.unit_id)
                         from listing l where l.listing_id=booking.listing_id
@@ -251,6 +252,7 @@ class ArrivalListsController extends Controller
         $paginated = fnpaginate::pager($ar, $request);
         return $paginated;
     }
+    
     public function LoS($id)
     {
         $bookings = Bookings::select('booking_check_in', 'booking_check_out')->where('booking_id',$id)->first();

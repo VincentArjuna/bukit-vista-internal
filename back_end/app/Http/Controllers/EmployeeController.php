@@ -15,7 +15,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = employee::where('employee_status',1)->orderBy('employee_name')->paginate(50);
+        $employees = employee::where('employee_status',1)->orderBy('employee_name')->paginate(30);
         return $employees;
     }
     
@@ -39,7 +39,7 @@ class EmployeeController extends Controller
         $employees->employee_address = $request->input('data.employee_address');
         $employees->employee_phone = $request->input('data.employee_phone');
         $employees->employee_status = $request->input('data.employee_status');
-        $listings->save();
+        $employees->save();
         return 'New Data Added';
     }
 
@@ -67,12 +67,12 @@ class EmployeeController extends Controller
     }
     public function showStatus($id)
     {
-        $employees = employee::where('employee_status',$id)->paginate(20);
+        $employees = employee::where('employee_status',$id)->paginate(10);
         return $employees;
     }
     public function showDeleted()
     {
-        $employees = employee::onlyTrashed()->latest()->paginate(20);
+        $employees = employee::onlyTrashed()->latest()->paginate(10);
         return $employees;
     }
 
@@ -103,7 +103,7 @@ class EmployeeController extends Controller
         $employees->employee_address = $request->input('data.employee_address');
         $employees->employee_phone = $request->input('data.employee_phone');
         $employees->employee_status = $request->input('data.employee_status');
-        $listings->save();
+        $employees->save();
         return 'Data Updated';
     }
 

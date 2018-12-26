@@ -68,7 +68,7 @@ Route::get('employee/{id}','EmployeeController@showStatus');
 //Add new 'employee'
 Route::post('employee/add','EmployeeController@create');
 //Update a 'employee'
-Route::post('employee/update/{id}','EmployeeController@update');
+Route::post('employee/update','EmployeeController@update');
 //Delete from 'employee'
 Route::get('employee/delete/{id}','EmployeeController@softDelete');
 //Restore deleted employee
@@ -78,7 +78,7 @@ Route::get('employee/restore/{id}', 'EmployeeController@restore');
 //Display all 'booking'
 Route::post('booking','BookingsController@bookingList');
 //Display all soft-deleted
-Route::get('booking/show_del', 'EmployeeControlelr@showDeleted');
+Route::post('booking/show_del', 'BookingsController@showDeleted');
 //Add 'booking'
 Route::post('booking/add','BookingsController@create');
 //Update 'booking'
@@ -134,7 +134,7 @@ Route::get('profile/name/{id}', 'ProfilesController@showName');
 //Add new profile
 Route::post('profile/add', 'ProfilesController@create');
 //Update profile
-Route::post('profile/update/{id}', 'ProfilesController@update');
+Route::post('profile/update', 'ProfilesController@update');
 //Delete profile
 Route::get('profile/delete/{id}', 'ProfilesController@softDelete');
 //Restore softdeleted profile
@@ -148,7 +148,6 @@ Route::get('booking/{tgl}/download','ArrivalListsController@csvWriter');
 //Download as CSV monthly property
 Route::get('by_prop/{id}/{tgl}/download','ArrivalListsController@csvMonthly');
 
-
 //Log
 //Display all log
 Route::get('log', 'LogsController@index');
@@ -156,15 +155,17 @@ Route::get('log', 'LogsController@index');
 Route::post('log/add', 'LogsController@create');
 
 //Users
-Route::get('users', 'UserController@index');
+Route::get('user', 'UserController@index');
 //add user
 Route::post('register', 'UserController@create');
 //login
 Route::post('login', 'UserController@login');
 //details
-Route::post('user/details', 'UserControlelr@details');
+Route::post('user/details', 'UserController@details');
 //logout
 Route::post('logout', 'UserController@logout');
+//resetpassword
+Route::post('user/reset_pass', 'UserController@resetPassword');
 
 //Payment
 //Upload csv
@@ -183,10 +184,10 @@ Route::get('pb/profile/{id}', 'PBController@showProfile');
 
 //Notes
 Route::get('notes' , 'NotesController@index');
+//show based booking_id
+Route::post('notes/booking','NotesController@showBooking');
 //show based note_id
 Route::get('notes/{id}', 'NotesController@showId');
-//show based booking_id
-Route::get('notes/booking/{id}','NotesController@showBooking');
 //show based user_id
 Route::get('notes/user/{id}', 'NotesController@showUser');
 //add new note
