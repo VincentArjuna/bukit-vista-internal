@@ -79,6 +79,8 @@ Route::get('employee/restore/{id}', 'EmployeeController@restore');
 Route::post('booking','BookingsController@bookingList');
 //Display all soft-deleted
 Route::post('booking/show_del', 'BookingsController@showDeleted');
+//Display all booking with unregistered listing
+Route::post('booking/unreg_listing', 'BookingsController@bookingUnregisteredListing');
 //Add 'booking'
 Route::post('booking/add','BookingsController@create');
 //Update 'booking'

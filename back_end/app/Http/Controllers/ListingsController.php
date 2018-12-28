@@ -76,6 +76,45 @@ class ListingsController extends Controller
         //
     }
 
+    public function sorterlistingList(Request $request, $listings)
+    {
+        $sort_type = $request->input('data.sort_type');
+        if($sort_type == 1){
+            $listings = $listings->sortBy('created_at');
+        }else if($sort_type == 2){
+            $listings = $listings->sortByDesc('created_at');
+        }else if($sort_type == 3){
+            $listings = $listings->sortBy('unit_name');
+        }else if($sort_type == 4){
+            $listings = $listings->sortByDesc('unit_name');
+        }
+        $ar = $listings->values()->toArray();
+        $paginated = fnpaginate::pager($ar, $request);
+        return $paginated;
+    }
+
+    /**
+     * filter_type = 0 --> default
+     * filter_type = 1 --> listing_id
+     * filter_type = 2 --> listing_name
+     * filter_type = 3 --> unit_id
+     * filter_type = 4 --> unit_name
+     * filter_type = 5 --> profile_name
+     * filter_type = 6 --> employee_name
+     * filter_type = 7 --> listing_onboard_date
+     * filter_type = 8 --> listing_account_owner      
+     * filter_type = 9 --> listing_account_bv
+     * filter_type = 10 --> listing_remark
+     * filter_type = 11 --> area_id
+     * filterer = text for filter_type     
+     * per_page = data amount per page
+     * sort_type = 0 --> default
+     * sort_type = 1 --> created_at ASC
+     * sort_type = 2 --> created_at DESC
+     * sort_type = 3 --> unit_name ASC
+     * sort_type = 4 --> unit_name DESC
+     */
+
     /**
      * Display the specified listing.
      *
@@ -95,26 +134,26 @@ class ListingsController extends Controller
         if($filter_type == 0)
         {
             $listings = DB::table('listing')->select($searcher)->latest()
-            ->paginate($per_page);
-            return $listings;
+            ->get();
+            $listings = $this->sorterlistingList($request, $listings);
         }else if ($filter_type == 1)
         {
             $listings = DB::table('listing')->select($searcher)
             ->where('listing_id', 'like', '%'.$filterer.'%')->latest()
-            ->paginate($per_page);
-            return $listings;
+            ->get();
+            $listings = $this->sorterlistingList($request, $listings);
         }else if ($filter_type == 2)
         {
             $listings = DB::table('listing')->select($searcher)
             ->where('listing_name', 'like', '%'.$filterer.'%')->latest()
-            ->paginate($per_page);
-            return $listings;
+            ->get();
+            $listings = $this->sorterlistingList($request, $listings);
         }else if ($filter_type == 3)
         {
             $listings = DB::table('listing')->select($searcher)
             ->where('unit_id', 'like', '%'.$filterer.'%')->latest()
-            ->paginate($per_page);
-            return $listings;
+            ->get();
+            $listings = $this->sorterlistingList($request, $listings);
         }else if($filter_type == 4)
         {
             $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->latest()->get();
@@ -125,8 +164,7 @@ class ListingsController extends Controller
                 ->where('unit_id', $unit->unit_id)->get();
                 $collect = $collect->merge($listings);
             }
-            $paginated = fnPaginate::pager($collect, $request);
-            return $paginated;
+            $listings = $this->sorterlistingList($request, $collect);            
         }else if($filter_type == 5)
         {
             $profiles = Profiles::where('profile_name', 'like', '%'.$filterer.'%')->latest()->get();
@@ -137,8 +175,7 @@ class ListingsController extends Controller
                 ->where('profile_id', $profiles->profile_id)->get();
                 $collect = $collect->merge($listings);
             }
-            $paginated = fnPaginate::pager($collect, $request);
-            return $paginated;
+            $listings = $this->sorterlistingList($request, $collect);            
         }else if($filter_type == 6)
         {
             $employees = employee::where('employee_name', 'like', '%'.$filterer.'%')->latest()->get();
@@ -149,32 +186,31 @@ class ListingsController extends Controller
                 ->where('employee_id', $employee->employee_id)->get();
                 $collect = $collect->merge($listings);
             }
-            $paginated = fnPaginate::pager($collect, $request);
-            return $paginated;
+            $listings = $this->sorterlistingList($request, $collect);            
         }else if($filter_type == 7)
         {
             $listings = DB::table('listing')->select($searcher)
             ->where('listing_onboard_date', 'like', '%'.$filterer.'%')->latest()
-            ->paginate($per_page);
-            return $listings;
+            ->get();
+            $listings = $this->sorterlistingList($request, $listings);
         }else if($filter_type == 8)
         {
             $listings = DB::table('listing')->select($searcher)
             ->where('listing_account_owner', 'like', '%'.$filterer.'%')->latest()
-            ->paginate($per_page);
-            return $listings;
+            ->get();
+            $listings = $this->sorterlistingList($request, $listings);
         }else if($filter_type == 9)
         {
             $listings = DB::table('listing')->select($searcher)
             ->where('listing_account_bv', 'like', '%'.$filterer.'%')->latest()
-            ->paginate($per_page);
-            return $listings;
+            ->get();
+            $listings = $this->sorterlistingList($request, $listings);
         }else if ($filter_type == 10)
         {
             $listings = DB::table('listing')->select($searcher)
             ->where('listing_remark', $filterer)->latest()
-            ->paginate($per_page);
-            return $listings;
+            ->get();
+            $listings = $this->sorterlistingList($request, $listings);
         }else if ($filter_type == 11)
         {
             $properties = Properties::where('area_id', $filterer)->get();
@@ -190,10 +226,11 @@ class ListingsController extends Controller
                     $collect = $collect->merge($listings);
                 }
             }
-            $paginated = fnPaginate::pager($collect, $request);
-            return $paginated;
+            $listings = $this->sorterlistingList($request, $collect);            
         }
+        return $listings;
     }
+
     public function showDeleted()
     {
         $listings = Listing::onlyTrashed()->latest()->paginate(20);

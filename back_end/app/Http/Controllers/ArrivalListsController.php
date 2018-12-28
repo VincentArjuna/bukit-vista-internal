@@ -325,7 +325,6 @@ class ArrivalListsController extends Controller
                             'Communication Channel',
                             'Host',
                             'Driver',
-                            'Notes',
                             'Area'
                             ]);
             foreach ($ar as $arr)
@@ -375,7 +374,6 @@ class ArrivalListsController extends Controller
                         $ccs,
                         $host,
                         $driver,
-                        $arr['booking_notes'],
                         $arr['area_name']
                 ];
                 $wr->insertOne($tmp);
