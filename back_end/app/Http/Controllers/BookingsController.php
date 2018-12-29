@@ -912,7 +912,6 @@ class BookingsController extends Controller
                 $bookings->booking_currency = $request->input('data.booking_currency');
                 $bookings->booking_source = $request->input('data.booking_source');
                 $bookings->booking_conversation_url = $request->input('data.booking_conversation_url');
-                $bookings->booking_received_timestamp = $request->input('data.booking_received.timestamp');
                 $bookings->listing_id = $request->input('data.listing_id');
             }else
             {

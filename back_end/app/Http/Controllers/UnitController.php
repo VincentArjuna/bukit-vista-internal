@@ -65,6 +65,27 @@ class UnitController extends Controller
         //
     }
 
+    public function sorterUnitList(Request $request, $units)
+    {
+        $sort_type = $request->input('data.sort_type');
+        if($sort_type == 1){
+            $units = $units->sortBy('booking_guest_name');
+        }else if($sort_type == 2){
+            $units = $units->sortByDesc('booking_guest_name');
+        }else if($sort_type == 3){
+            $units = $units->sortBy('unit_name');
+        }else if($sort_type == 4){
+            $units = $units->sortByDesc('unit_name');
+        }else if($sort_type == 5){
+            $units = $units->sortBy('profile_name');
+        }else if($sort_type == 6){
+            $units = $units->sortByDesc('profile_name');
+        }
+        $ar = $bookings->values()->toArray();
+        $paginated = fnpaginate::pager($ar, $request);
+        return $paginated;
+    }
+
     /**
      * Display the specified resource.
      *
