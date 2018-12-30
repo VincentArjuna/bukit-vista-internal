@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Users;
+use App\fnPaginate;
 use DateTime;
 
 class UserController extends Controller
@@ -56,12 +57,14 @@ class UserController extends Controller
         $users->save();
         return 'Succeed';
     }
+    
     public function details(Request $request)
     {
         $users = Users::select('user_id', 'user_email', 'employee_id')
         ->where('remember_token', $request->input('data.remember_token'))->first();
         return $users;
     }
+
     public function newUser_ID()
     {
         $ctr = Users::Latest()->count();
@@ -89,6 +92,40 @@ class UserController extends Controller
             $users->save();
             return 'User Created';
         }
+    }
+
+    public function sorterUserList(Request $request, $users)
+    {
+        $sort_type = $request->input('data.sort_type');
+        if($sort_type == 1){
+            $users = $users->sortBy('user_id');
+        }else if($sort_type == 2){
+            $users = $users->sortByDesc('user_id');
+        }else if($sort_type == 3){
+            $users = $users->sortBy('employee_id');
+        }else if($sort_type == 4){
+            $users = $users->sortByDesc('employee_id');
+        }
+        $ar = $users->values()->toArray();
+        $paginated = fnpaginate::pager($ar, $request);
+        return $paginated;
+    }
+
+    public function userList(Request $request)
+    {
+        $filter_type = $request->input('data.filter_type');
+        $filterer = $request->input('data.filterer');
+        if($filter_type == 0){
+            $users = Users::get();
+            $users = $this->sorterUserList($request, $users);
+        }else if($filter_type == 1){
+            $users = Users::where('user_email', 'LIKE', '%'.$filterer.'%')->get();
+            $users = $this->sorterUserList($request, $users);
+        }else if($filter_type == 2){
+            $users = Users::where('employee_id', 'LIKE', '%'.$filterer.'%')->get();
+            $users = $this->sorterUserList($request, $users);
+        }
+        return $users;
     }
     
 

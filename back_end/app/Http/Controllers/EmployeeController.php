@@ -54,27 +54,67 @@ class EmployeeController extends Controller
         //
     }
 
+    public function sorterEmployeeList(Request $request, $employees)
+    {
+        $sort_type = $request->input('data.sort_type');
+        if($sort_type == 1){
+            $employees = $employees->sortBy('employee_id');
+        }else if($sort_type == 2){
+            $employees = $employees->sortByDesc('employee_id');
+        }else if($sort_type == 3){
+            $employees = $employees->sortBy('employee_name');
+        }else if($sort_type == 4){
+            $employees = $employees->sortByDesc('employee_name');
+        }
+        $ar = $employees->values()->toArray();
+        $paginated = fnpaginate::pager($ar, $request);
+        return $paginated;
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showId($id)
+    
+    public function employeeList(Request $request)
     {
-        $employees = employee::where('employee_id',$id)->get();
+        $filter_type = $request->input('data.filter_type');
+        $filterer = $request->input('data.filterer');
+        if($filter_type == 0){
+            $employees = employee::where('employee_status',1)->get();
+            $employees = $this->sorterEmployeeList($request,$employees);
+        }else if($filter_type == 1){
+            $employees = employee::where('employee_status',1)
+            ->where('employee_id', 'LIKE', '%'.$filterer.'%')
+            ->get();
+            $employees = $this->sorterEmployeeList($request, $employees);
+        }else if($filter_type == 2){
+            $employees = employee::where('employee_status', 1)
+            ->where('employee_name', 'LIKE', '%'.$filterer.'%')     
+            ->get();
+            $employees = $this->sorterEmployeeList($request, $employees);       
+        }else if($filter_type == 3){
+            $employees = employee::where('employee_status', 1)
+            ->where('employee_address', 'LIKE', '%'.$filterer.'%')     
+            ->get();
+            $employees = $this->sorterEmployeeList($request, $employees);       
+        }else if($filter_type == 4){
+            $employees = employee::where('employee_status', 1)
+            ->where('employee_phone', 'LIKE', '%'.$filterer.'%')     
+            ->get();
+            $employees = $this->sorterEmployeeList($request, $employees);       
+        }
         return $employees;
     }
-    public function showStatus($id)
-    {
-        $employees = employee::where('employee_status',$id)->paginate(10);
-        return $employees;
-    }
+
     public function showDeleted()
     {
         $employees = employee::onlyTrashed()->latest()->paginate(10);
         return $employees;
     }
+
 
     /**
      * Show the form for editing the specified resource.

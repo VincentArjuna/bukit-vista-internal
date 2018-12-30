@@ -71,6 +71,43 @@ class PropertiesController extends Controller
         //
     }
 
+    public function sorterPropertyList(Request $request, $units)
+    {
+        $sort_type = $request->input('data.sort_type');
+        if($sort_type == 1){
+            $properties = $properties->sortBy('property_type');
+        }else if($sort_type == 2){
+            $properties = $properties->sortByDesc('property_type');
+        }else if($sort_type == 3){
+            $properties = $properties->sortBy('property_status');
+        }else if($sort_type == 4){
+            $properties = $properties->sortByDesc('property_status');
+        }else if($sort_type == 5){
+            $properties = $properties->sortBy('property_package');
+        }else if($sort_type == 6){
+            $properties = $properties->sortByDesc('property_package');
+        }else if($sort_type == 7){
+            $properties = $properties->sortBy('property_package');
+        }else if($sort_type == 8){
+            $properties = $properties->sortByDesc('property_package');
+        }else if($sort_type == 9){
+            $properties = $properties->sortBy('property_design');
+        }else if($sort_type == 10){
+            $properties = $properties->sortByDesc('property_design');
+        }else if($sort_type == 11){
+            $properties = $properties->sortBy('property_proximity');
+        }else if($sort_type == 12){
+            $properties = $properties->sortByDesc('property_proximity');
+        }else if($sort_type == 13){
+            $properties = $properties->sortBy('property_life_support');
+        }else if($sort_type == 14){
+            $properties = $properties->sortByDesc('property_life_support');
+        }
+        $ar = $properties->values()->toArray();
+        $paginated = fnpaginate::pager($ar, $request);
+        return $paginated;
+    }
+
     /**
      * Display the specified resource.
      *
@@ -83,16 +120,16 @@ class PropertiesController extends Controller
         $filterer = $request->input('data.filterer');
         if ($filter_type == 0)
         {
-            $properties = Properties::paginate(10);
-            return $properties;
+            $properties = Properties::get();
+            $properties = $this->sorterPropertyList($request, $properties);
         }else if ($filter_type == 1)
         {
-            $properties = Properties::where('property_id', 'like', '%'.$filterer.'%')->paginate(10);
-            return $properties;
+            $properties = Properties::where('property_id', 'like', '%'.$filterer.'%')->get();
+            $properties = $this->sorterPropertyList($request, $properties);
         }else if ($filter_type == 2)
         {
-            $properties = Properties::where('property_name', 'like', '%'.$filterer.'%')->paginate(10);
-            return $properties;
+            $properties = Properties::where('property_name', 'like', '%'.$filterer.'%')->get();
+            $properties = $this->sorterPropertyList($request, $properties);
         }else if ($filter_type == 3)
         {
             $areas = Areas::where('area_name', 'like', '%'.$filterer.'%')->get();
@@ -102,8 +139,7 @@ class PropertiesController extends Controller
                 $properties = Properties::where('area_id', $area->area_id)->get();
                 $collect = $collect->merge($properties);
             }
-            $paginated = fnPaginate::pager($collect, $request);
-            return $paginated;
+            $properties = $this->sorterPropertyList($request, $collect);
         }else if ($filter_type == 4){
             $prop_types = Prop_Type::where('type_desc', 'like', '%'.$filtere.'%')->get();
             $collect = collect();
@@ -112,8 +148,7 @@ class PropertiesController extends Controller
                 $properties = Properties::where('property_type', $prop_type->property_type)->get();
                 $collect = $collect->merge($properties);
             }
-            $paginated = fnPaginate::pager($collect, $request);
-            return $paginated;
+            $properties = $this->sorterPropertyList($request, $collect);
         }else if ($filter_type == 5)
         {
             $employees = employee::where('employee_name', 'like', '%'.$filterer.'%')->get();
@@ -123,9 +158,9 @@ class PropertiesController extends Controller
                 $properties = Properties::where('employee_id', $employee->employee_id)->get();
                 $collect = $collect->merge($properties);
             }
-            $paginated = fnPaginate::pager($collect, $request);
-            return $paginated;
+            $properties = $this->sorterPropertyList($request, $collect);
         }
+        return $properties;
     }
     public function showDeleted()
     {

@@ -52,6 +52,23 @@ class ProfilesController extends Controller
         //
     }
 
+    public function sorterProfileList(Request $request, $profiles)
+    {
+        $sort_type = $request->input('data.sort_type');
+        if($sort_type == 1){
+            $profiles = $profiles->sortBy('profile_id');
+        }else if($sort_type == 2){
+            $profiles = $profiles->sortByDesc('profile_id');
+        }else if($sort_type == 3){
+            $profiles = $profiles->sortBy('profile_name');
+        }else if($sort_type == 4){
+            $profiles = $profiles->sortByDesc('profile_name');
+        }
+        $ar = $profiles->values()->toArray();
+        $paginated = fnpaginate::pager($ar, $request);
+        return $paginated;
+    }
+
     /**
      * Display the specified resource.
      *
@@ -67,6 +84,28 @@ class ProfilesController extends Controller
     {
         $profiles = Profiles::where('profile_name', $id)->paginate(10);
         return $profiles;
+    }
+
+    public function profileList(Request $request)
+    {
+        $filter_type = $request->input('data.filter_type');
+        $filterer = $request->input('data.filterer');
+        if($filter_type == 0){
+            $profiles = Profiles::get();
+            $profiles = $this->sorterProfileList($request, $profiles);
+        }else if($filter_type == 1){
+            $profiles = Profiles::where('profile_id', 'LIKE', '%'.$filterer.'%')
+            ->get();
+            $profiles = $this->sorterProfileList($request, $profiles);
+        }else if($filter_type == 2){
+            $profiles = Profiles::where('profile_name', 'LIKE', '%'.$filterer.'%')
+            ->get();
+            $profiles = $this->sorterProfileList($request, $profiles);
+        }else if($filter_type == 3){
+            $profiles = Profiles::where('profile_email', 'LIKE', '%'.$filterer.'%')
+            ->get();
+            $profiles = $this->sorterProfileList($request, $profiles);
+        }
     }
     public function showDeleted()
     {

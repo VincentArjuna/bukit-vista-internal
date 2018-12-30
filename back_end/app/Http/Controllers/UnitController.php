@@ -69,19 +69,19 @@ class UnitController extends Controller
     {
         $sort_type = $request->input('data.sort_type');
         if($sort_type == 1){
-            $units = $units->sortBy('booking_guest_name');
+            $units = $units->sortBy('unit_capacity');
         }else if($sort_type == 2){
-            $units = $units->sortByDesc('booking_guest_name');
+            $units = $units->sortByDesc('unit_capacity');
         }else if($sort_type == 3){
-            $units = $units->sortBy('unit_name');
+            $units = $units->sortBy('unit_number_room');
         }else if($sort_type == 4){
-            $units = $units->sortByDesc('unit_name');
+            $units = $units->sortByDesc('unit_number_room');
         }else if($sort_type == 5){
-            $units = $units->sortBy('profile_name');
+            $units = $units->sortBy('unit_swimming_pool');
         }else if($sort_type == 6){
-            $units = $units->sortByDesc('profile_name');
+            $units = $units->sortByDesc('unit_swimming_pool');
         }
-        $ar = $bookings->values()->toArray();
+        $ar = $units->values()->toArray();
         $paginated = fnpaginate::pager($ar, $request);
         return $paginated;
     }
@@ -103,16 +103,16 @@ class UnitController extends Controller
             return $units;
         }else if ($filter_type == 1)
         {
-            $units = Unit::where('unit_id', 'like', '%'.$filterer.'%')->paginate($per_page);
-            return $units;
+            $units = Unit::where('unit_id', 'like', '%'.$filterer.'%')->get();
+            $units = $this->sorterUnitList($request, $units);
         }else if ($filter_type == 2)
         {
-            $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->paginate($per_page);
-            return $units;
+            $units = Unit::where('unit_name', 'like', '%'.$filterer.'%')->get();
+            $units = $this->sorterUnitList($request, $units);
         }else if ($filter_type == 3)
         {
-            $units = Unit::where('property_id', 'like', '%'.$filterer.'%')->paginate($per_page);
-            return $units;
+            $units = Unit::where('property_id', 'like', '%'.$filterer.'%')->get();
+            $units = $this->sorterUnitList($request, $units);
         }else if ($filter_type == 4)
         {
             $properties = Properties::where('property_name', 'like', '%'.$filterer.'%')->get();
@@ -122,13 +122,13 @@ class UnitController extends Controller
                 $units = Unit::where('property_id', $property->property_id)->get();
                 $collect = $collect->merge($units);
             }
-            $paginated = fnPaginate::pager($collect, $request);
-            return $paginated;
+            $units = $this->sorterUnitList($request, $collect);
         }else if ($filter_type == 5)
         {
-            $units = Unit::where('unit_onboard_date', 'like', '%'.$filterer.'%')->paginate($per_page);
-            return $units;
+            $units = Unit::where('unit_onboard_date', 'like', '%'.$filterer.'%')->get();
+            $units = $this->sorterUnitList($request, $units);
         }
+        return $units;
     }
     public function showDeleted()
     {
