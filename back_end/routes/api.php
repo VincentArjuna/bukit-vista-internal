@@ -58,7 +58,7 @@ Route::get('unit/restore/{id}', 'UnitController@restore');
 
 //employee
 //Display all 'employee'
-Route::get('employee','EmployeeController@index');
+Route::post('employee','EmployeeController@employeeList');
 //display all softdeleted employee
 Route::get('employee/show_del', 'EmployeeController@showDeleted');
 //Display specified 'employee' by 'employee_id'
@@ -126,7 +126,7 @@ Route::get('area/restore/{id}', 'AreasController@restore');
 
 //Profile
 //Display all 'Profile'
-Route::get('profile', 'ProfilesController@index');
+Route::post('profile', 'ProfilesController@profileList');
 //Display all softdeleted profile
 Route::get('profile/show_del', 'ProfilesController@showDeleted');
 //Display 'Profile'specified by 'profile_id'
@@ -157,7 +157,7 @@ Route::get('log', 'LogsController@index');
 Route::post('log/add', 'LogsController@create');
 
 //Users
-Route::get('user', 'UserController@index');
+Route::post('user', 'UserController@userList');
 //add user
 Route::post('register', 'UserController@create');
 //login

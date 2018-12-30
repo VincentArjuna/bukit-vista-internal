@@ -87,6 +87,22 @@ class UnitController extends Controller
     }
 
     /**
+     * filter_type = 0 --> default
+     * filter_type = 1 --> unit_id
+     * filter_type = 2 --> unit_name
+     * filter_type = 3 --> property_id
+     * filter_type = 4 --> property_name
+     * filterer = text for filter_type
+     * per_page = data amount per page
+     * sort_type = 0 --> default
+     * sort_type = 1 --> unit_capacity ASC
+     * sort_type = 2 --> unit_capacity DESC
+     * sort_type = 3 --> unit_number_room ASC
+     * sort_type = 4 --> unit_number_room DESC
+     * sort_type = 5 --> unit_swimming_pool ASC
+     * sort_type = 6 --> unit_swimming_pool DESC
+     */
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

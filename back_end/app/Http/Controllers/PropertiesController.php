@@ -87,20 +87,16 @@ class PropertiesController extends Controller
         }else if($sort_type == 6){
             $properties = $properties->sortByDesc('property_package');
         }else if($sort_type == 7){
-            $properties = $properties->sortBy('property_package');
-        }else if($sort_type == 8){
-            $properties = $properties->sortByDesc('property_package');
-        }else if($sort_type == 9){
             $properties = $properties->sortBy('property_design');
-        }else if($sort_type == 10){
+        }else if($sort_type == 8){
             $properties = $properties->sortByDesc('property_design');
-        }else if($sort_type == 11){
+        }else if($sort_type == 9){
             $properties = $properties->sortBy('property_proximity');
-        }else if($sort_type == 12){
+        }else if($sort_type == 10){
             $properties = $properties->sortByDesc('property_proximity');
-        }else if($sort_type == 13){
+        }else if($sort_type == 11){
             $properties = $properties->sortBy('property_life_support');
-        }else if($sort_type == 14){
+        }else if($sort_type == 12){
             $properties = $properties->sortByDesc('property_life_support');
         }
         $ar = $properties->values()->toArray();
@@ -108,6 +104,29 @@ class PropertiesController extends Controller
         return $paginated;
     }
 
+     /**
+     * filter_type = 0 --> default
+     * filter_type = 1 --> property_id
+     * filter_type = 2 --> property_name
+     * filter_type = 3 --> area_name
+     * filter_type = 4 --> property_type
+     * filter_type = 5 --> employee_name
+     * filterer = text for filter_type
+     * per_page = data amount per page
+     * sort_type = 0 --> default
+     * sort_type = 1 --> property_type ASC
+     * sort_type = 2 --> property_type DESC
+     * sort_type = 3 --> property_status ASC
+     * sort_type = 4 --> property_status DESC
+     * sort_type = 5 --> property_package ASC
+     * sort_type = 6 --> property_package DESC
+     * sort_type = 7 --> property_design ASC
+     * sort_type = 8 --> property_design DESC
+     * sort_type = 9 --> property_proximity ASC
+     * sort_type = 10 --> property_proximity DESC
+     * sort_type = 11 --> property_life_support ASC
+     * sort_type = 12 --> property_life_support DESC
+     */
     /**
      * Display the specified resource.
      *

@@ -86,6 +86,21 @@ class ProfilesController extends Controller
         return $profiles;
     }
 
+    /**
+     * filter_type = 0 --> default
+     * filter_type = 1 --> profile_id
+     * filter_type = 2 --> profile_name
+     * filter_type = 3 --> profile_email
+     * filter_type = 4 --> employee_phone
+     * filterer = text for filter_type
+     * per_page = data amount per page
+     * sort_type = 0 --> default
+     * sort_type = 1 --> employee_id ASC
+     * sort_type = 2 --> employee_id DESC
+     * sort_type = 3 --> employee_name ASC
+     * sort_type = 4 --> employee_name DESC
+     */
+
     public function profileList(Request $request)
     {
         $filter_type = $request->input('data.filter_type');
@@ -106,6 +121,7 @@ class ProfilesController extends Controller
             ->get();
             $profiles = $this->sorterProfileList($request, $profiles);
         }
+        return $profiles;
     }
     public function showDeleted()
     {

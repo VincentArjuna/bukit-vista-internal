@@ -11,6 +11,45 @@ use App\Listing;
 
 class PaymentController extends Controller
 {
+    public function new_payout_id()
+    {
+        $payments = Payment::Latest()->first();
+        $id = substr($payments->payout_bundle,2);
+        $ctr = intval($id)+1;
+        $po_id = 'PO'.sprintf("%04s", $ctr);
+        return $po_id;
+    }
+
+    public function integromatPayload(Request $request)
+    {
+        $host_name = $request->input('host_name');
+        $total_payout = $request->input('total_payout');
+        $currency = $request->input('host_name');
+        $payout_eta = $request->input('payout_eta');
+        $payout_bundle = $request->input('payout_bundle');
+        $po_bundle_id = $this->new_payout_id();
+        $payment = new Payment;
+        $payment->temp_column = $payout_bundle;
+        $payment->save();
+        /*foreach ($payout_bundle as $payout) {
+            $check_in = $payout->Check_In;
+            $check_out = $payout->Check_In;
+            $booking_id = $payout->Booking_ID;
+            $listing_name = $payout->Listing_name;
+            $transfer_amount = $payout->Transfer_Amount;
+            $payment = new Payment;
+            $payment->payout_bundle = $po_bundle_id;
+            $payment->payout_eta = $payout_eta;
+            $payment->booking_id = $booking_id;
+            $payment->payout_booking_checkin = $check_in;
+            $payment->payout_booking_checkout = $check_out;
+            $payment->payout_listing_name = $listing_name;
+            $payment->payout_amount = $transfer_amount;
+            $payment->temp_column = $total_payout;
+            $payment->save();
+        }
+        */
+    }
     /**
      * Display a listing of the resource.
      *

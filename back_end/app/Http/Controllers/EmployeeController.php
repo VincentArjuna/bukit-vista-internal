@@ -72,6 +72,21 @@ class EmployeeController extends Controller
     }
 
     /**
+     * filter_type = 0 --> default
+     * filter_type = 1 --> employee_id
+     * filter_type = 2 --> employee_name
+     * filter_type = 3 --> employee_address
+     * filter_type = 4 --> employee_phone
+     * filterer = text for filter_type
+     * per_page = data amount per page
+     * sort_type = 0 --> default
+     * sort_type = 1 --> employee_id ASC
+     * sort_type = 2 --> employee_id DESC
+     * sort_type = 3 --> employee_name ASC
+     * sort_type = 4 --> employee_name DESC
+     */
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
