@@ -170,6 +170,10 @@ Route::post('logout', 'UserController@logout');
 Route::post('user/reset_pass', 'UserController@resetPassword');
 
 //Payment
+//payoutList
+Route::post('payout','PaymentController@payoutList');
+//integromat payload
+Route::post('integ_payload', 'PaymentController@integromatPayload');
 //Upload csv
 Route::post('payment/upload/new', 'PaymentController@upload');
 Route::post('payment/listings/new', 'PaymentController@uplisting');

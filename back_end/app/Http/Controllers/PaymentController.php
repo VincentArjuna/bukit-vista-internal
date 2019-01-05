@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use League\Csv\Reader;
 use App\Payment;
 use App\PaymentBooking;
@@ -14,29 +15,94 @@ class PaymentController extends Controller
     public function new_payout_id()
     {
         $payments = Payment::Latest()->first();
-        $id = substr($payments->payout_bundle,2);
-        $ctr = intval($id)+1;
+        if($payments){
+            $id = substr($payments->payout_bundle,2);
+            $ctr = intval($id)+1;
+        }else{
+            $ctr = 1;
+        }
         $po_id = 'PO'.sprintf("%04s", $ctr);
         return $po_id;
+    }
+    
+    public function convert_currency($cur){
+        if($cur == 'Rp'){
+            return 1;
+        }else if($cur == '$'){
+            return 2;
+        }
+        else if($cur == 'EUR' || $cur == '€'){
+            return 3;
+        }else if($cur == '$AUD'){
+            return 4;
+        }else{
+            return 5;
+        }
     }
 
     public function integromatPayload(Request $request)
     {
-        $host_name = $request->input('host_name');
-        $total_payout = $request->input('total_payout');
-        $currency = $request->input('host_name');
-        $payout_eta = $request->input('payout_eta');
-        $payout_bundle = $request->input('payout_bundle');
+        $text = $request->input('string');
+        $findme = "Column 6";
+        $replacer = "tmp";
+        $findme2 = "Column 7";
+        $replacer2 = "tmp2";
+        $text = str_replace($findme,$replacer,$text);
+        $text = str_replace($findme2,$replacer2,$text);
+        $data = json_decode($text);
+        $input = $data[0];
+        $host_name = $input->host_name;
+        $total_payout = $input->Totalpayout;
+        $bundle_currency = preg_replace('/[^A-Za-z?!$€]/','',$total_payout);
+        $bundle_amount = (float)preg_replace('/[^\-\d.]*(\-?\d.*).*/','$1',$total_payout);
+        $payout_eta = $input->ETA;
+        $payout_bundle = $input->Payout_Bundle;
         $po_bundle_id = $this->new_payout_id();
-        $payment = new Payment;
-        $payment->temp_column = $payout_bundle;
-        $payment->save();
-        /*foreach ($payout_bundle as $payout) {
+        foreach ($payout_bundle as $payout) {
             $check_in = $payout->Check_In;
-            $check_out = $payout->Check_In;
+            $check_out = $payout->Check_Out;
             $booking_id = $payout->Booking_ID;
-            $listing_name = $payout->Listing_name;
-            $transfer_amount = $payout->Transfer_Amount;
+            if($check_out == 'Resolution Adjustment'){
+                $listing_name = $check_out;
+                $check_out = NULL;
+                $transfer_amount = '-'.$payout->Guest_Name;
+                $guest_name = NULL;
+            }else{
+                if(Arr::exists($payout,$replacer)){
+                    if(Arr::exists($payout,$replacer2)){
+                        if(isset($payout->tmp2)){
+                            $transfer_amount = '-'.$payout->tmp2;
+                            $listing_name = $payout->Listing_name.' - '.$payout->Transfer_amount;                        
+                        }else{
+                            if(isset($payout->tmp)){
+                                $listing_name = $payout->Listing_name.' - '.$payout->Transfer_amount;
+                                $transfer_amount = $payout->tmp;
+                            }else{
+                                $listing_name = $payout->Listing_name;
+                                $transfer_amount = $payout->Transfer_amount;
+                            }
+                        }
+                    }else{
+                        if(isset($payout->tmp)){
+                            if(isset($payout->Transfer_amount)){
+                                $listing_name = $payout->Listing_name.' - '.$payout->Transfer_amount;
+                                $transfer_amount = $payout->tmp;
+                            }else{
+                                $listing_name = $payout->Listing_name;
+                                $transfer_amount = '-'.$payout->tmp;
+                            }
+                        }else{
+                            $listing_name = $payout->Listing_name;
+                            $transfer_amount = $payout->Transfer_amount;
+                        }
+                    }
+                }else{
+                    $listing_name = $payout->Listing_name;
+                    $transfer_amount = $payout->Transfer_amount;
+                }
+            }
+            $payout_currency = preg_replace('/[^A-Za-z?!$€]/','',$transfer_amount);
+            $payout_amount = (float)preg_replace('/[^\-\d.]*(\-?\d.*).*/','$1',$transfer_amount);
             $payment = new Payment;
             $payment->payout_bundle = $po_bundle_id;
             $payment->payout_eta = $payout_eta;
@@ -44,12 +110,202 @@ class PaymentController extends Controller
             $payment->payout_booking_checkin = $check_in;
             $payment->payout_booking_checkout = $check_out;
             $payment->payout_listing_name = $listing_name;
-            $payment->payout_amount = $transfer_amount;
-            $payment->temp_column = $total_payout;
+            $payment->payout_currency = $this->convert_currency($payout_currency);
+            $payment->payout_amount = $payout_amount;
+            $payment->bundle_currency = $this->convert_currency($bundle_currency);
+            $payment->bundle_amount = $bundle_amount;
+            $payment->payout_date = $input->ReceivedDate;
             $payment->save();
         }
-        */
     }
+
+    /**
+     * date_type = 0 --> no type
+     * date_type = 1 --> payout_date    
+     * date_type = 2 --> payout_eta  
+     * date_type = 3 --> payout_booking_check_in 
+     * date_type = 4 --> payout_booking_check_out
+     * filter_type = 0 --> no filter
+     * filter_type = 1 --> payout_bundle
+     * filter_type = 2 --> booking_id
+     * filter_type = 3 --> payout_listing_name
+     * filter_type = 4 --> payout_amount
+     * filter_type = 5 --> bundle_amount
+     * date = the date for date_filter
+     * filterer = the text for filter_type
+     * sort_type = 0 -> no sort
+     * sort_type = 1 -> payout_listing_name ASC
+     * sort_type = 2 -> payout_listing_name DESC
+    */
+
+    public function sorterPayoutList(Request $request, $payouts)
+    {
+        $sort_type = $request->input('data.sort_type');
+        if($sort_type == 1){
+            $payouts = $payouts->sortBy('payout_listing_name');
+        }else if($sort_type == 2){
+            $bookings = $bookings->sortByDesc('payout_listing_name');
+        }
+        $ar = $payouts->values()->toArray();
+        $paginated = fnpaginate::pager($ar, $request);
+        return $paginated;
+    }
+    
+    public function payoutList(Request $request)
+    {
+        $filter_type = $request->input('data.filter_type');
+        $filterer = $request->input('data.filterer');
+        $date_type = $request->input('data.date_type');
+        $date = $request->input('data.date');
+        if($date_type == 0){
+            if($filter_type == 0){
+                $payouts = Payment::get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 1){
+                $payouts = Payment::where('payout_bundle','like','%'.$filterer.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 2){
+                $payouts = Payment::where('booking_id','like','%'.$filterer.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 3){
+                $payouts = Payment::where('payout_listing_name','like','%'.$filterer.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 4){
+                $payouts = Payment::where('payout_amount','like','%'.$filterer.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 5){
+                $payouts = Payment::where('bundle_amount','like','%'.$filterer.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }
+        }else if($date_type == 1){
+            if($filter_type == 0){
+                $payouts = Payment::where('payout_date','like','%'.$date.'%')->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 1){
+                $payouts = Payment::where('payout_bundle','like','%'.$filterer.'%')
+                ->where('payout_date','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 2){
+                $payouts = Payment::where('booking_id','like','%'.$filterer.'%')
+                ->where('payout_date','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 3){
+                $payouts = Payment::where('payout_listing_name','like','%'.$filterer.'%')
+                ->where('payout_date','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 4){
+                $payouts = Payment::where('payout_amount','like','%'.$filterer.'%')
+                ->where('payout_date','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 5){
+                $payouts = Payment::where('bundle_amount','like','%'.$filterer.'%')
+                ->where('payout_date','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }
+        }else if($date_type == 2){
+            if($filter_type == 0){
+                $payouts = Payment::where('payout_eta','like','%'.$date.'%')->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 1){
+                $payouts = Payment::where('payout_bundle','like','%'.$filterer.'%')
+                ->where('payout_eta','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 2){
+                $payouts = Payment::where('booking_id','like','%'.$filterer.'%')
+                ->where('payout_eta','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 3){
+                $payouts = Payment::where('payout_listing_name','like','%'.$filterer.'%')
+                ->where('payout_eta','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 4){
+                $payouts = Payment::where('payout_amount','like','%'.$filterer.'%')
+                ->where('payout_eta','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 5){
+                $payouts = Payment::where('bundle_amount','like','%'.$filterer.'%')
+                ->where('payout_eta','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }
+        }else if($date_type == 3){
+            if($filter_type == 0){
+                $payouts = Payment::where('payout_booking_check_in','like','%'.$date.'%')->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 1){
+                $payouts = Payment::where('payout_bundle','like','%'.$filterer.'%')
+                ->where('payout_booking_check_in','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 2){
+                $payouts = Payment::where('booking_id','like','%'.$filterer.'%')
+                ->where('payout_booking_check_in','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 3){
+                $payouts = Payment::where('payout_listing_name','like','%'.$filterer.'%')
+                ->where('payout_booking_check_in','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 4){
+                $payouts = Payment::where('payout_amount','like','%'.$filterer.'%')
+                ->where('payout_booking_check_in','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 5){
+                $payouts = Payment::where('bundle_amount','like','%'.$filterer.'%')
+                ->where('payout_booking_check_in','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }
+        }else if($date_type == 4){
+            if($filter_type == 0){
+                $payouts = Payment::where('payout_booking_check_out','like','%'.$date.'%')->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 1){
+                $payouts = Payment::where('payout_bundle','like','%'.$filterer.'%')
+                ->where('payout_booking_check_out','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 2){
+                $payouts = Payment::where('booking_id','like','%'.$filterer.'%')
+                ->where('payout_booking_check_out','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 3){
+                $payouts = Payment::where('payout_listing_name','like','%'.$filterer.'%')
+                ->where('payout_booking_check_out','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 4){
+                $payouts = Payment::where('payout_amount','like','%'.$filterer.'%')
+                ->where('payout_booking_check_out','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }else if($filter_type == 5){
+                $payouts = Payment::where('bundle_amount','like','%'.$filterer.'%')
+                ->where('payout_booking_check_out','like','%'.$date.'%')
+                ->get();
+                $payouts = $this->sorterPayoutList($request,$payouts);
+            }
+        }
+        return $payouts;
+    }
+
     /**
      * Display a listing of the resource.
      *

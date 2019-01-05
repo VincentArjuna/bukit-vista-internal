@@ -37,14 +37,9 @@ class UnitController extends Controller
             $units = new Unit;
             $units->unit_id = $this->new_unit_id();
             $units->unit_name = $request->input('data.unit_name');
-            $units->unit_onboard_date = $request->input('data.unit_onboard_date');
-            $units->unit_base_price = $request->input('data.unit_base_price');
-            $units->unit_currency = $request->input('data.unit_currency');
             $units->unit_capacity = $request->input('data.unit_capacity');
             $units->unit_number_room = $request->input('data.unit_number_room');
             $units->unit_swimming_pool = $request->input('data.unit_swimming_pool');
-            $units->unit_percentage_owner = $request->input('data.unit_percentage_owner');
-            $units->unit_percentage_bv = $request->input('data.unit_percentage_bv');
             $units->property_id = $request->input('data.property_id');
             $units->save();
             return 'TRUE';   
@@ -173,20 +168,13 @@ class UnitController extends Controller
     public function update(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $rawonboard = date_create($request->input('data.unit_onboard_date'));
-        $onboard_date = date_format($rawonboard,"Y-m-d");
         $id = $request->input('data.unit_id');
         $units = Unit::where('unit_id', $id)->first();
         if($units){
             $units->unit_name = $request->input('data.unit_name');
-            $units->unit_onboard_date = $onboard_date;
-            $units->unit_base_price = $request->input('data.unit_base_price');
-            $units->unit_currency = $request->input('data.unit_currency');
             $units->unit_capacity = $request->input('data.unit_capacity');
             $units->unit_number_room = $request->input('data.unit_number_room');
             $units->unit_swimming_pool = $request->input('data.unit_swimming_pool');
-            $units->unit_percentage_owner = $request->input('data.unit_percentage_owner');
-            $units->unit_percentage_bv = $request->input('data.unit_percentage_bv');
             $units->property_id = $request->input('data.property_id');
             $units->save();
             return 'TRUE';

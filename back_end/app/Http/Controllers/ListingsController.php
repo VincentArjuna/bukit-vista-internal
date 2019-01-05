@@ -45,10 +45,12 @@ class ListingsController extends Controller
         $id = $request->input('data.listing_id');
         $listings = Listing::where('listing_id', $id)->first();
         if (!$listings){
+            $rawpublish = date_create($request->input('data.publish_date'));
+            $publish_date = date_format($rawpublish,"Y-m-d");
             $listings = new Listing;
             $listings->listing_id = $id;
             $listings->listing_name = $request->input('data.listing_name');
-            $listings->listing_onboard_date = $request->input('data.listing_onboard_date');
+            $listings->listing_publish_date = $publish_date;
             $listings->listing_status = $request->input('data.listing_status');
             $listings->listing_instant_book = $request->input('data.listing_instant_book');
             $listings->listing_account_owner = $request->input('data.listing_account_owner');
@@ -74,6 +76,12 @@ class ListingsController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function showId($id)
+    {
+        $listings = Listing::where('listing_id', 'like', '%'.$id.'%');
+        return $listings;
     }
 
     public function sorterlistingList(Request $request, $listings)
@@ -247,13 +255,13 @@ class ListingsController extends Controller
     public function update(Request $request)
     {
         date_default_timezone_set('Asia/Kuala_Lumpur');
-        $rawonboard = date_create($request->input('data.onboard_date'));
-        $onboard_date = date_format($rawonboard,"Y-m-d");
+        $rawpublish = date_create($request->input('data.publish_date'));
+        $publish_date = date_format($rawpublish,"Y-m-d");
         $id = $request->input('data.listing_id');
         $listings = Listing::where('listing_id', $id)->first();
         if($listings){
             $listings->listing_name = $request->input('data.listing_name');
-            $listings->listing_onboard_date = $onboard_date;
+            $listings->listing_publish_date = $publish_date;
             $listings->listing_status = $request->input('data.listing_status');
             $listings->listing_instant_book = $request->input('data.listing_instant_book');
             $listings->listing_account_owner = $request->input('data.listing_account_owner');

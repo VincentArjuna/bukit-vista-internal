@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    public $incrementing = false;
-    protected $table = 'payment';
-    protected $primaryKey = 'payment_id';
+    protected $table = 'payout';
+    protected $primaryKey = 'payout_id';
 }

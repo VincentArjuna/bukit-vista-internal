@@ -91,14 +91,13 @@ class ProfilesController extends Controller
      * filter_type = 1 --> profile_id
      * filter_type = 2 --> profile_name
      * filter_type = 3 --> profile_email
-     * filter_type = 4 --> employee_phone
      * filterer = text for filter_type
      * per_page = data amount per page
      * sort_type = 0 --> default
-     * sort_type = 1 --> employee_id ASC
-     * sort_type = 2 --> employee_id DESC
-     * sort_type = 3 --> employee_name ASC
-     * sort_type = 4 --> employee_name DESC
+     * sort_type = 1 --> profile_id ASC
+     * sort_type = 2 --> profile_id DESC
+     * sort_type = 3 --> profile_name ASC
+     * sort_type = 4 --> profile_name DESC
      */
 
     public function profileList(Request $request)
