@@ -689,6 +689,25 @@ class BookingsController extends Controller
         return $bookings;
     }
 
+    /**
+     * date_type = 0 --> no type
+     * date_type = 1 --> check_in    
+     * date_type = 2 --> check_out
+     * filter_type = 0 --> no filter
+     * filter_type = 1 --> booking_id
+     * filter_type = 2 --> guest_name
+     * filter_type = 3 --> profile_name
+     * date = the date for date_filter
+     * filterer = the text for filter_type
+     * sort_type = 0 -> no sort
+     * sort_type = 1 -> booking_guest_name ASC
+     * sort_type = 2 -> booking_guest_name DESC
+     * sort_type = 3 -> unit_name ASC
+     * sort_type = 4 -> unit_name DESC
+     * sort_type = 5 -> profile_name ASC
+     * sort_type = 6 -> profile_name DESC
+    */
+
     public function bookingUnregisteredListing(Request $request)
     {
         $date_type = $request->input('data.date_type');
@@ -727,18 +746,6 @@ class BookingsController extends Controller
                 ->get();
                 $bookings = $this->sorterbookinglist($request, $bookings);
             }else if ($filter_type == 3)
-            {
-                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->get();
-                $ar = collect();
-                foreach($listings as $listing){
-                    $bookings = DB::table('booking')->select($searcher
-                    )->where('listing_id', $listing->listing_id)
-                    ->where('listing_id', 'UNREGISTERED')
-                    ->get();
-                    $ar = $ar->merge($bookings);
-                }
-                $bookings = $this->sorterbookinglist($request, $ar);
-            }else if ($filter_type == 4)
             {
                 $profiles = Profiles::where('profile_name','like', '%'.$filterer.'%')->get();
                 $ar = collect();
@@ -782,19 +789,6 @@ class BookingsController extends Controller
                 $bookings = $this->sorterbookinglist($request, $bookings);
             }else if ($filter_type == 3)
             {
-                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->get();
-                $ar = collect();
-                foreach($listings as $listing){
-                    $bookings = DB::table('booking')->select($searcher
-                    )->where('listing_id', $listing->listing_id)
-                    ->where('listing_id', 'UNREGISTERED')
-                    ->where('booking_check_in', $date)
-                    ->get();
-                    $ar = $ar->merge($bookings);
-                }
-                $bookings = $this->sorterbookinglist($request, $ar);
-            }else if ($filter_type == 4)
-            {
                 $profiles = Profiles::where('profile_name','like', '%'.$filterer.'%')->get();
                 $ar = collect();
                 foreach($profiles as $profile)
@@ -837,19 +831,6 @@ class BookingsController extends Controller
                 ->get();
                 $bookings = $this->sorterbookinglist($request, $bookings);
             }else if ($filter_type == 3)
-            {
-                $listings = Listing::where('listing_name','like', '%'.$filterer.'%')->get();
-                $ar = collect();
-                foreach($listings as $listing){
-                    $bookings = DB::table('booking')->select($searcher
-                    )->where('listing_id', $listing->listing_id)
-                    ->where('listing_id', 'UNREGISTERED')
-                    ->where('booking_check_out', $date)
-                    ->get();
-                    $ar = $ar->merge($bookings);
-                }
-                $bookings = $this->sorterbookinglist($request, $ar);                
-            }else if ($filter_type == 4)
             {
                 $profiles = Profiles::where('profile_name','like', '%'.$filterer.'%')->get();
                 $ar = collect();
