@@ -11,7 +11,9 @@ trait LogTrait
 {
     public function new_log_id()
     {
-        $ctr = Logs::latest()->count();
+        $logs = Logs::latest()->first();
+        $id = substr($logs->log_id,2);
+        $ctr = intval($id)+1;
         $log_id = 'LH'.sprintf("%04s", $ctr);
         return $log_id;
     }

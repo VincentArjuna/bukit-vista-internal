@@ -9,6 +9,8 @@ use App\Payment;
 use App\PaymentBooking;
 use App\Bookings;
 use App\Listing;
+use DB;
+use DateTime;
 
 class PaymentController extends Controller
 {
@@ -30,8 +32,7 @@ class PaymentController extends Controller
             return 1;
         }else if($cur == '$'){
             return 2;
-        }
-        else if($cur == 'EUR' || $cur == '€'){
+        }else if($cur == 'EUR' || $cur == '€'){
             return 3;
         }else if($cur == '$AUD'){
             return 4;
@@ -47,8 +48,11 @@ class PaymentController extends Controller
         $replacer = "tmp";
         $findme2 = "Column 7";
         $replacer2 = "tmp2";
+        $findme3 = "Column 8";
+        $replacer3 = "tmp3";
         $text = str_replace($findme,$replacer,$text);
         $text = str_replace($findme2,$replacer2,$text);
+        $text = str_replace($findme3,$replacer3,$text);
         $data = json_decode($text);
         $input = $data[0];
         $host_name = $input->host_name;
@@ -70,16 +74,55 @@ class PaymentController extends Controller
             }else{
                 if(Arr::exists($payout,$replacer)){
                     if(Arr::exists($payout,$replacer2)){
-                        if(isset($payout->tmp2)){
-                            $transfer_amount = '-'.$payout->tmp2;
-                            $listing_name = $payout->Listing_name.' - '.$payout->Transfer_amount;                        
-                        }else{
-                            if(isset($payout->tmp)){
-                                $listing_name = $payout->Listing_name.' - '.$payout->Transfer_amount;
-                                $transfer_amount = $payout->tmp;
+                        if(Arr::exists($payout,$replacer3)){
+                            if(isset($payout->tmp3)){
+                                if(isset($payout->tmp2)){
+                                    $transfer_amount = $payout->tmp3;
+                                    $guest_name = $guest_name.'-'.$payout->Listing_name;
+                                    $listing_name = $payout->Transfer_amount.' - '.$payout->tmp.' - '.$payout->tmp2;
+                                }else{
+                                    $transfer_amount = '-'.$payout->tmp3;
+                                    $guest_name = $guest_name.'-'.$payout->Listing_name;
+                                    $listing_name = $payout->Transfer_amount.' - '.$payout->tmp;
+                                }
                             }else{
-                                $listing_name = $payout->Listing_name;
-                                $transfer_amount = $payout->Transfer_amount;
+                                if(isset($payout->tmp2)){
+                                    if(isset($payout->tmp)){
+                                        $transfer_amount = $payout->tmp2;
+                                        $guest_name = $guest_name.'-'.$payout->Listing_name;
+                                        $listing_name = $payout->Transfer_amount.' - '.$payout->tmp;
+                                    }else{
+                                        $transfer_amount = '-'.$payout->tmp2;
+                                        $listing_name = $payout->Listing_name.' - '.$payout->Transfer_amount; 
+                                    }                       
+                                }else{
+                                    if(isset($payout->tmp)){
+                                        $listing_name = $payout->Listing_name.' - '.$payout->Transfer_amount;
+                                        $transfer_amount = $payout->tmp;
+                                    }else{
+                                        $listing_name = $payout->Listing_name;
+                                        $transfer_amount = $payout->Transfer_amount;
+                                    }
+                                }    
+                            }
+                        }else{
+                            if(isset($payout->tmp2)){
+                                if(isset($payout->tmp)){
+                                    $transfer_amount = $payout->tmp2;
+                                    $guest_name = $guest_name.'-'.$payout->Listing_name;
+                                    $listing_name = $payout->Transfer_amount.' - '.$payout->tmp;
+                                }else{
+                                    $transfer_amount = '-'.$payout->tmp2;
+                                    $listing_name = $payout->Listing_name.' - '.$payout->Transfer_amount; 
+                                }                       
+                            }else{
+                                if(isset($payout->tmp)){
+                                    $listing_name = $payout->Listing_name.' - '.$payout->Transfer_amount;
+                                    $transfer_amount = $payout->tmp;
+                                }else{
+                                    $listing_name = $payout->Listing_name;
+                                    $transfer_amount = $payout->Transfer_amount;
+                                }
                             }
                         }
                     }else{
@@ -347,6 +390,55 @@ class PaymentController extends Controller
         $reader->setHeaderOffset(0);
         $payment_id = '';
         foreach ($reader as $offset => $record) {
+            $booking_id = $record['booking_id'];
+            $guest_name = $record['booking_guest_name'];
+            $booking_status = 1;
+            $ci = $record['booking_check_in'];
+            $co = $record['booking_check_out'];
+            $booking_earned = $record['booking_earned'];
+            $booking_currency = $record['booking_currency'];
+            $listing_id = $record['listing_id'];
+            $bookings = Bookings::withTrashed()->where('booking_id', 'HMCJ2CPW3W')->first();
+            print_r($bookings);
+            if($bookings){
+                return 1;
+                $listing = Listing::where('listing_id', $listing_id)->first();
+                $bookings->booking_id = $booking_id;
+                $bookings->booking_guest_name = $guest_name;
+                $bookings->booking_check_in = $ci;
+                $bookings->booking_check_out = $co;
+                $bookings->booking_status = $booking_status;
+                $bookings->booking_currency = $booking_currency;
+                $bookings->booking_earned = $booking_earned;
+                if($listing){
+                    $bookings->listing_id = $listing_id;
+                    $bookings->save();
+                }else{
+                    $bookings->listing_id = 'UNREGISTERED';
+                    $bookings->temp_column = $listing_id;
+                    $bookings->save();
+                }
+            }else{
+                return 2;
+                $bookings = new Bookings;
+                $bookings = $bookings[0];
+                $listing = Listing::where('listing_id', $listing_id)->first();
+                $bookings->booking_id = $booking_id;
+                $bookings->booking_guest_name = $guest_name;
+                $bookings->booking_check_in = $ci;
+                $bookings->booking_check_out = $co;
+                $bookings->booking_status = $booking_status;
+                $bookings->booking_currency = $booking_currency;
+                $bookings->booking_earned = $booking_earned;
+                if($listing){
+                    $bookings->listing_id = $listing_id;
+                    $bookings->save();
+                }else{
+                    $bookings->listing_id = 'UNREGISTERED';
+                    $bookings->temp_column = $listing_id;
+                    $bookings->save();
+                }
+            }
             /*if($record['Type'] == 'Payout')
             {
                 $pb_ammount = floatval($record['Paid Out']);
@@ -377,6 +469,7 @@ class PaymentController extends Controller
                 $pbs->save();
             }
             */
+            /*
             if($record['Type'] == 'Reservation')
             {
                 $booking_id = $record['Confirmation Code'];
@@ -421,6 +514,7 @@ class PaymentController extends Controller
                     $booking->save();
                 }
             }
+            */
         }
         return 'Succeed';
     }

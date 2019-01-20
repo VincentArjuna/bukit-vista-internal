@@ -859,9 +859,19 @@ class BookingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit_ETA(Request $request)
     {
-        //
+        $id = $request->input('booking_id');
+        $eta = $request->input('ETA');
+        $phone = $request->input('guest_phone');
+        $bookings = Bookings::where('booking_id', $id)->first();
+        if($bookings){
+            $bookings->booking_guest_eta = $eta;
+            $bookings->booking_guest_phone = $phone;
+            $bookings->save(); 
+            return $this->integromatcancelation($id);
+        }
+        return "Booking Not Found";
     }
 
     /**
@@ -878,8 +888,7 @@ class BookingsController extends Controller
         $id = $request->input('data.booking_id');
         $bookings = Bookings::where('booking_id', $id)->first();
         if($bookings){
-            if($update_type == 0)
-            {
+            if($update_type == 0){
                 $bookings->booking_guest_name = $request->input('data.booking_guest_name');
                 $bookings->booking_status = $request->input('data.booking_status');
                 $bookings->booking_check_in = $request->input('data.booking_check_in');
@@ -887,15 +896,13 @@ class BookingsController extends Controller
                 $bookings->booking_guest_number = $request->input('data.booking_guest_number');
                 $bookings->booking_guest_phone = $request->input('data.booking_guest_phone');
                 $bookings->booking_guest_eta = $request->input('data.booking_guest_eta');
-                $bookings->booking_guest_status = $request->input('data.booking_guest_status');
                 $bookings->booking_comm_channel = $request->input('data.booking_comm_channel');
                 $bookings->booking_earned = $request->input('data.booking_earned');
                 $bookings->booking_currency = $request->input('data.booking_currency');
                 $bookings->booking_source = $request->input('data.booking_source');
                 $bookings->booking_conversation_url = $request->input('data.booking_conversation_url');
                 $bookings->listing_id = $request->input('data.listing_id');
-            }else
-            {
+            }else{
                 $bookings->booking_comm_channel = $request->input('data.booking_comm_channel');
                 $bookings->booking_check_out = $request->input('data.booking_check_out');
                 $bookings->booking_guest_phone = $request->input('data.booking_guest_phone');
@@ -904,8 +911,7 @@ class BookingsController extends Controller
                 $bookings->booking_guest_number = $request->input('data.booking_guest_number');
             }
             $bookings->save();
-            if ($bookings->booking_status == 2)
-            {
+            if ($bookings->booking_status == 2){
                 $this->softDelete($bookings->booking_id);
             }
             return 'TRUE';
