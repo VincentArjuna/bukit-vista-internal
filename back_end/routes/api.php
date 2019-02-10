@@ -211,3 +211,32 @@ Route::post('be_store', 'BEController@store');
 Route::get('integromat/{id}', 'ListingsController@integromat');
 //bookingcancelation
 Route::get('integromatcancelation/{id}', 'BookingsController@integromatcancelation');
+
+//role
+//check roles permission (will return or false)
+//bookingList_view
+Route::get('permission/bookingList_view/{id}', 'RoleController@bookingList_view');
+//bookingList_modify
+Route::get('permission/bookingList_modify/{id}', 'RoleController@bookingList_modify');
+//extraInfo_view
+Route::get('permission/extraInfo_view/{id}', 'RoleController@extraInfo_view');
+//extraInfo_modify
+Route::get('permission/extraInfo_modify/{id}', 'RoleController@extraInfo_modify');
+//ownerBooking_view
+Route::get('permission/ownerBooking_view/{id}', 'RoleController@ownerBooking_view');
+//marketBuilding_view
+Route::get('permission/marketBuilding_view/{id}', 'RoleController@marketBuilding_view');
+//marketBuilding_modify
+Route::get('permission/marketBuilding_modify/{id}', 'RoleController@marketBuilding_modify');
+//ressources_view
+Route::get('permission/ressources_view/{id}', 'RoleController@ressources_view');
+//ressources_modify
+Route::get('permission/ressources_modify/{id}', 'RoleController@ressources_modify');
+//propDetails_view
+Route::get('permission/propDetails_view/{id}', 'RoleController@propDetails_view');
+//financeBoard_view
+Route::get('permission/financeBoard_view/{id}', 'RoleController@financeBoard_view');
+//financeBoard_modify
+Route::get('permission/financeBoard_modify/{id}', 'RoleController@financeBoard_modify');
+//ownerFinanceBoard_view
+Route::get('permission/ownerFinanceBoard_view/{id}', 'RoleController@ownerFinanceBoard_view');

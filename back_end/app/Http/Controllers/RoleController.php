@@ -87,21 +87,7 @@ class RoleController extends Controller
         }
         return $checker;
     }
-
-    public function ownerBooking_modify($user_id)
-    {
-        $user_roles = User_Role::where('user_id', $user_id)->get();
-        $checker = false;
-        foreach ($user_roles as $user_role) {
-            $role = Role::where('role_name', $user_role->role)->first();
-            if($role->ownerBooking_modify){
-                $checker = true;
-                break;
-            }
-        }
-        return $checker;
-    }
-
+    
     public function marketBuilding_view($user_id)
     {
         $user_roles = User_Role::where('user_id', $user_id)->get();
