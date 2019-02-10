@@ -87,7 +87,7 @@ class RoleController extends Controller
         }
         return $checker;
     }
-    
+
     public function marketBuilding_view($user_id)
     {
         $user_roles = User_Role::where('user_id', $user_id)->get();
@@ -209,9 +209,31 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function create(Request $request)
     {
-        //
+        $role_name = $request->input('data.role_name');
+        $role = Role::where('role_name', $role_name)->first();
+        if(!$role){
+            $role = new Role;
+            $role->role_name = $role_name;
+            $role->bookingList_view= $request->input('data.bookingList_view');
+            $role->bookingList_modify= $request->input('data.bookingList_modify');
+            $role->extraInfo_view= $request->input('data.extraInfo_view');
+            $role->extraInfo_modify= $request->input('data.extraInfo_modify');
+            $role->ownerBooking_view= $request->input('data.ownerBooking_view');
+            $role->marketBuilding_view= $request->input('data.marketBuilding_view');
+            $role->marketBuilding_modify= $request->input('data.marketBuilding_modify');
+            $role->ressources_view= $request->input('data.ressources_view');
+            $role->ressources_modify= $request->input('data.ressources_modify');
+            $role->propDetails_view= $request->input('data.propDetails_view');
+            $role->financeDashboard_view= $request->input('data.financeDashboard_view');
+            $role->financeDashboard_modify= $request->input('data.financeDashboard_modify');
+            $role->ownerFinanceDashboard_view= $request->input('data.ownerFinanceDashboard_view');
+            $role->save();
+            return 'TRUE';        
+        }else {
+            return 'FALSE';
+        }
     }
 
     /**
@@ -220,9 +242,10 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function roleDetails($id)
     {
-        //
+        $role = Role::where('role_name', $id)->first();
+        return $role;
     }
 
     /**
@@ -232,9 +255,29 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request)
     {
-        //
+        $role = Role::where('role_name', $request->input('data.role_name'))->first();
+        if($role){
+            $role->role_name = $request->input('data.role_name');
+            $role->bookingList_view= $request->input('data.bookingList_view');
+            $role->bookingList_modify= $request->input('data.bookingList_modify');
+            $role->extraInfo_view= $request->input('data.extraInfo_view');
+            $role->extraInfo_modify= $request->input('data.extraInfo_modify');
+            $role->ownerBooking_view= $request->input('data.ownerBooking_view');
+            $role->marketBuilding_view= $request->input('data.marketBuilding_view');
+            $role->marketBuilding_modify= $request->input('data.marketBuilding_modify');
+            $role->ressources_view= $request->input('data.ressources_view');
+            $role->ressources_modify= $request->input('data.ressources_modify');
+            $role->propDetails_view= $request->input('data.propDetails_view');
+            $role->financeDashboard_view= $request->input('data.financeDashboard_view');
+            $role->financeDashboard_modify= $request->input('data.financeDashboard_modify');
+            $role->ownerFinanceDashboard_view= $request->input('data.ownerFinanceDashboard_view');
+            $role->save();
+            return 'TRUE';
+        }else{
+            return 'FALSE';
+        }
     }
 
     /**

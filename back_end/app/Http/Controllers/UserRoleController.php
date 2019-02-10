@@ -22,10 +22,23 @@ class UserRoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $role_name = $request->input('data.role_name');
+        $user_id = $request->input('data.user_id');
+        $user_Role = User_Role::where('user_id', $user_id)
+                    ->where('role_name', $role_name)->first();
+        if(!$user_Role){
+            $user_Role = new User_Role;
+            $user_Role->role_name = $role_name;
+            $user_Role->user_id = $user_id;
+            $user_Role->save();
+            return 'TRUE';
+        }else {
+            return 'FALSE';
+        }
     }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -55,9 +68,19 @@ class UserRoleController extends Controller
      * @param  \App\User_Role  $user_Role
      * @return \Illuminate\Http\Response
      */
-    public function edit(User_Role $user_Role)
+    public function editRole(Request $request)
     {
-        //
+        $role_name = $request->input('data.role_name');
+        $user_id = $request->input('data.user_id');
+        $user_Role = User_Role::where('user_id', $user_id)
+                    ->where('role_name', $role_name)->first();
+        if($user_Role){
+            $user_Role->role_name = $role_name;
+            $user_Role->save();
+            return 'TRUE';
+        }else {
+            return 'FALSE';
+        }
     }
 
     /**

@@ -88,7 +88,6 @@ class UserController extends Controller
             $password = Hash::make($request->input('data.user_password'));
             $users->user_email = $request->input('data.user_email');
             $users->user_password = $password;
-            $users->employee_id = $request->input('data.employee_id');
             $users->save();
             return 'User Created';
         }

@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class User_Role extends Model
 {
     protected $table ='user_role';
-    public $incrementing = false;
+    protected $primaryKey = 'id';
 }

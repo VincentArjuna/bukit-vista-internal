@@ -240,3 +240,15 @@ Route::get('permission/financeBoard_view/{id}', 'RoleController@financeBoard_vie
 Route::get('permission/financeBoard_modify/{id}', 'RoleController@financeBoard_modify');
 //ownerFinanceBoard_view
 Route::get('permission/ownerFinanceBoard_view/{id}', 'RoleController@ownerFinanceBoard_view');
+//create new role
+Route::post('role/create', 'RoleController@create');
+//update role
+Route::post('role/update', 'RoleController@update');
+//show role details for specific role
+Route::get('role/details/{id}', 'RoleController@roleDetails');
+
+//User_Role
+//create new user_role
+Route::post('user_role/create', 'UserRoleController@create');
+//edit user_role
+Route::post('user_role/edit', 'UserRoleController@editRole');
